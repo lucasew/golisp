@@ -24,6 +24,12 @@ func NewRationalFromBigRat(n *big.Rat) LispRational {
     }
 }
 
+func NewRationalFromString(s string) (LispRational, bool) {
+    ret := &big.Rat{}
+    _, ok := ret.SetString(s)
+    return NewRationalFromBigRat(ret), ok
+}
+
 func (i LispRational) IsZero() bool {
     return i.n.Num().Cmp(big.NewInt(0)) == 0
 }

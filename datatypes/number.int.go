@@ -20,6 +20,13 @@ func NewIntFromBigInt(n *big.Int) LispInt {
     }
 }
 
+func NewIntFromString(s string) (LispInt, bool) {
+    ret := &big.Int{}
+    _, ok := ret.SetString(s, 0)
+    return NewIntFromBigInt(ret), ok
+
+}
+
 func (n LispInt) Int64() (r int64, acc LispAccuracy) {
     if (n.n.IsInt64()) {
         acc = AccuracyExact

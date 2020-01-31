@@ -18,6 +18,12 @@ func NewFloatFromBigFloat(n *big.Float) LispFloat {
     }
 }
 
+func NewFloatFromString(s string) (LispFloat, bool) {
+    ret := &big.Float{}
+    _, ok := ret.SetString(s)
+    return NewFloatFromBigFloat(ret), ok
+}
+
 func NewFloatFromInt(i LispInt) LispFloat {
     ret := &big.Float{}
     return NewFloatFromBigFloat(ret.SetInt(i.n))

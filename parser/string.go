@@ -1,11 +1,12 @@
-package lex
+package parser
 
 import (
     "github.com/lucasew/golisp/datatypes"
+    "github.com/lucasew/golisp/lex"
     "errors"
 )
 
-func (ctx *Context) ParseString() (datatypes.LispValue, error) {
+func ParseString(ctx *lex.Context) (datatypes.LispValue, error) {
     b, ok := ctx.GetByte()
     if !ok {
         return datatypes.Nil, errors.New("eof when parsing string")
@@ -21,9 +22,9 @@ func (ctx *Context) ParseString() (datatypes.LispValue, error) {
             return datatypes.Nil, errors.New("eof when parsing string body")
         }
         if b.IsStringMark() {
-            block := ctx.data[begin:ctx.Index()]
+            s := ctx.Slice(begin, ctx.Index())
             ctx.Increment()
-            return datatypes.NewConventionalString(string(block)), nil
+            return datatypes.NewConventionalString(s), nil
         }
     }
 }

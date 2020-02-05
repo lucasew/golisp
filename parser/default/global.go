@@ -1,13 +1,15 @@
-package lex
+package pdefault
 
 import (
     "github.com/lucasew/golisp/datatypes"
+    "github.com/lucasew/golisp/lex"
+    "github.com/lucasew/golisp/parser"
     "errors"
     "fmt"
 )
 
-func (ctx *Context) GlobalState() (datatypes.LispValue, error) {
-    ctx.stateWhitespace()
+func GlobalState(ctx *lex.Context) (datatypes.LispValue, error) {
+    ctx.StateWhitespace()
     b, ok := ctx.GetByte()
     if !ok {
         return datatypes.Nil, errors.New("eof when parsing global state")
@@ -26,29 +28,29 @@ func (ctx *Context) GlobalState() (datatypes.LispValue, error) {
                     return datatypes.Nil, errors.New("eof when parsing comment")
                 }
                 if b.IsByte('\n') {
-                    return datatypes.Comment, nil
+                    return parser.Comment, nil
                 }
                 ctx.Increment()
             }
         }
     }
     if b.IsByteColon() {
-        return ctx.ParseAtom()
+        return parser.ParseAtom(ctx)
     }
     if b.IsOpenPar() {
-        return ctx.ParseList()
+        return parser.ParseList(ctx, GlobalState)
     }
     if b.IsStringMark() {
-        return ctx.ParseString()
+        return parser.ParseString(ctx)
     }
     if b.IsByteNumber() {
-        return ctx.ParseNumber()
+        return parser.ParseNumber(ctx)
     }
     if b.IsHash() {
-        return ctx.ParseSpecialLiteral()
+        return ParseSpecialLiteral(ctx)
     }
     if b.IsByteLetter() || b.IsByteSpecialSymbol() {
-        return ctx.ParseSymbol()
+        return parser.ParseSymbol(ctx)
     }
     // if b.IsClosePar() { // TODO: Test more
     //     // panic("invalid ) token")

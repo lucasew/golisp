@@ -1,13 +1,15 @@
-package lex
+package pdefault
 
 import (
     "github.com/lucasew/golisp/datatypes"
+    "github.com/lucasew/golisp/lex"
+    "github.com/lucasew/golisp/parser"
     "math/big"
     "errors"
     "fmt"
 )
 
-func (ctx *Context) ParseSpecialLiteral() (datatypes.LispValue, error) {
+func ParseSpecialLiteral(ctx *lex.Context) (datatypes.LispValue, error) {
     b, ok := ctx.GetByte()
     if !ok {
         return datatypes.Nil, errors.New("eof when parsing special literal")
@@ -22,11 +24,11 @@ func (ctx *Context) ParseSpecialLiteral() (datatypes.LispValue, error) {
     }
     if b.IsByteUnderline() { // Like a comment
         ctx.Increment()
-        _, err := ctx.ParseString()
+        _, err := parser.ParseString(ctx)
         if err != nil {
             return datatypes.Nil, err
         }
-        return datatypes.Comment, nil // TODO: Comment object?
+        return parser.Comment, nil // TODO: Comment object?
     }
     if b.IsByte('b') { // parse binary
         ctx.Increment()
@@ -38,8 +40,8 @@ func (ctx *Context) ParseSpecialLiteral() (datatypes.LispValue, error) {
             }
             if !(b.IsByte('1') || b.IsByte('0')) {
                 ret := &big.Int{}
-                str := ctx.data[begin:ctx.Index()]
-                ret.SetString(string(str), 2) // Parse in base 2
+                s := ctx.Slice(begin, ctx.Index())
+                ret.SetString(s, 2) // Parse in base 2
                 return datatypes.NewIntFromBigInt(ret), nil
             }
             ctx.Increment()
@@ -55,8 +57,8 @@ func (ctx *Context) ParseSpecialLiteral() (datatypes.LispValue, error) {
             }
             if !(b >= '0' && b <= '8') {
                 ret := &big.Int{}
-                str := ctx.data[begin:ctx.Index()]
-                ret.SetString(string(str), 8) // Parse in base 8
+                s := ctx.Slice(begin, ctx.Index())
+                ret.SetString(s, 8) // Parse in base 8
                 return datatypes.NewIntFromBigInt(ret), nil
             }
             ctx.Increment()
@@ -72,8 +74,8 @@ func (ctx *Context) ParseSpecialLiteral() (datatypes.LispValue, error) {
             }
             if !b.IsHexadecimal() {
                 ret := &big.Int{}
-                str := ctx.data[begin:ctx.Index()]
-                ret.SetString(string(str), 16) // Parse in base 8
+                s := ctx.Slice(begin, ctx.Index())
+                ret.SetString(s, 16) // Parse in base 8
                 return datatypes.NewIntFromBigInt(ret), nil
             }
             ctx.Increment()

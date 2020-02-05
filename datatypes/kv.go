@@ -10,12 +10,12 @@ func NewKV(k LispValue, v LispValue) LispValue {
     return KV([]LispValue{k, v})
 }
 
-func (KV) Car() LispValue {
-    return Nil
+func (k KV) Car() LispValue {
+    return k[0]
 }
 
-func (KV) Cdr() LispValue {
-    return Nil
+func (k KV) Cdr() LispValue {
+    return k[1]
 }
 
 func (kv KV) IsNil() bool {

@@ -5,7 +5,7 @@ import (
     // "github.com/davecgh/go-spew/spew"
 )
 
-func (ctx *Context) stateWhitespace() error {
+func (ctx *Context) StateWhitespace() error {
     for {
         b, ok := ctx.GetByte()
         if !ok {

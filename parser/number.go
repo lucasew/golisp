@@ -1,13 +1,14 @@
-package lex
+package parser
 
 import (
     "github.com/lucasew/golisp/datatypes"
+    "github.com/lucasew/golisp/lex"
     "errors"
     "fmt"
     "strings"
 )
 
-func (ctx *Context) ParseNumber() (datatypes.LispValue, error) {
+func ParseNumber(ctx *lex.Context) (datatypes.LispValue, error) {
     b, ok := ctx.GetByte()
     if !ok {
         return datatypes.Nil, errors.New("eof when parsing number")
@@ -52,21 +53,21 @@ func (ctx *Context) ParseNumber() (datatypes.LispValue, error) {
         if b.IsByteUnderline() { // TODO: Ignore it when using the function to parse
             continue
         }
-        str := string(ctx.data[begin:ctx.Index()])
-        str = strings.ReplaceAll(str, "_", "")
-        reti, ok := datatypes.NewIntFromString(str)
+        s := ctx.Slice(begin, ctx.Index())
+        s = strings.ReplaceAll(s, "_", "")
+        reti, ok := datatypes.NewIntFromString(s)
         if ok {
             return reti, nil
         }
-        retf, ok := datatypes.NewFloatFromString(str)
+        retf, ok := datatypes.NewFloatFromString(s)
         if ok {
             return retf, nil
         }
 
-        retr, ok := datatypes.NewRationalFromString(str)
+        retr, ok := datatypes.NewRationalFromString(s)
         if ok {
             return retr, nil
         }
-        return datatypes.Nil, fmt.Errorf("cant parse %s as number", str)
+        return datatypes.Nil, fmt.Errorf("cant parse %s as number", s)
     }
 }

@@ -1,11 +1,12 @@
-package lex
+package parser
 
 import (
     "github.com/lucasew/golisp/datatypes"
+    "github.com/lucasew/golisp/lex"
     "errors"
 )
 
-func (ctx *Context) ParseAtom() (datatypes.LispValue, error) {
+func ParseAtom(ctx *lex.Context) (datatypes.LispValue, error) {
     b, ok := ctx.GetByte()
     if !ok {
         return datatypes.Nil, errors.New("eof when parsing atom datatype")
@@ -21,7 +22,7 @@ func (ctx *Context) ParseAtom() (datatypes.LispValue, error) {
             return datatypes.Nil, errors.New("premature eof when lexing atom")
         }
         if !(b.IsByteNumber() || b.IsByteLetter() || b.IsByteSpecialSymbol()) {
-            return datatypes.NewAtom(string(ctx.data[begin:ctx.Index()])), nil
+            return datatypes.NewAtom(ctx.Slice(begin, ctx.Index())), nil
         }
     }
 }

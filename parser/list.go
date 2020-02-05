@@ -1,12 +1,13 @@
-package lex
+package parser
 
 import (
     "github.com/lucasew/golisp/datatypes"
+    "github.com/lucasew/golisp/lex"
     "errors"
 )
 
-func (ctx *Context) ParseList() (datatypes.LispValue, error) {
-    ctx.stateWhitespace()
+func ParseList(ctx *lex.Context, global GlobalStateFunc) (datatypes.LispValue, error) {
+    ctx.StateWhitespace()
     b, ok := ctx.GetByte()
     if !ok {
         return datatypes.Nil, errors.New("eof when parsing list")
@@ -17,7 +18,7 @@ func (ctx *Context) ParseList() (datatypes.LispValue, error) {
     ctx.Increment()
     li := datatypes.NewCons()
     for {
-        err := ctx.stateWhitespace()
+        err := ctx.StateWhitespace()
         if err != nil {
             // return li, nil
             return datatypes.Nil, err
@@ -31,11 +32,11 @@ func (ctx *Context) ParseList() (datatypes.LispValue, error) {
             ctx.Increment()
             return li, nil
         }
-        v, err := ctx.GlobalState()
+        v, err := global(ctx)
         if err != nil {
             return datatypes.Nil, err
         }
-        if !datatypes.IsComment(v) { // Ignore all comments
+        if !IsComment(v) { // Ignore all comments
             li = append(li.(datatypes.Cons), v)
         }
     }

@@ -5,6 +5,13 @@ type Context struct {
     index int
 }
 
+func NewContext(data []byte) Context {
+    return Context{
+        data: data,
+        index: 0,
+    }
+}
+
 func (c *Context) MustGetByte() LexByte {
     b, ok := c.GetByte()
     if !ok {
@@ -30,4 +37,9 @@ func (c *Context) Increment() {
 
 func (c *Context) Index() int {
     return c.index
+}
+
+func (c *Context) Slice(from, to int) string {
+    s := c.data[from:to]
+    return string(s)
 }

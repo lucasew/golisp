@@ -4,7 +4,6 @@ import (
     "github.com/lucasew/golisp/datatypes"
     "github.com/lucasew/golisp/lex"
     "errors"
-    // "fmt"
 )
 
 func ParseSymbol(ctx *lex.Context) (datatypes.LispValue, error) {

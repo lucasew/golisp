@@ -6,6 +6,10 @@ func NewSymbol(s string) LispValue {
     return Symbol(s)
 }
 
+func (s Symbol) ToString() string {
+    return string(s)
+}
+
 func (Symbol) Car() LispValue {
     return Nil
 }

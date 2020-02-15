@@ -45,6 +45,8 @@ func NewLispValue(v interface{}) (lv LispValue, err error) {
         lv = NewIntFromInt64(i)
     case int, int16, int32, uint16, uint32:
         lv = NewIntFromInt64(reflect.ValueOf(i).Int())
+    case func(LispValue)(LispValue, error):
+        lv = NewFunction(i)
     default:
         goto checkvec
     }

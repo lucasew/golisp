@@ -1,18 +1,18 @@
 package parser
 
 import (
-    "github.com/lucasew/golisp/datatypes"
+    "github.com/lucasew/golisp/data"
 )
 
 type _comment uint8
 
-var Comment datatypes.LispValue = _comment(0)
+var Comment data.LispValue = _comment(0)
 
-func (_comment) Car() datatypes.LispValue {
+func (_comment) Car() data.LispValue {
     return nil
 }
 
-func (_comment) Cdr() datatypes.LispValue {
+func (_comment) Cdr() data.LispValue {
     return nil
 }
 
@@ -24,7 +24,7 @@ func (_comment) Repr() string {
     return ""
 }
 
-func IsComment(lv datatypes.LispValue) bool {
+func IsComment(lv data.LispValue) bool {
     _, ok := lv.(_comment)
     return ok
 }

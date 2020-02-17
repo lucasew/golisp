@@ -1,11 +1,11 @@
 package vm
 
 import (
-    "github.com/lucasew/golisp/datatypes"
+    "github.com/lucasew/golisp/data"
 )
 
 type LispVM interface {
-    Eval(datatypes.LispValue) (datatypes.LispValue, error)
-    EnvGet(key string) datatypes.LispValue // if not exist return nil
-    EnvSet(key string, value datatypes.LispValue) datatypes.LispValue
+    Eval(data.LispValue) (data.LispValue, error)
+    EnvGet(key string) data.LispValue // if not exist return nil
+    EnvSet(key string, value data.LispValue) data.LispValue
 }

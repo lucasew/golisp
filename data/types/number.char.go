@@ -1,7 +1,8 @@
-package datatypes
+package types
 
 import (
     "fmt"
+    "github.com/lucasew/golisp/data"
 )
 
 type Byte byte
@@ -10,12 +11,12 @@ func NewByte(b byte) Byte {
     return Byte(b)
 }
 
-func (Byte) Car() LispValue {
-    return Nil
+func (Byte) Car() data.LispValue {
+    return data.Nil
 }
 
-func (Byte) Cdr() LispValue {
-    return Nil
+func (Byte) Cdr() data.LispValue {
+    return data.Nil
 }
 
 func (Byte) IsNil() bool {

@@ -1,10 +1,10 @@
 package parser
 
 import (
-    "github.com/lucasew/golisp/datatypes"
+    "github.com/lucasew/golisp/data"
     "github.com/lucasew/golisp/lex"
 )
 
-type ParserFunc func(string) (datatypes.LispValue, error)
+type ParserFunc func(string) (data.LispValue, error)
 
-type GlobalStateFunc func(*lex.Context) (datatypes.LispValue, error)
+type GlobalStateFunc func(*lex.Context) (data.LispValue, error)

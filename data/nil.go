@@ -1,4 +1,4 @@
-package datatypes
+package data
 
 type _nil uint8
 

@@ -1,7 +1,8 @@
-package datatypes
+package types
 
 import (
     "math/big"
+    "github.com/lucasew/golisp/data"
 )
 
 type LispRational struct {
@@ -84,12 +85,12 @@ func (i LispRational) Div(n LispRational) LispRational {
     return NewRationalFromBigRat(ret.Mul(i.n, y))
 }
 
-func (i LispRational) Car() LispValue {
-    return Nil
+func (i LispRational) Car() data.LispValue {
+    return data.Nil
 }
 
-func (i LispRational) Cdr() LispValue {
-    return Nil
+func (i LispRational) Cdr() data.LispValue {
+    return data.Nil
 }
 
 func (i LispRational) IsNil() bool {

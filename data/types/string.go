@@ -1,12 +1,13 @@
-package datatypes
+package types
 
 import (
     "fmt"
+    "github.com/lucasew/golisp/data"
 )
 
 type ConventionalString string
 
-func NewConventionalString(s string) LispString {
+func NewConventionalString(s string) data.LispString {
     return ConventionalString(s)
 }
 
@@ -14,17 +15,17 @@ func (c ConventionalString) IsNil() bool {
     return len(c) == 0
 }
 
-func (c ConventionalString) Car() LispValue {
+func (c ConventionalString) Car() data.LispValue {
     if len(c) == 0 {
-        return Nil
+        return data.Nil
     }
     s := string(c)[0]
     return NewByte(s)
 }
 
-func (c ConventionalString) Cdr() LispValue {
+func (c ConventionalString) Cdr() data.LispValue {
     if len(c) < 2 {
-        return Nil
+        return data.Nil
     }
     s := string(c)[1:len(c)] // TODO: Testar se não teremos acessos errados aqui
     return NewConventionalString(s)

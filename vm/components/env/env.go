@@ -1,18 +1,18 @@
-package vm
+package env
 
 import (
-    "github.com/lucasew/golisp/datatypes"
+    "github.com/lucasew/golisp/data"
 )
 
 type LispEnv struct {
     upper *LispEnv
-    data map[string]datatypes.LispValue
+    data map[string]data.LispValue
 }
 
 func NewLispEnv(upper *LispEnv, kv ...LispEnvKV) *LispEnv {
     e := LispEnv{
         upper: upper,
-        data: map[string]datatypes.LispValue{},
+        data: map[string]data.LispValue{},
     }
     for _, v := range kv {
         e.SetLocal(v.Key, v.Value)
@@ -20,12 +20,12 @@ func NewLispEnv(upper *LispEnv, kv ...LispEnvKV) *LispEnv {
     return &e
 }
 
-func (e *LispEnv) SetLocal(key string, value datatypes.LispValue) datatypes.LispValue {
+func (e *LispEnv) SetLocal(key string, value data.LispValue) data.LispValue {
     e.data[key] = value
     return value
 }
 
-func (e *LispEnv) SetGlobal(key string, value datatypes.LispValue) datatypes.LispValue {
+func (e *LispEnv) SetGlobal(key string, value data.LispValue) data.LispValue {
     if e.upper == nil {
         e.data[key] = value
         return value
@@ -34,7 +34,7 @@ func (e *LispEnv) SetGlobal(key string, value datatypes.LispValue) datatypes.Lis
     }
 }
 
-func (e *LispEnv) Get(key string) datatypes.LispValue {
+func (e *LispEnv) Get(key string) data.LispValue {
     r, ok := e.data[key]
     if !ok {
         if e.upper != nil {
@@ -43,7 +43,7 @@ func (e *LispEnv) Get(key string) datatypes.LispValue {
     } else {
         return r
     }
-    return datatypes.Nil
+    return data.Nil
 }
 
 

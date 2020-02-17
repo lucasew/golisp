@@ -1,7 +1,8 @@
-package datatypes
+package types
 
 import (
     "math/big"
+    "github.com/lucasew/golisp/data"
 )
 
 type LispFloat struct {
@@ -90,12 +91,12 @@ func (n LispFloat) Sqrt() LispFloat {
     return NewFloatFromBigFloat(ret.Sqrt(n.n))
 }
 
-func (LispFloat) Car() LispValue {
-    return Nil
+func (LispFloat) Car() data.LispValue {
+    return data.Nil
 }
 
-func (LispFloat) Cdr() LispValue {
-    return Nil
+func (LispFloat) Cdr() data.LispValue {
+    return data.Nil
 }
 
 func (i LispFloat) IsNil() bool {

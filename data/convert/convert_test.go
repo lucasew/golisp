@@ -1,7 +1,8 @@
-package datatypes
+package convert
 
 import (
     "testing"
+    "github.com/lucasew/golisp/data/types"
     "reflect"
 )
 
@@ -36,7 +37,7 @@ func TestHybridList(t *testing.T) {
 }
 
 func TestLispValueToConvert(t *testing.T) {
-    in := NewConventionalString("teste")
+    in := types.NewConventionalString("teste")
     ret, err := NewLispValue(in)
     if err != nil {
         t.Error(err)

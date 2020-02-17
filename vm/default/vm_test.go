@@ -24,6 +24,21 @@ func TestBasicEval(t *testing.T) {
     }
 }
 
+func TestIfPrints(t *testing.T) {
+    ast, err := parser.Parse("(println \"teste\" )")
+    if err != nil {
+        t.Error(err)
+    }
+    vm := NewVM(nil)
+    res, err := vm.Eval(ast)
+    if err != nil {
+        t.Error(err)
+    }
+    if res.Repr() != " (\"teste\") " {
+        t.Fail()
+    }
+}
+
 func TestAcessFunctionAnd(t *testing.T) {
     vm := NewVM(nil)
     if vm.EnvGet("and").IsNil() {

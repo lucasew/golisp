@@ -1,7 +1,8 @@
-package datatypes
+package types
 
 import (
     "testing"
+    "github.com/lucasew/golisp/data"
 )
 
 var (
@@ -26,8 +27,8 @@ func TestNumbersAreLispNumbers(t *testing.T) {
 }
 
 
-func dummyLispValueReceiver(lv LispValue) {
+func dummyLispValueReceiver(lv data.LispValue) {
 }
 
-func dummyLispNumberReceiver(ln LispNumber) {
+func dummyLispNumberReceiver(ln data.LispNumber) {
 }

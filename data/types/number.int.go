@@ -1,7 +1,8 @@
-package datatypes
+package types
 
 import (
     "math/big"
+    "github.com/lucasew/golisp/data"
 )
 
 type LispInt struct {
@@ -27,21 +28,21 @@ func NewIntFromString(s string) (LispInt, bool) {
 
 }
 
-func (n LispInt) Int64() (r int64, acc LispAccuracy) {
+func (n LispInt) Int64() (r int64, acc data.LispAccuracy) {
     if (n.n.IsInt64()) {
-        acc = AccuracyExact
+        acc = data.AccuracyExact
     } else {
-        acc = AccuracyInvalid
+        acc = data.AccuracyInvalid
     }
     r = n.n.Int64()
     return
 }
 
-func (n LispInt) Uint64() (r uint64, acc LispAccuracy) {
+func (n LispInt) Uint64() (r uint64, acc data.LispAccuracy) {
     if (n.n.IsUint64()) {
-        acc = AccuracyExact
+        acc = data.AccuracyExact
     } else {
-        acc = AccuracyInvalid
+        acc = data.AccuracyInvalid
     }
     r = n.n.Uint64()
     return
@@ -127,12 +128,12 @@ func (n LispInt) Abs() LispInt {
     return NewIntFromBigInt(num)
 }
 
-func (LispInt) Car() LispValue {
-    return Nil
+func (LispInt) Car() data.LispValue {
+    return data.Nil
 }
 
-func (LispInt) Cdr() LispValue {
-    return Nil
+func (LispInt) Cdr() data.LispValue {
+    return data.Nil
 }
 
 func (i LispInt) IsNil() bool {

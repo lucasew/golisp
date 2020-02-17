@@ -1,7 +1,8 @@
-package datatypes
+package types
 
 import (
     "testing"
+    "github.com/lucasew/golisp/data"
 )
 
 func TestStringCar(t *testing.T) {
@@ -29,7 +30,7 @@ func TestStringCdrSmall(t *testing.T) {
     // -- (assert-true (eq (cdr x) nil))
     s := NewConventionalString("a") 
     c := s.Cdr()
-    if c != Nil {
+    if c != data.Nil {
         t.Errorf("expected 'nil' got '%s'", c.Repr())
     }
 }

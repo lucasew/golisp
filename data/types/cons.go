@@ -1,26 +1,27 @@
-package datatypes
+package types
 
 import (
     "strings"
     "fmt"
+    "github.com/lucasew/golisp/data"
 )
 
-type Cons []LispValue
+type Cons []data.LispValue
 
-func NewCons(v ...LispValue) LispCons {
+func NewCons(v ...data.LispValue) data.LispCons {
     return Cons(v)
 }
 
-func (i Cons) Car() LispValue {
+func (i Cons) Car() data.LispValue {
     if len(i) == 0 {
-        return Nil
+        return data.Nil
     }
     return i[0]
 }
 
-func (i Cons) Cdr() LispValue {
+func (i Cons) Cdr() data.LispValue {
     if len(i) < 2 {
-        return Nil
+        return data.Nil
     }
     return i[1:len(i)]
 }
@@ -37,9 +38,9 @@ func (i Cons) Repr() string {
     return fmt.Sprintf(" (%s) ", strings.Join(strs, " "))
 }
 
-func (i Cons) Get(k int) LispValue {
+func (i Cons) Get(k int) data.LispValue {
     if k > len(i) {
-        return Nil
+        return data.Nil
     }
     return i[k]
 }

@@ -1,4 +1,4 @@
-package datatypes
+package data
 
 type LispAccuracy int
 
@@ -50,3 +50,15 @@ type LispValue interface {
     Cdr() LispValue
     Repr() string
 }
+
+type IntoLispValue interface {
+    ToLispValue() LispValue
+}
+
+type LispFunction interface {
+    LispValue
+    LispCall(LispValue) (LispValue, error)
+    IsFunctionNative() bool
+}
+
+

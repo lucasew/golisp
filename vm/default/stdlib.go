@@ -1,83 +1,92 @@
 package vm_default
 
 import (
-    "github.com/lucasew/golisp/datatypes"
+    "github.com/lucasew/golisp/data"
+    "github.com/lucasew/golisp/data/convert"
+    "github.com/lucasew/golisp/data/types"
     common "github.com/lucasew/golisp/vm"
+    envpkg "github.com/lucasew/golisp/vm/components/env"
     "os"
     "reflect"
+    "errors"
+    "strings"
 )
 
-var env = map[string]datatypes.LispValue{}
+var scope = map[string]data.LispValue{}
 
 // A function that depends of the environment to run
-type LoadFunction func(common.LispVM) func(datatypes.LispValue) (datatypes.LispValue, error)
+type LoadFunction func(common.LispVM) func(data.LispValue) (data.LispValue, error)
 
-func NewDefaultEnv(parent *common.LispEnv) *common.LispEnv {
-    env := map[string]interface{} {}
+func NewDefaultEnv(parent *envpkg.LispEnv) *envpkg.LispEnv {
+    e := map[string]interface{} {}
     // boolean constants
-    env["nil"] = datatypes.Nil
-    env["t"] = datatypes.T
+    e["nil"] = data.Nil
+    e["t"] = data.T
     // system constants
-    env["*TARGET*"] = []string{"golang", "default"}
-    env["*HOSTNAME*"], _ = os.Hostname()
+    e["*TARGET*"] = []string{"golang", "default"}
+    e["*HOSTNAME*"], _ = os.Hostname()
+    // char constants
+    e["char-bell"] = "\a"
+    e["char-cr"] = "\r"
+    e["char-nl"] = "\n"
     // basic primitives
-    env["car"] = func(v datatypes.LispValue) (datatypes.LispValue, error) {
+    e["car"] = func(v data.LispValue) (data.LispValue, error) {
         return v.Car(), nil
     }
-    env["cdr"] = func(v datatypes.LispValue) (datatypes.LispValue, error) {
+    e["cdr"] = func(v data.LispValue) (data.LispValue, error) {
         return v.Cdr(), nil
     }
     // is-* functions
-    env["is-number"] = func(v datatypes.LispValue) (datatypes.LispValue, error) {
-        _, is := v.(datatypes.LispNumber)
+    e["is-number"] = func(v data.LispValue) (data.LispValue, error) {
+        _, is := v.(data.LispNumber)
         return boolToLispValue(is), nil
     }
-    env["is-string"] = func(v datatypes.LispValue) (datatypes.LispValue, error) {
-        _, is := v.(datatypes.LispString)
+    e["is-string"] = func(v data.LispValue) (data.LispValue, error) {
+        _, is := v.(data.LispString)
         return boolToLispValue(is), nil
     }
-    env["is-symbol"] = func(v datatypes.LispValue) (datatypes.LispValue, error) {
-        _, is := v.(datatypes.Symbol)
+    e["is-symbol"] = func(v data.LispValue) (data.LispValue, error) {
+        _, is := v.(types.Symbol)
         return boolToLispValue(is), nil
     }
-    env["is-function"] = func(v datatypes.LispValue) (datatypes.LispValue, error) {
-        _, is := v.(datatypes.LispFunction)
+    e["is-function"] = func(v data.LispValue) (data.LispValue, error) {
+        _, is := v.(data.LispFunction)
         return boolToLispValue(is), nil
     }
-    env["is-function-native"] = func(v datatypes.LispValue) (datatypes.LispValue, error) {
-        f, is := v.(datatypes.LispFunction)
+    e["is-function-native"] = func(v data.LispValue) (data.LispValue, error) {
+        f, is := v.(data.LispFunction)
         if is {
             return boolToLispValue(f.IsFunctionNative()), nil
         }
-        return datatypes.Nil, nil
+        return data.Nil, nil
     }
-    env["is-atom"] = func(v datatypes.LispValue) (datatypes.LispValue, error) {
-        _, is := v.(datatypes.Atom)
+    e["is-atom"] = func(v data.LispValue) (data.LispValue, error) {
+        _, is := v.(types.Atom)
         return boolToLispValue(is), nil
     }
-    env["is-cons"] = func(v datatypes.LispValue) (datatypes.LispValue, error) {
-        _, is := v.(datatypes.Cons)
+    e["is-cons"] = func(v data.LispValue) (data.LispValue, error) {
+        _, is := v.(types.Cons)
         return boolToLispValue(is), nil
     }
     // get length of something
-    env["len"] = func(v datatypes.LispValue) (datatypes.LispValue, error) {
+    e["len"] = func(v data.LispValue) (data.LispValue, error) {
         if v.IsNil() {
-            return datatypes.NewIntFromInt64(0), nil
+            return types.NewIntFromInt64(0), nil
         }
         t := reflect.TypeOf(v).Kind()
         if t == reflect.Array || t == reflect.Chan || t == reflect.Map || t == reflect.Slice || t == reflect.String {
-            return datatypes.NewIntFromInt64(int64(reflect.ValueOf(v).Len())), nil
+            return types.NewIntFromInt64(int64(reflect.ValueOf(v).Len())), nil
         }
-        return datatypes.NewIntFromInt64(1), nil
+        return types.NewIntFromInt64(1), nil
     }
-    env["not"] = func(v datatypes.LispValue) (datatypes.LispValue, error) {
+    e["not"] = func(v data.LispValue) (data.LispValue, error) {
         return boolToLispValue(v.IsNil()), nil // nil is false, then !true
     }
     // Returns the first non nil value
     //TODO: Test
-    env["or"] = func(v datatypes.LispValue) (datatypes.LispValue, error) {
+    e["or"] = func(v data.LispValue) (data.LispValue, error) {
         if v.IsNil() {
-            return datatypes.Nil, nil
+            return data.Nil, nil
         }
         begin:
         if !v.Car().IsNil() {
@@ -86,9 +95,9 @@ func NewDefaultEnv(parent *common.LispEnv) *common.LispEnv {
         v = v.Cdr()
         goto begin
     }
-    env["and"] = func(v datatypes.LispValue) (datatypes.LispValue, error) {
+    e["and"] = func(v data.LispValue) (data.LispValue, error) {
         if v.IsNil() {
-            return datatypes.Nil, nil
+            return data.Nil, nil
         }
         begin:
         if v.Car().IsNil() {
@@ -100,21 +109,48 @@ func NewDefaultEnv(parent *common.LispEnv) *common.LispEnv {
         v = v.Cdr()
         goto begin
     }
-    e := common.NewLispEnv(parent)
-    for k, v := range env {
-        val, err := datatypes.NewLispValue(v)
+    e["print"] = func(v data.LispValue) (data.LispValue, error) {
+        str := []string{}
+        for val := v.Car(); !v.IsNil(); v = v.Cdr() {
+            println(v.Repr())
+            s, ok := val.(data.LispString)
+            if !ok {
+                return data.Nil, errors.New("I can only print strings, to print other types convert it first")
+            }
+            str = append(str, s.ToString())
+        }
+        s := strings.Join(str, "")
+        print(s)
+        return types.NewConventionalString(s), nil
+    }
+    e["println"] = func(v data.LispValue) (data.LispValue, error) {
+        str := []string{}
+        for val := v.Car(); !v.IsNil(); v = v.Cdr() {
+            s, ok := val.(types.ConventionalString)
+            if !ok {
+                return data.Nil, errors.New("I can only print strings, to print other types convert it first")
+            }
+            str = append(str, string(s))
+        }
+        s := strings.Join(str, "")
+        println(s)
+        return types.NewConventionalString(s), nil
+    }
+    r := envpkg.NewLispEnv(parent)
+    for k, v := range e {
+        val, err := convert.NewLispValue(v)
         if err != nil {
             panic(err)
         }
-        e.SetGlobal(k, val)
+        r.SetGlobal(k, val)
     }
-    return e
+    return r
 }
 
-func boolToLispValue(b bool) datatypes.LispValue {
+func boolToLispValue(b bool) data.LispValue {
     if b {
-        return datatypes.T
+        return data.T
     } else {
-        return datatypes.Nil
+        return data.Nil
     }
 }

@@ -136,6 +136,30 @@ func NewDefaultEnv(parent *envpkg.LispEnv) *envpkg.LispEnv {
         println(s)
         return types.NewConventionalString(s), nil
     }
+    // set
+    e["setg"] = func(env common.LispVM, v data.LispValue) (data.LispValue, error) {
+        key, ok := v.Car().(types.Symbol)
+        if !ok {
+            return data.Nil, errors.New("invalid input for setg")
+        }
+        value, err := env.Eval(v.Cdr())
+        if err != nil {
+            return data.Nil, err
+        }
+        env.EnvSetGlobal(key.ToString(), value)
+        return value, nil
+    }
+    e["if"] = func(env common.LispVM, v data.LispValue) (data.LispValue, error) {
+        cond, err := env.Eval(v.Car())
+        if err != nil {
+            return data.Nil, err
+        }
+        if !cond.IsNil() {
+            return env.Eval(v.Cdr().Car())
+        } else {
+            return env.Eval(v.Cdr().Cdr().Car())
+        }
+    }
     r := envpkg.NewLispEnv(parent)
     for k, v := range e {
         val, err := convert.NewLispValue(v)

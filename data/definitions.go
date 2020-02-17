@@ -60,5 +60,3 @@ type LispFunction interface {
     LispCall(LispValue) (LispValue, error)
     IsFunctionNative() bool
 }
-
-

@@ -35,3 +35,7 @@ func (LispMacro) IsNil() bool {
 func (LispMacro) Repr() string {
     return "<native macro>"
 }
+
+func (m LispMacro) LispCallMacro(v vm.LispVM, val data.LispValue) (data.LispValue, error) {
+    return m(v, val)
+}

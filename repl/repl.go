@@ -30,12 +30,12 @@ func main() {
             lines = []string{}
             ast, err := parser.Parse(stmt)
             if err != nil {
-                print(err.Error())
+                println(err.Error())
                 break
             }
             ret, err := vm.Eval(ast)
             if err != nil {
-                print(err.Error())
+                println(err.Error())
                 break
             }
             println(ret.Repr())

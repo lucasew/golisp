@@ -19,7 +19,7 @@ func Print(v data.LispCons) (data.LispValue, error) {
     if !ok {
         return data.Nil, errors.New("invalid input")
     }
-    print(s)
+    print(s.ToString())
     return s, nil
 }
 
@@ -32,6 +32,6 @@ func Println(v data.LispCons) (data.LispValue, error) {
     if !ok {
         return data.Nil, errors.New("invalid input")
     }
-    println(s)
+    println(s.ToString())
     return s, nil
 }

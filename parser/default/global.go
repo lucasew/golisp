@@ -36,6 +36,11 @@ func GlobalState(ctx *lex.Context) (data.LispValue, error) {
             return types.NewSymbol("-"), nil
         }
     }
+    if b.IsByte('\'') {
+        ctx.Increment()
+        g, err := GlobalState(ctx)
+        return types.NewCons(types.NewSymbol("quote"), g), err
+    }
     if b.IsByteColon() {
         return parser.ParseAtom(ctx)
     }

@@ -16,41 +16,41 @@ func init() {
     register("is-cons", IsCons)
 }
 
-func IsNumber(v data.LispValue) (data.LispValue, error) {
-    _, is := v.(data.LispNumber)
+func IsNumber(v data.LispCons) (data.LispValue, error) {
+    _, is := v.Car().(data.LispNumber)
     return convert.NewLispValue(is)
 }
 
-func IsString(v data.LispValue) (data.LispValue, error) {
-    _, is := v.(data.LispString)
+func IsString(v data.LispCons) (data.LispValue, error) {
+    _, is := v.Car().(data.LispString)
     return convert.NewLispValue(is)
 }
 
-func IsSymbol(v data.LispValue) (data.LispValue, error) {
-    _, is := v.(types.Symbol)
+func IsSymbol(v data.LispCons) (data.LispValue, error) {
+    _, is := v.Car().(types.Symbol)
     return convert.NewLispValue(is)
 }
 
-func IsFunction(v data.LispValue) (data.LispValue, error) {
-    _, is := v.(data.LispFunction)
+func IsFunction(v data.LispCons) (data.LispValue, error) {
+    _, is := v.Car().(data.LispFunction)
     return convert.NewLispValue(is)
 }
 
-func IsFunctionNative(v data.LispValue) (data.LispValue, error) {
-    f, is := v.(data.LispFunction)
+func IsFunctionNative(v data.LispCons) (data.LispValue, error) {
+    f, is := v.Car().(data.LispFunction)
     if is {
         return convert.NewLispValue(f.IsFunctionNative())
     }
     return convert.NewLispValue(false)
 }
 
-func IsAtom(v data.LispValue) (data.LispValue, error) {
-    _, is := v.(types.Atom)
+func IsAtom(v data.LispCons) (data.LispValue, error) {
+    _, is := v.Car().(types.Atom)
     return convert.NewLispValue(is)
 }
 
-func IsCons(v data.LispValue) (data.LispValue, error) {
-    _, is := v.(data.LispCons)
+func IsCons(v data.LispCons) (data.LispValue, error) {
+    _, is := v.Car().(data.LispCons)
     return convert.NewLispValue(is)
 }
 

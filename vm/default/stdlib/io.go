@@ -11,7 +11,7 @@ func init() {
     register("println", Println)
 }
 
-func Print(v data.LispValue) (data.LispValue, error) {
+func Print(v data.LispCons) (data.LispValue, error) {
     if v.IsNil() {
         return convert.NewLispValue("")
     }
@@ -24,7 +24,7 @@ func Print(v data.LispValue) (data.LispValue, error) {
 }
 
 
-func Println(v data.LispValue) (data.LispValue, error) {
+func Println(v data.LispCons) (data.LispValue, error) {
     if v.IsNil() {
         return convert.NewLispValue("")
     }

@@ -9,10 +9,10 @@ func init() {
     register("cdr", Cdr)
 }
 
-func Car(v data.LispValue) (data.LispValue, error) {
+func Car(v data.LispCons) (data.LispValue, error) {
     return v.Car(), nil
 }
 
-func Cdr(v data.LispValue) (data.LispValue, error) {
+func Cdr(v data.LispCons) (data.LispValue, error) {
     return v.Cdr(), nil
 }

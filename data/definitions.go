@@ -57,6 +57,6 @@ type IntoLispValue interface {
 
 type LispFunction interface {
     LispValue
-    LispCall(LispValue) (LispValue, error)
+    LispCall(LispCons) (LispValue, error)
     IsFunctionNative() bool
 }

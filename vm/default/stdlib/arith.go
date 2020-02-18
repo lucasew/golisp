@@ -20,43 +20,44 @@ func init() {
     register("is-zero", IsZero)
     register("is-int", IsInt)
 }
-func Sum(v data.LispValue) (data.LispValue, error) {
+
+func Sum(v data.LispCons) (data.LispValue, error) {
     a := v.Car()
     b := v.Cdr().Car()
     return callMethod("Sum", a, b)
 }
 
-func Sub(v data.LispValue) (data.LispValue, error) {
+func Sub(v data.LispCons) (data.LispValue, error) {
     a := v.Car()
     b := v.Cdr().Car()
     return callMethod("Sub", a, b)
 }
 
-func Neg(v data.LispValue) (data.LispValue, error) {
+func Neg(v data.LispCons) (data.LispValue, error) {
     a := v.Car()
     b := v.Cdr().Car()
     return callMethod("Neg", a, b)
 }
 
-func Mul(v data.LispValue) (data.LispValue, error) {
+func Mul(v data.LispCons) (data.LispValue, error) {
     a := v.Car()
     b := v.Cdr().Car()
     return callMethod("Mul", a, b)
 }
 
-func Div(v data.LispValue) (data.LispValue, error) {
+func Div(v data.LispCons) (data.LispValue, error) {
     a := v.Car()
     b := v.Cdr().Car()
     return callMethod("Div", a, b)
 }
 
-func Rem(v data.LispValue) (data.LispValue, error) {
+func Rem(v data.LispCons) (data.LispValue, error) {
     a := v.Car()
     b := v.Cdr().Car()
     return callMethod("Rem", a, b)
 }
 
-func Sqrt(v data.LispValue) (data.LispValue, error) {
+func Sqrt(v data.LispCons) (data.LispValue, error) {
     a := v.Car()
     if reflect.ValueOf(a).MethodByName("Sqrt").IsValid() {
         return reflect.ValueOf(a).MethodByName("Sqrt").Call([]reflect.Value{})[0].Interface().(data.LispValue), nil
@@ -65,13 +66,13 @@ func Sqrt(v data.LispValue) (data.LispValue, error) {
     }
 }
 
-func Exp(v data.LispValue) (data.LispValue, error) {
+func Exp(v data.LispCons) (data.LispValue, error) {
     a := v.Car()
     b := v.Cdr().Car()
     return callMethod("Exp", a, b)
 }
 
-func Abs(v data.LispValue) (data.LispValue, error) {
+func Abs(v data.LispCons) (data.LispValue, error) {
     a := v.Car()
     if reflect.ValueOf(a).MethodByName("Abs").IsValid() {
         return reflect.ValueOf(a).MethodByName("Abs").Call([]reflect.Value{})[0].Interface().(data.LispValue), nil
@@ -80,7 +81,7 @@ func Abs(v data.LispValue) (data.LispValue, error) {
     }
 }
 
-func IsZero(v data.LispValue) (data.LispValue, error) {
+func IsZero(v data.LispCons) (data.LispValue, error) {
     n := v.Car()
     num, ok := n.(data.LispNumber)
     if !ok {
@@ -89,7 +90,7 @@ func IsZero(v data.LispValue) (data.LispValue, error) {
     return convert.NewLispValue(num.IsZero())
 }
 
-func IsInt(v data.LispValue) (data.LispValue, error) {
+func IsInt(v data.LispCons) (data.LispValue, error) {
     n, ok := v.Car().(data.LispNumber)
     if !ok {
         return data.Nil, fmt.Errorf("parameter should be a number")

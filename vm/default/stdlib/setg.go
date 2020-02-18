@@ -11,7 +11,7 @@ func init() {
     register("setg", Setg)
 }
 
-func Setg(env vm.LispVM, v data.LispValue) (data.LispValue, error) {
+func Setg(env vm.LispVM, v data.LispCons) (data.LispValue, error) {
     key, ok := v.Car().(types.Symbol)
     if !ok {
         return data.Nil, errors.New("invalid output for setg")

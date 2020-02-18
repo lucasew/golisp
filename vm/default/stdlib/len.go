@@ -9,7 +9,7 @@ func init() {
     register("len", Len)
 }
 
-func Len(v data.LispValue) (data.LispValue, error) {
+func Len(v data.LispCons) (data.LispValue, error) {
     return convert.NewLispValue(_len(v.Car()))
 }
 

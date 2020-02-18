@@ -69,7 +69,11 @@ func (vm *LispVM) Eval(v data.LispValue) (data.LispValue, error) {
                 }
                 return fn.LispCall(types.NewCons(params...))
             case macro.LispMacro:
-                return fn.LispCallMacro(vm.PushVM(), v.Cdr())
+                l, ok := v.Cdr().(data.LispCons)
+                if !ok {
+                    l = types.NewCons(v)
+                }
+                return fn.LispCallMacro(vm.PushVM(), l)
             default:
                 return data.Nil, errors.New("cant call the variable")
             }

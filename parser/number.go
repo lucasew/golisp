@@ -4,7 +4,6 @@ import (
     "github.com/lucasew/golisp/data"
     "github.com/lucasew/golisp/data/types"
     "github.com/lucasew/golisp/lex"
-    "errors"
     "fmt"
     "strings"
 )
@@ -12,10 +11,10 @@ import (
 func ParseNumber(ctx *lex.Context) (data.LispValue, error) {
     b, ok := ctx.GetByte()
     if !ok {
-        return data.Nil, errors.New("eof when parsing number")
+        return data.Nil, fmt.Errorf("%w: number", ErrEOFWhile)
     }
     if !b.IsByteNumber() {
-        return data.Nil, errors.New("invalid entry point for number")
+        return data.Nil, fmt.Errorf("%w: number", ErrInvalidEntryPoint)
     }
     e := false // For scientific notation like 10^2 that is like 1E2
     dot := false // For the dot of floats
@@ -29,21 +28,21 @@ func ParseNumber(ctx *lex.Context) (data.LispValue, error) {
         }
         if b.IsByteE() {
             if e {
-                return data.Nil, errors.New("cant use the 'e' token more than one time to represent a number")
+                return data.Nil, fmt.Errorf("%w: 'e'", ErrInvalidMarkerRepetition)
             }
             e = true
             continue
         }
         if b.IsDot() {
             if dot {
-                return data.Nil, errors.New("cant use the '.' token more than one time to represent a number")
+                return data.Nil, fmt.Errorf("%w: '.'", ErrInvalidMarkerRepetition)
             }
             dot = true
             continue
         }
         if b.IsSlash() {
             if slash {
-                return data.Nil, errors.New("cant use the '/' token more than one time to represent a number")
+                return data.Nil, fmt.Errorf("%w: '/'", ErrInvalidMarkerRepetition)
             }
             slash = true
             continue
@@ -69,6 +68,6 @@ func ParseNumber(ctx *lex.Context) (data.LispValue, error) {
         if ok {
             return retr, nil
         }
-        return data.Nil, fmt.Errorf("cant parse %s as number", s)
+        return data.Nil, fmt.Errorf("%w: %s", ErrCantParseAsNumber, s)
     }
 }

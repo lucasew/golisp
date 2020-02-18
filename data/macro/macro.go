@@ -3,18 +3,9 @@ package macro
 import (
     "github.com/lucasew/golisp/vm"
     "github.com/lucasew/golisp/data"
-    "errors"
 )
 
 type LispMacro func(vm.LispVM, data.LispValue) (data.LispValue, error)
-
-func ConvertToLispValue(v interface{}) (data.LispValue, error) {
-    r, ok := v.(LispMacro)
-    if !ok {
-        return data.Nil, errors.New("not a macro")
-    }
-    return r, nil
-}
 
 func NewLispMacro(f func(vm.LispVM, data.LispValue) (data.LispValue, error)) LispMacro {
     return f

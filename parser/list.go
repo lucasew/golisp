@@ -4,17 +4,17 @@ import (
     "github.com/lucasew/golisp/data"
     "github.com/lucasew/golisp/data/types"
     "github.com/lucasew/golisp/lex"
-    "errors"
+    "fmt"
 )
 
 func ParseList(ctx *lex.Context, global GlobalStateFunc) (data.LispValue, error) {
     ctx.StateWhitespace()
     b, ok := ctx.GetByte()
     if !ok {
-        return data.Nil, errors.New("eof when parsing list")
+        return data.Nil, fmt.Errorf("%w: list", ErrEOFWhile)
     }
     if !b.IsOpenPar() {
-        return data.Nil, errors.New("invalid entry  point for type list")
+        return data.Nil, fmt.Errorf("%w: list", ErrInvalidEntryPoint)
     }
     ctx.Increment()
     li := types.NewCons()
@@ -27,7 +27,7 @@ func ParseList(ctx *lex.Context, global GlobalStateFunc) (data.LispValue, error)
         b, ok = ctx.GetByte()
         if !ok {
             // return li, nil
-            return data.Nil, errors.New("eof when parsing list")
+            return data.Nil, fmt.Errorf("%w: list", ErrPrematureEOF)
         }
         if b.IsClosePar() {
             ctx.Increment()

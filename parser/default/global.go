@@ -2,9 +2,9 @@ package pdefault
 
 import (
     "github.com/lucasew/golisp/data"
+    "github.com/lucasew/golisp/data/types"
     "github.com/lucasew/golisp/lex"
     "github.com/lucasew/golisp/parser"
-    "errors"
     "fmt"
 )
 
@@ -12,26 +12,28 @@ func GlobalState(ctx *lex.Context) (data.LispValue, error) {
     ctx.StateWhitespace()
     b, ok := ctx.GetByte()
     if !ok {
-        return data.Nil, errors.New("eof when parsing global state")
+        return data.Nil, fmt.Errorf("%w: global state", parser.ErrEOFWhile)
     }
     if b.IsByte('-') {
         ctx.Increment()
         b, ok := ctx.GetByte()
         if !ok {
-            return data.Nil, errors.New("eof when parsing comment")
+            return data.Nil, fmt.Errorf("%w: comment marker", parser.ErrEOFWhile)
         }
         if b.IsByte('-') {
             ctx.Increment()
             for {
                 b, ok := ctx.GetByte()
                 if !ok {
-                    return data.Nil, errors.New("eof when parsing comment")
+                    return data.Nil, fmt.Errorf("%w: comment", parser.ErrPrematureEOF)
                 }
                 if b.IsByte('\n') {
                     return parser.Comment, nil
                 }
                 ctx.Increment()
             }
+        } else {
+            return types.NewSymbol("-"), nil
         }
     }
     if b.IsByteColon() {
@@ -57,5 +59,5 @@ func GlobalState(ctx *lex.Context) (data.LispValue, error) {
     //     return data.Nil, errors.New("invalid ')' token")
     //     // return data.Nil, nil
     // }
-    return data.Nil, fmt.Errorf("invalid char: '%s'", string(ctx.MustGetByte()))
+    return data.Nil, fmt.Errorf("%w: '%s'", parser.ErrInvalidChar, string(ctx.MustGetByte()))
 }

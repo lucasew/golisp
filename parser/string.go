@@ -4,23 +4,23 @@ import (
     "github.com/lucasew/golisp/data"
     "github.com/lucasew/golisp/data/types"
     "github.com/lucasew/golisp/lex"
-    "errors"
+    "fmt"
 )
 
 func ParseString(ctx *lex.Context) (data.LispValue, error) {
     b, ok := ctx.GetByte()
     if !ok {
-        return data.Nil, errors.New("eof when parsing string")
+        return data.Nil, fmt.Errorf("%w: string", ErrEOFWhile)
     }
     if !b.IsStringMark() {
-        return data.Nil, errors.New("invalid entry point for string")
+        return data.Nil, fmt.Errorf("%w: string", ErrInvalidEntryPoint)
     }
     begin := ctx.Index() + 1
     for {
         ctx.Increment()
         b, ok := ctx.GetByte()
         if !ok {
-            return data.Nil, errors.New("eof when parsing string body")
+            return data.Nil, fmt.Errorf("%w: string", ErrPrematureEOF)
         }
         if b.IsStringMark() {
             s := ctx.Slice(begin, ctx.Index())

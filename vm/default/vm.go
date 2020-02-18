@@ -2,6 +2,7 @@ package vm_default
 
 import (
     common "github.com/lucasew/golisp/vm"
+    "github.com/lucasew/golisp/vm/default/stdlib"
     "github.com/lucasew/golisp/vm/components/env"
     "github.com/lucasew/golisp/data"
     "github.com/lucasew/golisp/data/types"
@@ -18,7 +19,7 @@ type LispVM struct {
 
 func NewVM(e *env.LispEnv) common.LispVM {
     vm := LispVM{
-        env: NewDefaultEnv(e),
+        env: stdlib.NewDefaultEnv(e),
     }
     return &vm
 }

@@ -11,6 +11,8 @@ import (
     "github.com/lucasew/golisp/vm"
 )
 
+var ErrCantHandleType = errors.New("cant handle type")
+
 func NewLispList(v ...interface{}) (lv data.LispValue, err error) {
     lv = data.Nil
     ret := make([]data.LispValue, len(v))
@@ -71,6 +73,6 @@ func NewLispValue(v interface{}) (lv data.LispValue, err error) {
         lv, err = NewLispList(ret...)
         return
     }
-    err = errors.New(fmt.Sprintf("cant handle type %T", v))
+    err = fmt.Errorf("%w: %T", ErrCantHandleType, v)
     return
 }

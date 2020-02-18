@@ -1,0 +1,37 @@
+package stdlib
+
+import (
+    "github.com/lucasew/golisp/data"
+    "github.com/lucasew/golisp/data/convert"
+    "errors"
+)
+
+func init() {
+    register("print", Print)
+    register("println", Println)
+}
+
+func Print(v data.LispValue) (data.LispValue, error) {
+    if v.IsNil() {
+        return convert.NewLispValue("")
+    }
+    s, ok := v.Car().(data.LispString)
+    if !ok {
+        return data.Nil, errors.New("invalid input")
+    }
+    print(s)
+    return s, nil
+}
+
+
+func Println(v data.LispValue) (data.LispValue, error) {
+    if v.IsNil() {
+        return convert.NewLispValue("")
+    }
+    s, ok := v.Car().(data.LispString)
+    if !ok {
+        return data.Nil, errors.New("invalid input")
+    }
+    println(s)
+    return s, nil
+}

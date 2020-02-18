@@ -1,5 +1,9 @@
 package lex
 
+import (
+    "fmt"
+)
+
 type Context struct {
     data []byte
     index int
@@ -15,7 +19,7 @@ func NewContext(data []byte) Context {
 func (c *Context) MustGetByte() LexByte {
     b, ok := c.GetByte()
     if !ok {
-        panic("invalid operation in EOF")
+        panic(fmt.Errorf("%w: invalid operation", ErrEOF))
     }
     return b
 }

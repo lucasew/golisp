@@ -60,3 +60,11 @@ type LispFunction interface {
     LispCall(LispCons) (LispValue, error)
     IsFunctionNative() bool
 }
+
+type LispPortal interface {
+    LispValue
+    Send(v LispValue) LispValue
+    SendUnblocking(v LispValue) LispValue
+    Recv() LispValue
+    RecvUnblocking() LispValue
+}

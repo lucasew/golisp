@@ -16,9 +16,16 @@ func GlobalState(ctx *lex.Context) (data.LispValue, error) {
     }
     if b.IsByte('-') {
         ctx.Increment()
-        b, ok := ctx.GetByte()
+        b, ok = ctx.GetByte()
         if !ok {
             return data.Nil, fmt.Errorf("%w: comment marker", parser.ErrEOFWhile)
+        }
+        if b.IsByteNumber() {
+            ctx.Decrement()
+            return parser.ParseNumber(ctx)
+        }
+        if b.IsBlank() {
+            return types.NewSymbol("-"), nil
         }
         if b.IsByte('-') {
             ctx.Increment()

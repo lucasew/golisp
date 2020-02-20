@@ -39,6 +39,10 @@ func (c *Context) Increment() {
     c.index++
 }
 
+func (c *Context) Decrement() {
+    c.index--
+}
+
 func (c *Context) Index() int {
     return c.index
 }

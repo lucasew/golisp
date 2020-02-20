@@ -13,7 +13,7 @@ func ParseNumber(ctx *lex.Context) (data.LispValue, error) {
     if !ok {
         return data.Nil, fmt.Errorf("%w: number", ErrEOFWhile)
     }
-    if !b.IsByteNumber() {
+    if !(b.IsByteNumber() || b.IsByte('-')) {
         return data.Nil, fmt.Errorf("%w: number", ErrInvalidEntryPoint)
     }
     e := false // For scientific notation like 10^2 that is like 1E2

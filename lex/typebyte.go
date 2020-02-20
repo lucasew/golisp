@@ -19,7 +19,7 @@ func (b LexByte) IsByteSmallLetter() bool {
 }
 
 func (b LexByte) IsByteSpecialSymbol() bool {
-    return b.IsByte('+') || b.IsByte('-') || b.IsByte('/') || b.IsByte('*') || b.IsByte('&') || b.IsByte('|') || b.IsByte('%') // TODO: Add the rest of
+    return b.IsByte('+') || b.IsByte('-') || b.IsByte('/') || b.IsByte('*') || b.IsByte('&') || b.IsByte('|') || b.IsByte('%') || b.IsByte('.') // TODO: Add the rest of
 }
 
 func (b LexByte) IsByteUnderline() bool {

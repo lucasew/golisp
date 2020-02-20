@@ -33,7 +33,12 @@ func GlobalState(ctx *lex.Context) (data.LispValue, error) {
                 ctx.Increment()
             }
         } else {
-            return types.NewSymbol("-"), nil
+            sym, err := parser.ParseSymbol(ctx)
+            if err != nil {
+                return data.Nil, err
+            }
+            s := fmt.Sprintf("-%s", sym)
+            return types.NewSymbol(s), nil
         }
     }
     if b.IsByte('\'') {

@@ -8,10 +8,23 @@ import (
     vm_lib "github.com/lucasew/golisp/vm/default"
 )
 
+const banner = `
+  ▄████ ▒█████  ██▓    ██▓ ██████ ██▓███  
+ ██▒ ▀█▒██▒  ██▓██▒   ▓██▒██    ▒▓██░  ██▒
+▒██░▄▄▄▒██░  ██▒██░   ▒██░ ▓██▄  ▓██░ ██▓▒
+░▓█  ██▒██   ██▒██░   ░██░ ▒   ██▒██▄█▓▒ ▒
+░▒▓███▀░ ████▓▒░██████░██▒██████▒▒██▒ ░  ░
+ ░▒   ▒░ ▒░▒░▒░░ ▒░▓  ░▓ ▒ ▒▓▒ ▒ ▒▓▒░ ░  ░
+  ░   ░  ░ ▒ ▒░░ ░ ▒  ░▒ ░ ░▒  ░ ░▒ ░     
+░ ░   ░░ ░ ░ ▒   ░ ░   ▒ ░  ░  ░ ░░       
+      ░    ░ ░     ░  ░░       ░          
+`
+
 func main() {
     vm := vm_lib.NewVM(nil)
     in := bufio.NewReader(os.Stdin)
     lines := []string{}
+    println(banner)
     parenthesis := 0
     for {
         for i := -1; i < parenthesis; i++ {

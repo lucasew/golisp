@@ -11,6 +11,18 @@ import (
 
 var bot *tgbotapi.BotAPI
 
+const banner = `
+Bem-vindo ao golisp, um dialeto de lisp feito em Go!
+
+Como introdução tente realizar operações matemáticas, como por exemplo (+ 2 2)
+
+Outros comandos incluem (env-dump) para despejar o objeto de env que está sendo usado na vm atualmente, que consequentemente expoe todos os elementos visíveis no escopo.
+
+Digite /help para reexibir esta mensagem
+`
+
+
+
 func main() {
     var err error
     if len(os.Args) < 2 {
@@ -33,6 +45,14 @@ func main() {
             continue
         }
         log.Printf("MSG from: @%s: %s", update.Message.From.UserName, update.Message.Text)
+        if update.Message.Command() == "help" {
+            reply(&update, banner)
+            continue
+        }
+        if update.Message.Command() == "start" {
+            reply(&update, banner)
+            continue
+        }
         ast, err := parse(update.Message.Text)
         if err != nil {
             reply(&update, fmt.Sprintf("🤔 %s", err.Error()))

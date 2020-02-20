@@ -3,6 +3,7 @@ package types
 import (
     "math/big"
     "github.com/lucasew/golisp/data"
+    "errors"
 )
 
 type LispInt struct {
@@ -26,6 +27,14 @@ func NewIntFromString(s string) (LispInt, bool) {
     _, ok := ret.SetString(s, 0)
     return NewIntFromBigInt(ret), ok
 
+}
+
+func NewIntFromFloat(n LispFloat) (LispInt, error) {
+    i, _ := n.n.Int(nil)
+    if i == nil {
+        return NewIntFromBigInt(i), errors.New("invalid float for conversion")
+    }
+    return NewIntFromBigInt(i), nil
 }
 
 func (n LispInt) Int64() (r int64, acc data.LispAccuracy) {

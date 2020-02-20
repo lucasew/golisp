@@ -47,6 +47,9 @@ func ParseNumber(ctx *lex.Context) (data.LispValue, error) {
             slash = true
             continue
         }
+        if b.IsByte('-') {
+            continue
+        }
         if b.IsByteNumber() {
             continue
         }

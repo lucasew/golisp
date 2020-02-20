@@ -6,14 +6,6 @@ import (
 
 type lispFunction func(data.LispCons)(data.LispValue, error)
 
-func (f lispFunction) Car() data.LispValue {
-    return data.Nil
-}
-
-func (f lispFunction) Cdr() data.LispValue {
-    return data.Nil
-}
-
 func (f lispFunction) IsNil() bool {
     return f == nil
 }

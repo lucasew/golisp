@@ -8,14 +8,6 @@ func (_t) IsNil() bool {
     return false
 }
 
-func (_t) Car() LispValue {
-    return Nil
-}
-
-func (_t) Cdr() LispValue {
-    return Nil
-}
-
 func (_t) Repr() string {
     return "t"
 }

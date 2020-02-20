@@ -21,12 +21,10 @@ func ParseList(ctx *lex.Context, global GlobalStateFunc) (data.LispValue, error)
     for {
         err := ctx.StateWhitespace()
         if err != nil {
-            // return li, nil
             return data.Nil, err
         }
         b, ok = ctx.GetByte()
         if !ok {
-            // return li, nil
             return data.Nil, fmt.Errorf("%w: list", ErrPrematureEOF)
         }
         if b.IsClosePar() {

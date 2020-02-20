@@ -14,14 +14,6 @@ func (s Symbol) ToString() string {
     return string(s)
 }
 
-func (Symbol) Car() data.LispValue {
-    return data.Nil
-}
-
-func (Symbol) Cdr() data.LispValue {
-    return data.Nil
-}
-
 func (Symbol) IsNil() bool {
     return false
 }

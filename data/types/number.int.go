@@ -137,14 +137,6 @@ func (n LispInt) Abs() LispInt {
     return NewIntFromBigInt(num)
 }
 
-func (LispInt) Car() data.LispValue {
-    return data.Nil
-}
-
-func (LispInt) Cdr() data.LispValue {
-    return data.Nil
-}
-
 func (i LispInt) IsNil() bool {
     return i.n == nil
 }

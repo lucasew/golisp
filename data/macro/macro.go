@@ -11,14 +11,6 @@ func NewLispMacro(f func(vm.LispVM, data.LispCons) (data.LispValue, error)) Lisp
     return f
 }
 
-func (LispMacro) Car() data.LispValue {
-    return data.Nil
-}
-
-func (LispMacro) Cdr() data.LispValue {
-    return data.Nil
-}
-
 func (LispMacro) IsNil() bool {
     return false
 }

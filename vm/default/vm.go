@@ -2,6 +2,7 @@ package vm_default
 
 import (
     common "github.com/lucasew/golisp/vm"
+    "github.com/davecgh/go-spew/spew"
     "github.com/lucasew/golisp/vm/default/stdlib"
     "github.com/lucasew/golisp/vm/components/env"
     "github.com/lucasew/golisp/data"
@@ -44,10 +45,6 @@ func (vm *LispVM) EnvSetGlobal(k string, v data.LispValue) data.LispValue {
 
 // Eval this function is where the magic starts
 func (vm *LispVM) Eval(v data.LispValue) (data.LispValue, error) {
-    // _, literal := v.Car().(parser)
-    // if literal {
-    //     return v, nil
-    // }
     switch in := v.(type) {
     case types.Cons:
         if in.Len() == 1 {

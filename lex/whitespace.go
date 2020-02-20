@@ -2,7 +2,6 @@ package lex
 
 import (
     "fmt"
-    // "github.com/davecgh/go-spew/spew"
 )
 
 func (ctx *Context) StateWhitespace() error {

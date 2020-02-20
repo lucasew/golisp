@@ -10,14 +10,6 @@ func NewPortal(buf int) data.LispPortal {
     return Portal(make(chan(data.LispValue), buf))
 }
 
-func (Portal) Car() data.LispValue {
-    return data.Nil
-}
-
-func (Portal) Cdr() data.LispValue {
-    return data.Nil
-}
-
 func (p Portal) IsNil() bool {
     return p == nil
 }

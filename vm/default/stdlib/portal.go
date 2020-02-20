@@ -7,6 +7,7 @@ import (
 )
 
 func init() {
+    register("is-portal", IsPortal)
     register("new-portal", NewPortal)
     register("portal-send", PortalSend)
     register("portal-send-unblocking", PortalSendUnblocking)
@@ -27,10 +28,19 @@ func NewPortal(v data.LispCons) (data.LispValue, error) {
     return types.NewPortal(int(num)), nil
 }
 
+func IsPortal(v data.LispCons) (data.LispValue, error) {
+    _, ok := v.Car().(data.LispPortal)
+    if ok {
+        return data.T, nil
+    } else {
+        return data.Nil, nil
+    }
+}
+
 func PortalSend(v data.LispCons) (data.LispValue, error) {
     p, ok := v.Car().(data.LispPortal)
     if !ok {
-        return data.Nil, fmt.Errorf("first argument expected portal got %T", p)
+        return data.Nil, fmt.Errorf("first argument expected portal got %T", v.Car())
     }
     val := v.Cdr().Car()
     return p.Send(val), nil
@@ -39,7 +49,7 @@ func PortalSend(v data.LispCons) (data.LispValue, error) {
 func PortalSendUnblocking(v data.LispCons) (data.LispValue, error) {
     p, ok := v.Car().(data.LispPortal)
     if !ok {
-        return data.Nil, fmt.Errorf("first argument expected portal got %T", p)
+        return data.Nil, fmt.Errorf("first argument expected portal got %T", v.Car())
     }
     val := v.Cdr().Car()
     return p.SendUnblocking(val), nil
@@ -48,7 +58,7 @@ func PortalSendUnblocking(v data.LispCons) (data.LispValue, error) {
 func PortalRecv(v data.LispCons) (data.LispValue, error) {
     p, ok := v.Car().(data.LispPortal)
     if !ok {
-        return data.Nil, fmt.Errorf("first argument expected portal got %T", p)
+        return data.Nil, fmt.Errorf("first argument expected portal got %T", v.Car())
     }
     return p.Recv(), nil
 }
@@ -56,7 +66,7 @@ func PortalRecv(v data.LispCons) (data.LispValue, error) {
 func PortalRecvUnblocking(v data.LispCons) (data.LispValue, error) {
     p, ok := v.Car().(data.LispPortal)
     if !ok {
-        return data.Nil, fmt.Errorf("first argument expected portal got %T", p)
+        return data.Nil, fmt.Errorf("first argument expected portal got %T", v.Car())
     }
     return p.RecvUnblocking(), nil
 }

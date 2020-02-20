@@ -2,7 +2,6 @@ package stdlib
 
 import (
     "github.com/lucasew/golisp/data"
-    "github.com/lucasew/golisp/data/convert"
 )
 
 func init() {
@@ -12,7 +11,11 @@ func init() {
 }
 
 func Not(v data.LispCons) (data.LispValue, error) {
-    return convert.NewLispValue(v.Car().IsNil())
+    if !v.Car().IsNil() {
+        return data.Nil, nil
+    } else {
+        return data.T, nil
+    }
 }
 
 func And(v data.LispCons) (data.LispValue, error) {

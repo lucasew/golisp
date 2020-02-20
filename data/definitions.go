@@ -18,7 +18,7 @@ type LispNumber interface {
 }
 
 type LispString interface {
-    LispValue
+    LispCarCdr
     ToString() string
 }
 
@@ -28,15 +28,15 @@ type LispAtom interface {
 }
 
 type LispCons interface {
-    LispValue
-    Len() int
+    LispCarCdr
+    LispLen
     Get(k int) LispValue
     //Set(k int, v LispValue)
 }
 
 type LispMap interface {
     LispValue
-    Len() int
+    LispLen
     Get(k LispValue) LispValue
     Set(k LispValue, v LispValue) LispValue
     Keys() LispValue // Cons
@@ -46,8 +46,6 @@ type LispMap interface {
 
 type LispValue interface {
     IsNil() bool
-    Car() LispValue
-    Cdr() LispValue
     Repr() string
 }
 
@@ -67,4 +65,14 @@ type LispPortal interface {
     SendUnblocking(v LispValue) LispValue
     Recv() LispValue
     RecvUnblocking() LispValue
+}
+
+type LispLen interface {
+    Len() int
+}
+
+type LispCarCdr interface {
+    LispValue
+    Car() LispValue
+    Cdr() LispCarCdr
 }

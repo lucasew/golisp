@@ -14,9 +14,14 @@ func Len(v data.LispCons) (data.LispValue, error) {
 }
 
 func _len(v data.LispValue) int {
-    if v.IsNil() {
-        return 0
+    l, ok := v.(data.LispLen)
+    if ok {
+        return l.Len()
     } else {
-        return 1 + _len(v.Cdr())
+        if v.IsNil() {
+            return 0
+        } else {
+            return 1
+        }
     }
 }

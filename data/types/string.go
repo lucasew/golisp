@@ -23,7 +23,7 @@ func (c ConventionalString) Car() data.LispValue {
     return NewByte(s)
 }
 
-func (c ConventionalString) Cdr() data.LispValue {
+func (c ConventionalString) Cdr() data.LispCarCdr {
     if len(c) < 2 {
         return data.Nil
     }

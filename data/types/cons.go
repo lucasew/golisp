@@ -19,9 +19,9 @@ func (i Cons) Car() data.LispValue {
     return i[0]
 }
 
-func (i Cons) Cdr() data.LispValue {
+func (i Cons) Cdr() data.LispCarCdr {
     if len(i) < 2 {
-        return data.Nil
+        return NewCons()
     }
     return i[1:len(i)]
 }

@@ -51,7 +51,7 @@ func (vm *LispVM) Eval(v data.LispValue) (data.LispValue, error) {
     switch in := v.(type) {
     case types.Cons:
         if in.Len() == 1 {
-            return vm.Eval(v.Car())
+            return vm.Eval(in.Car())
         }
         switch first := in.Car().(type) {
         case types.Symbol:
@@ -69,7 +69,7 @@ func (vm *LispVM) Eval(v data.LispValue) (data.LispValue, error) {
                 }
                 return fn.LispCall(types.NewCons(params...))
             case macro.LispMacro:
-                l, ok := v.Cdr().(data.LispCons)
+                l, ok := in.Cdr().(data.LispCons)
                 if !ok {
                     l = types.NewCons(v)
                 }

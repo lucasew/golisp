@@ -17,6 +17,9 @@ func register(k string, v interface{}) {
 }
 
 func NewDefaultEnv(parent *env.LispEnv) *env.LispEnv {
+    if parent == nil {
+        parent = env.NewLispEnv(nil)
+    }
     parent = env.NewLispEnv(parent)
     for k, v := range stdlib {
         parent.SetLocal(k, v)

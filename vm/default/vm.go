@@ -8,8 +8,6 @@ import (
     "github.com/lucasew/golisp/data/types"
     "github.com/lucasew/golisp/data/macro"
     "errors"
-    // "github.com/lucasew/golisp/parser"
-    // "fmt"
 )
 
 type LispVM struct {
@@ -46,9 +44,6 @@ func (vm *LispVM) EnvSetGlobal(k string, v data.LispValue) data.LispValue {
 func (vm *LispVM) Eval(v data.LispValue) (data.LispValue, error) {
     switch in := v.(type) {
     case types.Cons:
-        if in.Len() == 1 {
-            return vm.Eval(in.Car())
-        }
         switch first := in.Car().(type) {
         case types.Symbol:
             f := vm.EnvGet(first.ToString())
@@ -58,7 +53,7 @@ func (vm *LispVM) Eval(v data.LispValue) (data.LispValue, error) {
                 params := make([]data.LispValue, len(crude_params))
                 var err error = nil
                 for k, v := range crude_params {
-                    params[k], err = vm.PushVM().Eval(v)
+                    params[k], err = vm.Eval(v)
                     if err != nil {
                         return data.Nil, err
                     }
@@ -69,10 +64,20 @@ func (vm *LispVM) Eval(v data.LispValue) (data.LispValue, error) {
                 if !ok {
                     l = types.NewCons(v)
                 }
-                return fn.LispCallMacro(vm.PushVM(), l)
+                return fn.LispCallMacro(vm, l)
             default:
                 return data.Nil, errors.New("cant call the variable")
             }
+        case types.Cons:
+            ret := data.Nil.(data.LispValue)
+            var err error
+            for _, stmt := range(in) {
+                ret, err = vm.Eval(stmt.(data.LispValue))
+                if err != nil {
+                    return data.Nil, err
+                }
+            }
+            return ret, nil
         default:
             println(v.Repr())
             return data.Nil, errors.New("in code mode only commands are allowed")

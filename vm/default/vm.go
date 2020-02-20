@@ -2,7 +2,6 @@ package vm_default
 
 import (
     common "github.com/lucasew/golisp/vm"
-    "github.com/davecgh/go-spew/spew"
     "github.com/lucasew/golisp/vm/default/stdlib"
     "github.com/lucasew/golisp/vm/components/env"
     "github.com/lucasew/golisp/data"

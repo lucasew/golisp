@@ -18,6 +18,8 @@ Como introdução tente realizar operações matemáticas, como por exemplo (+ 2
 
 Outros comandos incluem (env-dump) para despejar o objeto de env que está sendo usado na vm atualmente, que consequentemente expoe todos os elementos visíveis no escopo.
 
+Funções de cálculo, como +, -, * e / só aceitam dois argumentos. Para realizar com mais elementos utilize a função reduce. Ex: (reduce + '(2 3 4)).
+
 Digite /help para reexibir esta mensagem
 `
 

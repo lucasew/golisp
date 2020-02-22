@@ -11,6 +11,17 @@ func NewString(s string) data.LispString {
     return String(s)
 }
 
+func (c String) Get(k int) data.LispValue {
+    if k >= c.Len() {
+        return Nil
+    }
+    return NewByte(c[k])
+}
+
+func (c String) Len() int {
+    return len(c)
+}
+
 func (c String) IsNil() bool {
     return len(c) == 0
 }

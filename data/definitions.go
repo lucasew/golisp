@@ -18,7 +18,7 @@ type LispNumber interface {
 }
 
 type LispString interface {
-    LispCarCdr
+    LispCons
     ToString() string
 }
 

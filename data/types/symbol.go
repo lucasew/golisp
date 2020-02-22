@@ -10,6 +10,14 @@ func NewSymbol(s string) data.LispString {
     return Symbol(s)
 }
 
+func (s Symbol) Get(k int) data.LispValue {
+    return String(k).Get(k)
+}
+
+func (s Symbol) Len() int {
+    return len(s)
+}
+
 func (s Symbol) ToString() string {
     return string(s)
 }

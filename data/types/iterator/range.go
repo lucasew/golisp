@@ -20,7 +20,7 @@ func NewRangeIteratorTo(i int) data.LispIterator {
 }
 
 func (r RangeIterator) IsEnd() bool {
-    return r.state > r.to
+    return r.state >= r.to
 }
 
 func (r RangeIterator) IsNil() bool {

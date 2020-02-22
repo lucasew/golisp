@@ -2,6 +2,7 @@ package stdlib
 
 import (
     "github.com/lucasew/golisp/data"
+    "github.com/lucasew/golisp/data/convert"
     "github.com/lucasew/golisp/vm/default/stdlib/enforce"
 )
 
@@ -16,11 +17,7 @@ func Not(v data.LispCons) (data.LispValue, error) {
     if err != nil {
         return data.Nil, err
     }
-    if !v.Car().IsNil() {
-        return data.Nil, nil
-    } else {
-        return data.T, nil
-    }
+    return convert.NewLispValue(!v.Car().IsNil())
 }
 
 func And(v data.LispCons) (data.LispValue, error) {

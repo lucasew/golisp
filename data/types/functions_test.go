@@ -9,3 +9,6 @@ func TestFunctionType(t *testing.T) {
     t.Run("lisp_value", ValueTest(fn))
     t.Run("function", FunctionTest(fn))
 }
+
+var FunctionTest = NewTestHelper(IsFunction)
+var NativeFunctionTest = NewTestHelper(IsNativeFunction)

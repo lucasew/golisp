@@ -108,4 +108,3 @@ func IsFloat(v data.LispValue) bool {
     return ok
 }
 
-var FloatTest = NewTestHelper(IsFloat)

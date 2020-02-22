@@ -48,4 +48,3 @@ func IsString(v data.LispValue) bool {
     return ok
 }
 
-var StringTest = NewTestHelper(IsString)

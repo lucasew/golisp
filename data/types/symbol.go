@@ -6,7 +6,7 @@ import (
 
 type Symbol string
 
-func NewSymbol(s string) data.LispValue {
+func NewSymbol(s string) data.LispString {
     return Symbol(s)
 }
 
@@ -31,4 +31,10 @@ func IsSymbol(v data.LispValue) bool {
     return ok
 }
 
-var SymbolTest = NewTestHelper(IsSymbol)
+func (s Symbol) Car() data.LispValue {
+    return NewByte(s[0])
+}
+
+func (s Symbol) Cdr() data.LispCarCdr {
+    return NewSymbol(String(s).Cdr().(data.LispString).ToString())
+}

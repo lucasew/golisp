@@ -40,4 +40,3 @@ func (Byte) LispTypeName() string {
     return "byte"
 }
 
-var ByteTest = NewTestHelper(IsByte)

@@ -10,3 +10,4 @@ func TestFloatType(t *testing.T) {
     t.Run("number", NumberTest(f))
     t.Run("float", FloatTest(f))
 }
+var FloatTest = NewTestHelper(IsFloat)

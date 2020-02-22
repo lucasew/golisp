@@ -10,3 +10,5 @@ func TestPortalType(t *testing.T) {
     t.Run("lisp_value", ValueTest(f))
     t.Run("portal", PortalTest(f))
 }
+
+var PortalTest = NewTestHelper(IsPortal)

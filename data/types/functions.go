@@ -43,5 +43,3 @@ func IsNativeFunction(v data.LispValue) bool {
     return fn.IsFunctionNative()
 }
 
-var FunctionTest = NewTestHelper(IsFunction)
-var NativeFunctionTest = NewTestHelper(IsNativeFunction)

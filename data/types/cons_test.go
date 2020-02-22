@@ -9,3 +9,5 @@ func TestConsType(t *testing.T) {
     t.Run("is_cons", ConsTest(NewCons()))
     t.Run("carcdr", CarCdrTest(NewCons()))
 }
+
+var ConsTest = NewTestHelper(IsCons)

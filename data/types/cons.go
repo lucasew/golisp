@@ -58,4 +58,3 @@ func IsCons(v data.LispValue) bool {
     return ok
 }
 
-var ConsTest = NewTestHelper(IsCons)

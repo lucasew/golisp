@@ -32,4 +32,3 @@ func IsAtom(v data.LispValue) bool {
     return ok
 }
 
-var AtomTest = NewTestHelper(IsAtom)

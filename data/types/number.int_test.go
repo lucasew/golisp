@@ -10,3 +10,4 @@ func TestIntType(t *testing.T) {
     t.Run("number", NumberTest(f))
     t.Run("int", IntTest(f))
 }
+var IntTest = NewTestHelper(IsInt)

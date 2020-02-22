@@ -154,4 +154,3 @@ func IsInt(v data.LispValue) bool {
     return ok
 }
 
-var IntTest = NewTestHelper(IsInt)

@@ -9,3 +9,5 @@ func TestByteType(t *testing.T) {
     t.Run("lisp_value", ValueTest(f))
     t.Run("byte", ByteTest(f))
 }
+
+var ByteTest = NewTestHelper(IsByte)

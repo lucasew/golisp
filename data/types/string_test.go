@@ -33,3 +33,4 @@ func TestStringCdrSmall(t *testing.T) {
         t.Errorf("expected 'nil' got '%s'", c.Repr())
     }
 }
+var StringTest = NewTestHelper(IsString)

@@ -9,3 +9,4 @@ func TestRatType(t *testing.T) {
     t.Run("lisp_value", ValueTest(f))
     t.Run("byte", RationalTest(f))
 }
+var RationalTest = NewTestHelper(IsRational)

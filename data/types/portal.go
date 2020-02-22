@@ -55,4 +55,3 @@ func IsPortal(v data.LispValue) bool {
     return ok
 }
 
-var PortalTest = NewTestHelper(IsPortal)

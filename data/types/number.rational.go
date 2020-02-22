@@ -102,4 +102,3 @@ func IsRational(v data.LispValue) bool {
     return ok
 }
 
-var RationalTest = NewTestHelper(IsRational)

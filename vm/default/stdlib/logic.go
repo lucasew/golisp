@@ -2,6 +2,7 @@ package stdlib
 
 import (
     "github.com/lucasew/golisp/data"
+    "github.com/lucasew/golisp/vm/default/stdlib/enforce"
 )
 
 func init() {
@@ -11,6 +12,10 @@ func init() {
 }
 
 func Not(v data.LispCons) (data.LispValue, error) {
+    err := enforce.Length(v, 1)
+    if err != nil {
+        return data.Nil, err
+    }
     if !v.Car().IsNil() {
         return data.Nil, nil
     } else {

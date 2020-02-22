@@ -3,6 +3,7 @@ package stdlib
 import (
     "github.com/lucasew/golisp/data"
     "github.com/lucasew/golisp/data/convert"
+    "github.com/lucasew/golisp/vm/default/stdlib/enforce"
     "reflect"
     "fmt"
 )
@@ -22,63 +23,39 @@ func init() {
 }
 
 func Sum(v data.LispCons) (data.LispValue, error) {
-    a := v.Car()
-    b := v.Cdr().Car()
-    return callMethod("Sum", a, b)
+    return pairOp("Sum", v)
 }
 
 func Sub(v data.LispCons) (data.LispValue, error) {
-    a := v.Car()
-    b := v.Cdr().Car()
-    return callMethod("Sub", a, b)
+    return pairOp("Sub", v)
 }
 
 func Neg(v data.LispCons) (data.LispValue, error) {
-    a := v.Car()
-    b := v.Cdr().Car()
-    return callMethod("Neg", a, b)
+    return singleOp("Neg", v)
 }
 
 func Mul(v data.LispCons) (data.LispValue, error) {
-    a := v.Car()
-    b := v.Cdr().Car()
-    return callMethod("Mul", a, b)
+    return pairOp("Mul", v)
 }
 
 func Div(v data.LispCons) (data.LispValue, error) {
-    a := v.Car()
-    b := v.Cdr().Car()
-    return callMethod("Div", a, b)
+    return pairOp("Div", v)
 }
 
 func Rem(v data.LispCons) (data.LispValue, error) {
-    a := v.Car()
-    b := v.Cdr().Car()
-    return callMethod("Rem", a, b)
+    return pairOp("Rem", v)
 }
 
 func Sqrt(v data.LispCons) (data.LispValue, error) {
-    a := v.Car()
-    if reflect.ValueOf(a).MethodByName("Sqrt").IsValid() {
-        return reflect.ValueOf(a).MethodByName("Sqrt").Call([]reflect.Value{})[0].Interface().(data.LispValue), nil
-    } else {
-        return data.Nil, fmt.Errorf("invalid value for sqrt")
-    }
+    return singleOp("Sqrt", v)
 }
 
 func Exp(v data.LispCons) (data.LispValue, error) {
-    a := v.Car()
-    b := v.Cdr().Car()
-    return callMethod("Exp", a, b)
+    return pairOp("Exp", v)
 }
 
 func Abs(v data.LispCons) (data.LispValue, error) {
-    a := v.Car()
-    if reflect.ValueOf(a).MethodByName("Abs").IsValid() {
-        return reflect.ValueOf(a).MethodByName("Abs").Call([]reflect.Value{})[0].Interface().(data.LispValue), nil
-    } else {
-        return data.Nil, fmt.Errorf("invalid value for abs")
-    }
+    return singleOp("Abs", v)
 }
 
 func IsZero(v data.LispCons) (data.LispValue, error) {
@@ -98,9 +75,28 @@ func IsInt(v data.LispCons) (data.LispValue, error) {
     return convert.NewLispValue(n.IsInt())
 }
 
-func callMethod(method string, a data.LispValue, b data.LispValue) (data.LispValue, error) {
-    if reflect.TypeOf(a) != reflect.TypeOf(b) {
-        return data.Nil, fmt.Errorf("unsupported %s operation between type %T and %T", method, a, b)
+func singleOp(method string, v data.LispCons) (data.LispValue, error) {
+    a := v.Car()
+    err := enforce.Validate(enforce.Length(v, 1), enforce.Number(a))
+    if err != nil {
+        return data.Nil, err
+    }
+    if reflect.ValueOf(a).MethodByName(method).IsValid() {
+        ret, ok := reflect.ValueOf(a).MethodByName(method).Call([]reflect.Value{})[0].Interface().(data.LispValue)
+        if !ok {
+            return data.Nil, fmt.Errorf("invalid state: method doesnt returns LispValue")
+        }
+        return ret, nil
+    }
+    return data.Nil, fmt.Errorf("invalid state: none of the conditions were satisfied")
+}
+
+func pairOp(method string, v data.LispCons) (data.LispValue, error) {
+    a := v.Car()
+    b := v.Cdr().Car()
+    err := enforce.Validate(enforce.Length(v, 2), enforce.SameType(a, b), enforce.Number(a), enforce.Number(b))
+    if err != nil {
+        return data.Nil, err
     }
     if reflect.ValueOf(a).MethodByName(method).IsValid() {
         rv := reflect.ValueOf(b)

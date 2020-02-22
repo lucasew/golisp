@@ -3,7 +3,7 @@ package stdlib
 import (
     "github.com/lucasew/golisp/data"
     "github.com/lucasew/golisp/data/types"
-    "fmt"
+    "github.com/lucasew/golisp/vm/default/stdlib/enforce"
 )
 
 func init() {
@@ -12,15 +12,12 @@ func init() {
 }
 
 func Map(v data.LispCons) (data.LispValue, error) {
-    fn, ok := v.Car().(data.LispFunction)
-    if !ok {
-        return data.Nil, fmt.Errorf("first argument must be a function, got %T", v.Car())
+    err := enforce.Validate(enforce.Function(v.Car(), 1), enforce.Cons(v.Cdr().Car(), 2), enforce.Length(v, 2))
+    if err != nil {
+        return data.Nil, err
     }
-    lst, ok := v.Cdr().Car().(data.LispCons)
-    if !ok {
-        return data.Nil, fmt.Errorf("second argument must be a cons, got %T", v.Cdr().Car())
-    }
-    var err error
+    fn := v.Car().(data.LispFunction)
+    lst := v.Cdr().Car().(data.LispCons)
     ret := make([]data.LispValue, lst.Len())
     for i := 0; i < lst.Len(); i++ {
         v := types.NewCons(lst.Get(i))
@@ -33,21 +30,19 @@ func Map(v data.LispCons) (data.LispValue, error) {
 }
 
 func Reduce(v data.LispCons) (data.LispValue, error) {
-    fn, ok := v.Car().(data.LispFunction)
-    if !ok {
-        return data.Nil, fmt.Errorf("first argument must be a function, got %T", v.Car())
+    err := enforce.Validate(enforce.Function(v.Car(), 1), enforce.Cons(v.Cdr().Car(), 2), enforce.Length(v, 2))
+    if err != nil {
+        return data.Nil, err
     }
-    lst, ok := v.Cdr().Car().(data.LispCarCdr)
-    if !ok {
-        return data.Nil, fmt.Errorf("second argument must be a cons, got %T", v.Cdr().Car())
-    }
+    fn := v.Car().(data.LispFunction)
+    lst := v.Cdr().Car().(data.LispCarCdr)
     ret := lst.Car()
     next:
     if lst.Cdr().IsNil() {
         return ret, nil
     }
     lst = lst.Cdr()
-    ret, err := fn.LispCall(types.NewCons(ret, lst.Car()))
+    ret, err = fn.LispCall(types.NewCons(ret, lst.Car()))
     if err != nil {
         return data.Nil, err
     }

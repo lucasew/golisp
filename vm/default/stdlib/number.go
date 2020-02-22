@@ -52,6 +52,6 @@ func ToInt(v data.LispCons) (data.LispValue, error) {
     case types.LispInt:
         return n, nil
     default:
-        return data.Nil, fmt.Errorf("cant convert %T to rational", n)
+        return data.Nil, fmt.Errorf("cant convert %T to int", n)
     }
 }

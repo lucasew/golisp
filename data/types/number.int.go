@@ -4,7 +4,6 @@ import (
     "math/big"
     "github.com/lucasew/golisp/data"
     "errors"
-    "testing"
 )
 
 type LispInt struct {
@@ -155,10 +154,4 @@ func IsInt(v data.LispValue) bool {
     return ok
 }
 
-func IntTest(v data.LispValue) func(*testing.T) {
-    return func(t *testing.T) {
-        if !IsInt(v) {
-            t.Fail()
-        }
-    }
-}
+var IntTest = NewTestHelper(IsInt)

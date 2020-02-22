@@ -2,7 +2,6 @@ package types
 
 import (
     "math/big"
-    "testing"
     "github.com/lucasew/golisp/data"
 )
 
@@ -103,10 +102,4 @@ func IsRational(v data.LispValue) bool {
     return ok
 }
 
-func RationalTest(v data.LispValue) func(*testing.T) {
-    return func(t *testing.T) {
-        if !IsRational(v) {
-            t.Fail()
-        }
-    }
-}
+var RationalTest = NewTestHelper(IsRational)

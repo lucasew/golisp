@@ -3,7 +3,6 @@ package types
 import (
     "strings"
     "fmt"
-    "testing"
     "github.com/lucasew/golisp/data"
 )
 
@@ -54,15 +53,9 @@ func (Cons) LispTypeName() string {
     return "cons"
 }
 
-func ConsTest(v data.LispValue) func(t *testing.T) {
-    return func(t *testing.T) {
-        if !IsCons(v) {
-            t.Fail()
-        }
-    }
-}
-
 func IsCons(v data.LispValue) bool {
     _, ok := v.(data.LispCons)
     return ok
 }
+
+var ConsTest = NewTestHelper(IsCons)

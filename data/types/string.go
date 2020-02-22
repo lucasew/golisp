@@ -3,7 +3,6 @@ package types
 import (
     "fmt"
     "github.com/lucasew/golisp/data"
-    "testing"
 )
 
 type String string
@@ -49,10 +48,4 @@ func IsString(v data.LispValue) bool {
     return ok
 }
 
-func StringTest(v data.LispValue) func(*testing.T) {
-    return func(t *testing.T) {
-        if !IsString(v) {
-            t.Fail()
-        }
-    }
-}
+var StringTest = NewTestHelper(IsString)

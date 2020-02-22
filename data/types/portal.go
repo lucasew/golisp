@@ -2,7 +2,6 @@ package types
 
 import (
     "github.com/lucasew/golisp/data"
-    "testing"
 )
 
 type Portal chan(data.LispValue)
@@ -56,10 +55,4 @@ func IsPortal(v data.LispValue) bool {
     return ok
 }
 
-func PortalTest(v data.LispValue) func(t *testing.T) {
-    return func(t *testing.T) {
-        if !IsPortal(v) {
-            t.Fail()
-        }
-    }
-}
+var PortalTest = NewTestHelper(IsPortal)

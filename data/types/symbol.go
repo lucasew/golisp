@@ -2,7 +2,6 @@ package types
 
 import (
     "github.com/lucasew/golisp/data"
-    "testing"
 )
 
 type Symbol string
@@ -32,10 +31,4 @@ func IsSymbol(v data.LispValue) bool {
     return ok
 }
 
-func SymbolTest(v data.LispValue) func(*testing.T) {
-    return func(t *testing.T) {
-        if !IsSymbol(v) {
-            t.Fail()
-        }
-    }
-}
+var SymbolTest = NewTestHelper(IsSymbol)

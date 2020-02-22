@@ -1,7 +1,6 @@
 package types
 
 import (
-    "testing"
     "github.com/lucasew/golisp/data"
 )
 
@@ -31,22 +30,6 @@ func (lispFunction) LispTypeName() string {
     return "function"
 }
 
-func FunctionTest(v data.LispValue) func(t *testing.T) {
-    return func(t *testing.T) {
-        if !IsFunction(v) {
-            t.Fail()
-        }
-    }
-}
-
-func NativeFunctionTest(v data.LispValue) func(t *testing.T) {
-    return func(t *testing.T) {
-        if !IsNativeFunction(v) {
-            t.Fail()
-        }
-    }
-}
-
 func IsFunction(v data.LispValue) bool {
     _, ok := v.(data.LispFunction)
     return ok
@@ -60,3 +43,5 @@ func IsNativeFunction(v data.LispValue) bool {
     return fn.IsFunctionNative()
 }
 
+var FunctionTest = NewTestHelper(IsFunction)
+var NativeFunctionTest = NewTestHelper(IsNativeFunction)

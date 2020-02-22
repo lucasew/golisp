@@ -3,7 +3,6 @@ package types
 import (
     "math/big"
     "github.com/lucasew/golisp/data"
-    "testing"
 )
 
 type LispFloat struct {
@@ -109,10 +108,4 @@ func IsFloat(v data.LispValue) bool {
     return ok
 }
 
-func FloatTest(v data.LispValue) func(*testing.T) {
-    return func(t *testing.T) {
-        if !IsFloat(v) {
-            t.Fail()
-        }
-    }
-} 
+var FloatTest = NewTestHelper(IsFloat)

@@ -2,9 +2,9 @@ package stdlib
 
 import (
     "github.com/lucasew/golisp/data"
+    "github.com/lucasew/golisp/data/is"
     "github.com/lucasew/golisp/data/convert"
     "github.com/lucasew/golisp/vm/default/stdlib/enforce"
-    "github.com/lucasew/golisp/data/types"
 )
 
 func init() {
@@ -22,8 +22,7 @@ func IsNumber(v data.LispCons) (data.LispValue, error) {
     if err != nil {
         return data.Nil, err
     }
-    _, is := v.Car().(data.LispNumber)
-    return convert.NewLispValue(is)
+    return convert.NewLispValue(is.Number(v.Car()))
 }
 
 func IsString(v data.LispCons) (data.LispValue, error) {
@@ -31,8 +30,7 @@ func IsString(v data.LispCons) (data.LispValue, error) {
     if err != nil {
         return data.Nil, err
     }
-    _, is := v.Car().(data.LispString)
-    return convert.NewLispValue(is)
+    return convert.NewLispValue(is.String(v.Car()))
 }
 
 func IsSymbol(v data.LispCons) (data.LispValue, error) {
@@ -40,8 +38,7 @@ func IsSymbol(v data.LispCons) (data.LispValue, error) {
     if err != nil {
         return data.Nil, err
     }
-    _, is := v.Car().(types.Symbol)
-    return convert.NewLispValue(is)
+    return convert.NewLispValue(is.Symbol(v.Car()))
 }
 
 func IsFunction(v data.LispCons) (data.LispValue, error) {
@@ -49,8 +46,7 @@ func IsFunction(v data.LispCons) (data.LispValue, error) {
     if err != nil {
         return data.Nil, err
     }
-    _, is := v.Car().(data.LispFunction)
-    return convert.NewLispValue(is)
+    return convert.NewLispValue(is.Function(v.Car()))
 }
 
 func IsFunctionNative(v data.LispCons) (data.LispValue, error) {
@@ -58,11 +54,7 @@ func IsFunctionNative(v data.LispCons) (data.LispValue, error) {
     if err != nil {
         return data.Nil, err
     }
-    f, is := v.Car().(data.LispFunction)
-    if is {
-        return convert.NewLispValue(f.IsFunctionNative())
-    }
-    return convert.NewLispValue(false)
+    return convert.NewLispValue(is.NativeFunction(v.Car()))
 }
 
 func IsAtom(v data.LispCons) (data.LispValue, error) {
@@ -70,8 +62,7 @@ func IsAtom(v data.LispCons) (data.LispValue, error) {
     if err != nil {
         return data.Nil, err
     }
-    _, is := v.Car().(types.Atom)
-    return convert.NewLispValue(is)
+    return convert.NewLispValue(is.Atom(v.Car()))
 }
 
 func IsCons(v data.LispCons) (data.LispValue, error) {
@@ -79,7 +70,6 @@ func IsCons(v data.LispCons) (data.LispValue, error) {
     if err != nil {
         return data.Nil, err
     }
-    _, is := v.Car().(data.LispCons)
-    return convert.NewLispValue(is)
+    return convert.NewLispValue(is.Cons(v.Car()))
 }
 

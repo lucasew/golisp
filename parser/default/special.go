@@ -81,5 +81,18 @@ func ParseSpecialLiteral(ctx *lex.Context) (data.LispValue, error) {
             ctx.Increment()
         }
     }
+    if b.IsByte('c') { // parse byte/char
+        ctx.Increment()
+        n, err := parser.ParseNumber(ctx)
+        if err != nil {
+            return types.Nil, err
+        }
+        num, ok := n.(types.LispInt)
+        if !ok {
+            return types.Nil, fmt.Errorf("invalid syntax for byte parsing")
+        }
+        inum, _ := num.Int64()
+        return types.NewByte(byte(inum)), nil
+    }
     return types.Nil, fmt.Errorf("%w: i do not understand this special literal expression: '%s'", parser.ErrInvalidChar, string(b))
 }

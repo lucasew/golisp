@@ -16,7 +16,7 @@ func (Byte) IsNil() bool {
 }
 
 func (b Byte) Repr() string {
-    return fmt.Sprintf("b%d", b) // TODO: Improve
+    return fmt.Sprintf("#c%d", b) // TODO: Improve
 }
 
 func (b Byte) IsInfinite() bool {
@@ -38,5 +38,13 @@ func IsByte(v data.LispValue) bool {
 
 func (Byte) LispTypeName() string {
     return "byte"
+}
+
+func (b Byte) Sum(other Byte) Byte {
+    return b + other
+}
+
+func (b Byte) Sub(other Byte) Byte {
+    return b - other
 }
 

@@ -77,3 +77,9 @@ type LispCarCdr interface {
     Car() LispValue
     Cdr() LispCarCdr
 }
+
+type LispIterator interface {
+    LispValue
+    Next() LispValue
+    IsEnd() bool
+}

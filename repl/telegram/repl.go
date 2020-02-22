@@ -5,6 +5,8 @@ import (
     "github.com/go-telegram-bot-api/telegram-bot-api"
     "github.com/lucasew/golisp/vm/default"
     "github.com/lucasew/golisp/parser/default"
+    "github.com/lucasew/golisp/data"
+    "github.com/davecgh/go-spew/spew"
     "log"
     "fmt"
 )
@@ -55,9 +57,28 @@ func main() {
             reply(&update, banner)
             continue
         }
-        ast, err := parse(update.Message.Text)
+        stmt := ""
+        resp := func(v data.LispValue) string {
+            return v.Repr()
+        }
+        if update.Message.Command() == "spew" {
+            resp = func(v data.LispValue) string {
+                return spew.Sdump(v)
+            }
+            stmt = update.Message.CommandArguments()
+        } else {
+            stmt = update.Message.Text
+        }
+        if update.Message.Command() == "parse" {
+            stmt = update.Message.CommandArguments()
+        }
+        ast, err := parse(stmt)
         if err != nil {
             reply(&update, fmt.Sprintf("🤔 %s", err.Error()))
+            continue
+        }
+        if update.Message.Command() == "parse" {
+            reply(&update, spew.Sdump(ast))
             continue
         }
         res, err := eval(ast)
@@ -65,7 +86,7 @@ func main() {
             reply(&update, fmt.Sprintf("🤯 %s", err.Error()))
             continue
         }
-        reply(&update, fmt.Sprintf("👍 %s", res.Repr()))
+        reply(&update, fmt.Sprintf("👍 %s", resp(res)))
     }
 }
 

@@ -12,7 +12,7 @@ func init() {
 }
 
 func Map(v data.LispCons) (data.LispValue, error) {
-    err := enforce.Validate(enforce.Function(v.Car(), 1), enforce.Cons(v.Cdr().Car(), 2), enforce.Length(v, 2))
+    err := enforce.Validate(enforce.Length(v, 2), enforce.Function(v.Car(), 1), enforce.Cons(v.Cdr().Car(), 2))
     if err != nil {
         return data.Nil, err
     }
@@ -30,7 +30,7 @@ func Map(v data.LispCons) (data.LispValue, error) {
 }
 
 func Reduce(v data.LispCons) (data.LispValue, error) {
-    err := enforce.Validate(enforce.Function(v.Car(), 1), enforce.Cons(v.Cdr().Car(), 2), enforce.Length(v, 2))
+    err := enforce.Validate(enforce.Length(v, 2), enforce.Function(v.Car(), 1), enforce.Cons(v.Cdr().Car(), 2))
     if err != nil {
         return data.Nil, err
     }

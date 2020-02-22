@@ -8,7 +8,7 @@ import (
 
 func Cons(d data.LispValue, nth int) error {
     if !types.IsCons(d) {
-        return fmt.Errorf("%d nth parameter expects a cons, got %T", nth, d)
+        return fmt.Errorf("%d nth parameter expects a cons, got %s", nth, d.LispTypeName())
     }
     return nil
 }

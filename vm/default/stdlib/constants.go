@@ -1,12 +1,12 @@
 package stdlib
 
 import (
-    "github.com/lucasew/golisp/data"
+    "github.com/lucasew/golisp/data/types"
 )
 
 func init() {
-    register("nil", data.Nil)
-    register("t", data.T)
+    register("nil", types.Nil)
+    register("t", types.T)
     register("char-bell", "\a")
     register("char-cr", "\r")
     register("char-nl", "\n")

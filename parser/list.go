@@ -11,21 +11,21 @@ func ParseList(ctx *lex.Context, global GlobalStateFunc) (data.LispValue, error)
     ctx.StateWhitespace()
     b, ok := ctx.GetByte()
     if !ok {
-        return data.Nil, fmt.Errorf("%w: list", ErrEOFWhile)
+        return types.Nil, fmt.Errorf("%w: list", ErrEOFWhile)
     }
     if !b.IsOpenPar() {
-        return data.Nil, fmt.Errorf("%w: list", ErrInvalidEntryPoint)
+        return types.Nil, fmt.Errorf("%w: list", ErrInvalidEntryPoint)
     }
     ctx.Increment()
     li := types.NewCons()
     for {
         err := ctx.StateWhitespace()
         if err != nil {
-            return data.Nil, err
+            return types.Nil, err
         }
         b, ok = ctx.GetByte()
         if !ok {
-            return data.Nil, fmt.Errorf("%w: list", ErrPrematureEOF)
+            return types.Nil, fmt.Errorf("%w: list", ErrPrematureEOF)
         }
         if b.IsClosePar() {
             ctx.Increment()
@@ -33,7 +33,7 @@ func ParseList(ctx *lex.Context, global GlobalStateFunc) (data.LispValue, error)
         }
         v, err := global(ctx)
         if err != nil {
-            return data.Nil, err
+            return types.Nil, err
         }
         if !IsComment(v) { // Ignore all comments
             li = append(li.(types.Cons), v)

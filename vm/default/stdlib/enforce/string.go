@@ -2,12 +2,12 @@ package enforce
 
 import (
     "github.com/lucasew/golisp/data"
-    "github.com/lucasew/golisp/data/is"
+    "github.com/lucasew/golisp/data/types"
     "fmt"
 )
 
 func String(v data.LispValue, nth int) error {
-    if !is.String(v) {
+    if !types.IsString(v) {
         return fmt.Errorf("%d nth element is not a string", nth)
     }
     return nil

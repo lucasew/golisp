@@ -11,10 +11,10 @@ import (
 func ParseNumber(ctx *lex.Context) (data.LispValue, error) {
     b, ok := ctx.GetByte()
     if !ok {
-        return data.Nil, fmt.Errorf("%w: number", ErrEOFWhile)
+        return types.Nil, fmt.Errorf("%w: number", ErrEOFWhile)
     }
     if !(b.IsByteNumber() || b.IsByte('-')) {
-        return data.Nil, fmt.Errorf("%w: number", ErrInvalidEntryPoint)
+        return types.Nil, fmt.Errorf("%w: number", ErrInvalidEntryPoint)
     }
     e := false // For scientific notation like 10^2 that is like 1E2
     dot := false // For the dot of floats
@@ -24,25 +24,25 @@ func ParseNumber(ctx *lex.Context) (data.LispValue, error) {
         ctx.Increment()
         b, ok := ctx.GetByte()
         if !ok {
-            // return data.Nil, errors.New("eof when parsing number body")
+            // return types.Nil, errors.New("eof when parsing number body")
         }
         if b.IsByteE() {
             if e {
-                return data.Nil, fmt.Errorf("%w: 'e'", ErrInvalidMarkerRepetition)
+                return types.Nil, fmt.Errorf("%w: 'e'", ErrInvalidMarkerRepetition)
             }
             e = true
             continue
         }
         if b.IsDot() {
             if dot {
-                return data.Nil, fmt.Errorf("%w: '.'", ErrInvalidMarkerRepetition)
+                return types.Nil, fmt.Errorf("%w: '.'", ErrInvalidMarkerRepetition)
             }
             dot = true
             continue
         }
         if b.IsSlash() {
             if slash {
-                return data.Nil, fmt.Errorf("%w: '/'", ErrInvalidMarkerRepetition)
+                return types.Nil, fmt.Errorf("%w: '/'", ErrInvalidMarkerRepetition)
             }
             slash = true
             continue
@@ -71,6 +71,6 @@ func ParseNumber(ctx *lex.Context) (data.LispValue, error) {
         if ok {
             return retr, nil
         }
-        return data.Nil, fmt.Errorf("%w: %s", ErrCantParseAsNumber, s)
+        return types.Nil, fmt.Errorf("%w: %s", ErrCantParseAsNumber, s)
     }
 }

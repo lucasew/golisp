@@ -22,7 +22,7 @@ func ToFloat(v data.LispCons) (data.LispValue, error) {
     case types.LispRational:
         return types.NewFloatFromRational(n), nil
     default:
-        return data.Nil, fmt.Errorf("cant convert %T to float", n)
+        return types.Nil, fmt.Errorf("cant convert %T to float", n)
     }
 }
 
@@ -39,7 +39,7 @@ func ToRat(v data.LispCons) (data.LispValue, error) {
     case types.LispRational:
         return n, nil
     default:
-        return data.Nil, fmt.Errorf("cant convert %T to rational", n)
+        return types.Nil, fmt.Errorf("cant convert %T to rational", n)
     }
 }
 
@@ -52,6 +52,6 @@ func ToInt(v data.LispCons) (data.LispValue, error) {
     case types.LispInt:
         return n, nil
     default:
-        return data.Nil, fmt.Errorf("cant convert %T to int", n)
+        return types.Nil, fmt.Errorf("cant convert %T to int", n)
     }
 }

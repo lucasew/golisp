@@ -2,6 +2,7 @@ package stdlib
 
 import (
     "github.com/lucasew/golisp/data"
+    "github.com/lucasew/golisp/data/types"
     "github.com/lucasew/golisp/data/convert"
     "github.com/lucasew/golisp/vm/default/stdlib/enforce"
     "reflect"
@@ -62,7 +63,7 @@ func IsZero(v data.LispCons) (data.LispValue, error) {
     n := v.Car()
     num, ok := n.(data.LispNumber)
     if !ok {
-        return data.Nil, fmt.Errorf("parameter should be a number")
+        return types.Nil, fmt.Errorf("parameter should be a number")
     }
     return convert.NewLispValue(num.IsZero())
 }
@@ -70,7 +71,7 @@ func IsZero(v data.LispCons) (data.LispValue, error) {
 func IsInt(v data.LispCons) (data.LispValue, error) {
     n, ok := v.Car().(data.LispNumber)
     if !ok {
-        return data.Nil, fmt.Errorf("parameter should be a number")
+        return types.Nil, fmt.Errorf("parameter should be a number")
     }
     return convert.NewLispValue(n.IsInt())
 }
@@ -79,16 +80,16 @@ func singleOp(method string, v data.LispCons) (data.LispValue, error) {
     a := v.Car()
     err := enforce.Validate(enforce.Length(v, 1), enforce.Number(a))
     if err != nil {
-        return data.Nil, err
+        return types.Nil, err
     }
     if reflect.ValueOf(a).MethodByName(method).IsValid() {
         ret, ok := reflect.ValueOf(a).MethodByName(method).Call([]reflect.Value{})[0].Interface().(data.LispValue)
         if !ok {
-            return data.Nil, fmt.Errorf("invalid state: method doesnt returns LispValue")
+            return types.Nil, fmt.Errorf("invalid state: method doesnt returns LispValue")
         }
         return ret, nil
     }
-    return data.Nil, fmt.Errorf("invalid state: none of the conditions were satisfied")
+    return types.Nil, fmt.Errorf("invalid state: none of the conditions were satisfied")
 }
 
 func pairOp(method string, v data.LispCons) (data.LispValue, error) {
@@ -96,15 +97,15 @@ func pairOp(method string, v data.LispCons) (data.LispValue, error) {
     b := v.Cdr().Car()
     err := enforce.Validate(enforce.Length(v, 2), enforce.SameType(a, b), enforce.Number(a), enforce.Number(b))
     if err != nil {
-        return data.Nil, err
+        return types.Nil, err
     }
     if reflect.ValueOf(a).MethodByName(method).IsValid() {
         rv := reflect.ValueOf(b)
         ret, ok := reflect.ValueOf(a).MethodByName(method).Call([]reflect.Value{rv})[0].Interface().(data.LispValue)
         if !ok {
-            return data.Nil, fmt.Errorf("invalid state: method doesnt returns LispValue")
+            return types.Nil, fmt.Errorf("invalid state: method doesnt returns LispValue")
         }
         return ret, nil
     }
-    return data.Nil, fmt.Errorf("invalid state: none of the conditions were satisfied")
+    return types.Nil, fmt.Errorf("invalid state: none of the conditions were satisfied")
 }

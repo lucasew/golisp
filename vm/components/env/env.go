@@ -2,6 +2,7 @@ package env
 
 import (
     "github.com/lucasew/golisp/data"
+    "github.com/lucasew/golisp/data/types"
 )
 
 type LispEnv struct {
@@ -43,7 +44,7 @@ func (e *LispEnv) Get(key string) data.LispValue {
     } else {
         return r
     }
-    return data.Nil
+    return types.Nil
 }
 
 

@@ -14,7 +14,7 @@ import (
 var ErrCantHandleType = errors.New("cant handle type")
 
 func NewLispList(v ...interface{}) (lv data.LispValue, err error) {
-    lv = data.Nil
+    lv = types.Nil
     ret := make([]data.LispValue, len(v))
     for k, v := range v {
         ret[k], err = NewLispValue(v)
@@ -32,17 +32,17 @@ func NewLispValue(v interface{}) (lv data.LispValue, err error) {
         lv = t
         return
     }
-    lv = data.Nil
+    lv = types.Nil
     switch i:= v.(type) {
     case string:
-        lv = types.NewConventionalString(i)
+        lv = types.NewString(i)
     case nil:
-        lv = data.Nil
+        lv = types.Nil
     case bool:
         if i {
-            lv = data.T
+            lv = types.T
         } else {
-            lv = data.Nil
+            lv = types.Nil
         }
     case byte:
         lv = types.NewByte(i)

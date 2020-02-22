@@ -3,6 +3,7 @@ package types
 import (
     "strings"
     "fmt"
+    "testing"
     "github.com/lucasew/golisp/data"
 )
 
@@ -14,7 +15,7 @@ func NewCons(v ...data.LispValue) data.LispCons {
 
 func (i Cons) Car() data.LispValue {
     if len(i) == 0 {
-        return data.Nil
+        return Nil
     }
     return i[0]
 }
@@ -40,11 +41,28 @@ func (i Cons) Repr() string {
 
 func (i Cons) Get(k int) data.LispValue {
     if k > len(i) {
-        return data.Nil
+        return Nil
     }
     return i[k]
 }
 
 func (i Cons) Len() int {
     return len(i)
+}
+
+func (Cons) LispTypeName() string {
+    return "cons"
+}
+
+func ConsTest(v data.LispValue) func(t *testing.T) {
+    return func(t *testing.T) {
+        if !IsCons(v) {
+            t.Fail()
+        }
+    }
+}
+
+func IsCons(v data.LispValue) bool {
+    _, ok := v.(data.LispCons)
+    return ok
 }

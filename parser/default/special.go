@@ -12,21 +12,21 @@ import (
 func ParseSpecialLiteral(ctx *lex.Context) (data.LispValue, error) {
     b, ok := ctx.GetByte()
     if !ok {
-        return data.Nil, fmt.Errorf("%w: special literal", parser.ErrEOFWhile)
+        return types.Nil, fmt.Errorf("%w: special literal", parser.ErrEOFWhile)
     }
     if !b.IsHash() {
-        return data.Nil, fmt.Errorf("%w: special literal", parser.ErrInvalidEntryPoint)
+        return types.Nil, fmt.Errorf("%w: special literal", parser.ErrInvalidEntryPoint)
     }
     ctx.Increment()
     b, ok = ctx.GetByte()
     if !ok {
-        return data.Nil, fmt.Errorf("%w: special literal command", parser.ErrPrematureEOF)
+        return types.Nil, fmt.Errorf("%w: special literal command", parser.ErrPrematureEOF)
     }
     if b.IsByteUnderline() { // Like a comment
         ctx.Increment()
         _, err := parser.ParseString(ctx)
         if err != nil {
-            return data.Nil, err
+            return types.Nil, err
         }
         return parser.Comment, nil // TODO: Comment object?
     }
@@ -36,7 +36,7 @@ func ParseSpecialLiteral(ctx *lex.Context) (data.LispValue, error) {
         for {
             b, ok = ctx.GetByte()
             if !ok {
-                return data.Nil, fmt.Errorf("%w: special literal body", parser.ErrPrematureEOF)
+                return types.Nil, fmt.Errorf("%w: special literal body", parser.ErrPrematureEOF)
             }
             if !(b.IsByte('1') || b.IsByte('0')) {
                 ret := &big.Int{}
@@ -53,7 +53,7 @@ func ParseSpecialLiteral(ctx *lex.Context) (data.LispValue, error) {
         for {
             b, ok = ctx.GetByte()
             if !ok {
-                return data.Nil, fmt.Errorf("%w: special literal body", parser.ErrPrematureEOF)
+                return types.Nil, fmt.Errorf("%w: special literal body", parser.ErrPrematureEOF)
             }
             if !(b >= '0' && b <= '8') {
                 ret := &big.Int{}
@@ -70,7 +70,7 @@ func ParseSpecialLiteral(ctx *lex.Context) (data.LispValue, error) {
         for {
             b, ok = ctx.GetByte()
             if !ok {
-                return data.Nil, fmt.Errorf("%w: special literal body", parser.ErrPrematureEOF)
+                return types.Nil, fmt.Errorf("%w: special literal body", parser.ErrPrematureEOF)
             }
             if !b.IsHexadecimal() {
                 ret := &big.Int{}
@@ -81,5 +81,5 @@ func ParseSpecialLiteral(ctx *lex.Context) (data.LispValue, error) {
             ctx.Increment()
         }
     }
-    return data.Nil, fmt.Errorf("%w: i do not understand this special literal expression: '%s'", parser.ErrInvalidChar, string(b))
+    return types.Nil, fmt.Errorf("%w: i do not understand this special literal expression: '%s'", parser.ErrInvalidChar, string(b))
 }

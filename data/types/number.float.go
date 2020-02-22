@@ -2,6 +2,8 @@ package types
 
 import (
     "math/big"
+    "github.com/lucasew/golisp/data"
+    "testing"
 )
 
 type LispFloat struct {
@@ -97,3 +99,20 @@ func (i LispFloat) IsNil() bool {
 func (i LispFloat) Repr() string {
     return i.n.String()
 }
+
+func (LispFloat) LispTypeName() string {
+    return "float"
+}
+
+func IsFloat(v data.LispValue) bool {
+    _, ok := v.(LispFloat)
+    return ok
+}
+
+func FloatTest(v data.LispValue) func(*testing.T) {
+    return func(t *testing.T) {
+        if !IsFloat(v) {
+            t.Fail()
+        }
+    }
+} 

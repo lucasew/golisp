@@ -2,7 +2,7 @@ package stdlib
 
 import (
     "github.com/lucasew/golisp/data"
-    "github.com/lucasew/golisp/data/is"
+    "github.com/lucasew/golisp/data/types"
     "github.com/lucasew/golisp/data/convert"
     "reflect"
     "github.com/lucasew/golisp/vm/default/stdlib/enforce"
@@ -17,7 +17,7 @@ func init() {
 func Eq(v data.LispCons) (data.LispValue, error) {
     err := enforce.Length(v, 2)
     if err != nil {
-        return data.Nil, err
+        return types.Nil, err
     }
     a := v.Car()
     b := v.Cdr().Car()
@@ -27,7 +27,7 @@ func Eq(v data.LispCons) (data.LispValue, error) {
 func EqDeep(v data.LispCons) (data.LispValue, error) {
     err := enforce.Length(v, 2)
     if err != nil {
-        return data.Nil, err
+        return types.Nil, err
     }
     a := v.Car()
     b := v.Cdr().Car()
@@ -37,10 +37,10 @@ func EqDeep(v data.LispCons) (data.LispValue, error) {
 func EqType(v data.LispCons) (data.LispValue, error) {
     err := enforce.Length(v, 2)
     if err != nil {
-        return data.Nil, err
+        return types.Nil, err
     }
     a := v.Car()
     b := v.Cdr().Car()
-    return convert.NewLispValue(is.SameType(a, b))
+    return convert.NewLispValue(types.IsSameType(a, b))
 }
 

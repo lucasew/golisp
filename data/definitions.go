@@ -46,6 +46,7 @@ type LispMap interface {
 
 type LispValue interface {
     IsNil() bool
+    LispTypeName() string
     Repr() string
 }
 

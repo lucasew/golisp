@@ -37,7 +37,7 @@ func TestHybridList(t *testing.T) {
 }
 
 func TestLispValueToConvert(t *testing.T) {
-    in := types.NewConventionalString("teste")
+    in := types.NewString("teste")
     ret, err := NewLispValue(in)
     if err != nil {
         t.Error(err)

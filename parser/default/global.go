@@ -12,13 +12,13 @@ func GlobalState(ctx *lex.Context) (data.LispValue, error) {
     ctx.StateWhitespace()
     b, ok := ctx.GetByte()
     if !ok {
-        return data.Nil, fmt.Errorf("%w: global state", parser.ErrEOFWhile)
+        return types.Nil, fmt.Errorf("%w: global state", parser.ErrEOFWhile)
     }
     if b.IsByte('-') {
         ctx.Increment()
         b, ok = ctx.GetByte()
         if !ok {
-            return data.Nil, fmt.Errorf("%w: comment marker", parser.ErrEOFWhile)
+            return types.Nil, fmt.Errorf("%w: comment marker", parser.ErrEOFWhile)
         }
         if b.IsByteNumber() {
             ctx.Decrement()
@@ -32,7 +32,7 @@ func GlobalState(ctx *lex.Context) (data.LispValue, error) {
             for {
                 b, ok := ctx.GetByte()
                 if !ok {
-                    return data.Nil, fmt.Errorf("%w: comment", parser.ErrPrematureEOF)
+                    return types.Nil, fmt.Errorf("%w: comment", parser.ErrPrematureEOF)
                 }
                 if b.IsByte('\n') {
                     return parser.Comment, nil
@@ -42,7 +42,7 @@ func GlobalState(ctx *lex.Context) (data.LispValue, error) {
         } else {
             sym, err := parser.ParseSymbol(ctx)
             if err != nil {
-                return data.Nil, err
+                return types.Nil, err
             }
             s := fmt.Sprintf("-%s", sym)
             return types.NewSymbol(s), nil
@@ -73,8 +73,8 @@ func GlobalState(ctx *lex.Context) (data.LispValue, error) {
     }
     // if b.IsClosePar() { // TODO: Test more
     //     // panic("invalid ) token")
-    //     return data.Nil, errors.New("invalid ')' token")
-    //     // return data.Nil, nil
+    //     return types.Nil, errors.New("invalid ')' token")
+    //     // return types.Nil, nil
     // }
-    return data.Nil, fmt.Errorf("%w: '%s'", parser.ErrInvalidChar, string(ctx.MustGetByte()))
+    return types.Nil, fmt.Errorf("%w: '%s'", parser.ErrInvalidChar, string(ctx.MustGetByte()))
 }

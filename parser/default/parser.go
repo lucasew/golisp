@@ -17,7 +17,7 @@ func Parse(s string) (data.LispValue, error) {
         ret, err := GlobalState(&ctx)
         // spew.Dump(ret)
         if err !=  nil {
-            return data.Nil, err
+            return types.Nil, err
         }
         if !parser.IsComment(ret) { // Ignore all comments
             list = append(list, ret)

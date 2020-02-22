@@ -2,6 +2,8 @@ package types
 
 import (
     "math/big"
+    "testing"
+    "github.com/lucasew/golisp/data"
 )
 
 type LispRational struct {
@@ -90,4 +92,21 @@ func (i LispRational) IsNil() bool {
 
 func (i LispRational) Repr() string {
     return i.n.RatString()
+}
+
+func (LispRational) LispTypeName() string {
+    return "rational"
+}
+
+func IsRational(v data.LispValue) bool {
+    _, ok := v.(LispRational)
+    return ok
+}
+
+func RationalTest(v data.LispValue) func(*testing.T) {
+    return func(t *testing.T) {
+        if !IsRational(v) {
+            t.Fail()
+        }
+    }
 }

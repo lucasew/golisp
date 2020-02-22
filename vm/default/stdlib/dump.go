@@ -15,7 +15,7 @@ func init() {
 func EnvDump(env vm.LispVM, v data.LispCons) (data.LispValue, error) {
     err := enforce.Length(v, 0)
     if err != nil {
-        return data.Nil, err
+        return types.Nil, err
     }
-    return types.NewConventionalString(spew.Sdump(env)), nil
+    return types.NewString(spew.Sdump(env)), nil
 }

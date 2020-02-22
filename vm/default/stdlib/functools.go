@@ -14,7 +14,7 @@ func init() {
 func Map(v data.LispCons) (data.LispValue, error) {
     err := enforce.Validate(enforce.Length(v, 2), enforce.Function(v.Car(), 1), enforce.Cons(v.Cdr().Car(), 2))
     if err != nil {
-        return data.Nil, err
+        return types.Nil, err
     }
     fn := v.Car().(data.LispFunction)
     lst := v.Cdr().Car().(data.LispCons)
@@ -23,7 +23,7 @@ func Map(v data.LispCons) (data.LispValue, error) {
         v := types.NewCons(lst.Get(i))
         ret[i], err = fn.LispCall(v)
         if err != nil {
-            return data.Nil, err
+            return types.Nil, err
         }
     }
     return types.NewCons(ret...), nil
@@ -32,7 +32,7 @@ func Map(v data.LispCons) (data.LispValue, error) {
 func Reduce(v data.LispCons) (data.LispValue, error) {
     err := enforce.Validate(enforce.Length(v, 2), enforce.Function(v.Car(), 1), enforce.Cons(v.Cdr().Car(), 2))
     if err != nil {
-        return data.Nil, err
+        return types.Nil, err
     }
     fn := v.Car().(data.LispFunction)
     lst := v.Cdr().Car().(data.LispCarCdr)
@@ -44,7 +44,7 @@ func Reduce(v data.LispCons) (data.LispValue, error) {
     lst = lst.Cdr()
     ret, err = fn.LispCall(types.NewCons(ret, lst.Car()))
     if err != nil {
-        return data.Nil, err
+        return types.Nil, err
     }
     goto next
 }

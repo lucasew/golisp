@@ -2,6 +2,7 @@ package stdlib
 
 import (
     "github.com/lucasew/golisp/data"
+    "github.com/lucasew/golisp/data/types"
     "github.com/lucasew/golisp/vm"
     "github.com/lucasew/golisp/vm/default/stdlib/enforce"
 )
@@ -15,7 +16,7 @@ func init() {
 func Quote(env vm.LispVM, v data.LispCons) (data.LispValue, error) {
     err := enforce.Length(v, 1)
     if err != nil {
-        return data.Nil, err
+        return types.Nil, err
     }
     return v.Car(), nil
 }
@@ -27,7 +28,7 @@ func List(v data.LispCons) (data.LispValue, error) {
 func Call(v data.LispCons) (data.LispValue, error) {
     err := enforce.Validate(enforce.Function(v.Car(), 1), enforce.Cons(v.Cdr().Car(), 2))
     if err != nil {
-        return data.Nil, err
+        return types.Nil, err
     }
     fn := v.Car().(data.LispFunction)
     val := v.Cdr().Car().(data.LispCons)

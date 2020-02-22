@@ -2,11 +2,10 @@ package types
 
 import (
     "testing"
-    "github.com/lucasew/golisp/data"
 )
 
 func TestStringCar(t *testing.T) {
-    s := NewConventionalString("hello")
+    s := NewString("hello")
     c := s.Car()
     if c != NewByte('h') {
         t.Errorf("expected 'h' got '%c'", c)
@@ -14,13 +13,13 @@ func TestStringCar(t *testing.T) {
 }
 
 func TestStringCdr(t *testing.T) {
-    s := NewConventionalString("hello")
+    s := NewString("hello")
     c := s.Cdr()
-    if c != NewConventionalString("ello") {
+    if c != NewString("ello") {
         t.Errorf("expected 'hello' got '%s'", c)
     }
     c = c.Cdr()
-    if c != NewConventionalString("llo") {
+    if c != NewString("llo") {
         t.Errorf("expected 'hello' got '%s'", c)
     }
 }
@@ -28,9 +27,9 @@ func TestStringCdr(t *testing.T) {
 func TestStringCdrSmall(t *testing.T) {
     // let x be a string that (< (len x) 2)
     // -- (assert-true (eq (cdr x) nil))
-    s := NewConventionalString("a") 
+    s := NewString("a") 
     c := s.Cdr()
-    if c != data.Nil {
+    if c != Nil {
         t.Errorf("expected 'nil' got '%s'", c.Repr())
     }
 }

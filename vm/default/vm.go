@@ -55,7 +55,7 @@ func (vm *LispVM) Eval(v data.LispValue) (data.LispValue, error) {
                 for k, v := range crude_params {
                     params[k], err = vm.Eval(v)
                     if err != nil {
-                        return data.Nil, err
+                        return types.Nil, err
                     }
                 }
                 return fn.LispCall(types.NewCons(params...))
@@ -66,25 +66,25 @@ func (vm *LispVM) Eval(v data.LispValue) (data.LispValue, error) {
                 }
                 return fn.LispCallMacro(vm, l)
             default:
-                return data.Nil, errors.New("cant call the variable")
+                return types.Nil, errors.New("cant call the variable")
             }
         case types.Cons:
-            ret := data.Nil.(data.LispValue)
+            ret := types.Nil.(data.LispValue)
             var err error
             for _, stmt := range(in) {
                 ret, err = vm.Eval(stmt.(data.LispValue))
                 if err != nil {
-                    return data.Nil, err
+                    return types.Nil, err
                 }
             }
             return ret, nil
         default:
             println(v.Repr())
-            return data.Nil, errors.New("in code mode only commands are allowed")
+            return types.Nil, errors.New("in code mode only commands are allowed")
         }
     case types.Symbol:
         return vm.EnvGet(in.ToString()), nil
-    case types.ConventionalString:
+    case types.String:
         return in, nil
     default:
         return in, nil

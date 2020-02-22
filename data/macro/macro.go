@@ -19,6 +19,10 @@ func (LispMacro) Repr() string {
     return "<native macro>"
 }
 
+func (LispMacro) LispTypeName() string {
+    return "macro"
+}
+
 func (m LispMacro) LispCallMacro(v vm.LispVM, val data.LispCons) (data.LispValue, error) {
     return m(v, val)
 }

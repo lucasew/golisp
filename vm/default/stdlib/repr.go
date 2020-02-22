@@ -10,6 +10,6 @@ func init() {
 }
 
 func Repr(v data.LispCons) (data.LispValue, error) {
-    return types.NewConventionalString(v.Car().Repr()), nil
+    return types.NewString(v.Car().Repr()), nil
 }
 

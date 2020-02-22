@@ -3,38 +3,56 @@ package types
 import (
     "fmt"
     "github.com/lucasew/golisp/data"
+    "testing"
 )
 
-type ConventionalString string
+type String string
 
-func NewConventionalString(s string) data.LispString {
-    return ConventionalString(s)
+func NewString(s string) data.LispString {
+    return String(s)
 }
 
-func (c ConventionalString) IsNil() bool {
+func (c String) IsNil() bool {
     return len(c) == 0
 }
 
-func (c ConventionalString) Car() data.LispValue {
+func (c String) Car() data.LispValue {
     if len(c) == 0 {
-        return data.Nil
+        return Nil
     }
     s := string(c)[0]
     return NewByte(s)
 }
 
-func (c ConventionalString) Cdr() data.LispCarCdr {
+func (c String) Cdr() data.LispCarCdr {
     if len(c) < 2 {
-        return data.Nil
+        return Nil
     }
     s := string(c)[1:len(c)] // TODO: Testar se não teremos acessos errados aqui
-    return NewConventionalString(s)
+    return NewString(s)
 }
 
-func (c ConventionalString) Repr() string {
+func (c String) Repr() string {
     return fmt.Sprintf("\"%s\"", c)
 }
 
-func (c ConventionalString) ToString() string {
+func (c String) ToString() string {
     return string(c)
+}
+
+func (String) LispTypeName() string {
+    return "string"
+}
+
+func IsString(v data.LispValue) bool {
+    _, ok := v.(data.LispString)
+    return ok
+}
+
+func StringTest(v data.LispValue) func(*testing.T) {
+    return func(t *testing.T) {
+        if !IsString(v) {
+            t.Fail()
+        }
+    }
 }

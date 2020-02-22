@@ -2,6 +2,7 @@ package types
 
 import (
     "github.com/lucasew/golisp/data"
+    "testing"
 )
 
 type Portal chan(data.LispValue)
@@ -28,7 +29,7 @@ func (p Portal) SendUnblocking(v data.LispValue) data.LispValue {
     case p <- v:
         return v
     default:
-        return data.Nil
+        return Nil
     }
 }
 
@@ -42,6 +43,23 @@ func (p Portal) RecvUnblocking() data.LispValue {
     case v := <- p:
         return v
     default:
-        return data.Nil
+        return Nil
+    }
+}
+
+func (Portal) LispTypeName() string {
+    return "portal"
+}
+
+func IsPortal(v data.LispValue) bool {
+    _, ok := v.(data.LispPortal)
+    return ok
+}
+
+func PortalTest(v data.LispValue) func(t *testing.T) {
+    return func(t *testing.T) {
+        if !IsPortal(v) {
+            t.Fail()
+        }
     }
 }

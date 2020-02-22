@@ -14,11 +14,11 @@ func init() {
 func Setg(env vm.LispVM, v data.LispCons) (data.LispValue, error) {
     key, ok := v.Car().(types.Symbol)
     if !ok {
-        return data.Nil, errors.New("invalid output for setg")
+        return types.Nil, errors.New("invalid output for setg")
     }
     value, err := env.Eval(v.Cdr().Car())
     if err != nil {
-        return data.Nil, err
+        return types.Nil, err
     }
     env.EnvSetGlobal(key.ToString(), value)
     return value, nil

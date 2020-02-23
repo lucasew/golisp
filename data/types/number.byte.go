@@ -1,50 +1,49 @@
 package types
 
 import (
-    "fmt"
-    "github.com/lucasew/golisp/data"
+	"fmt"
+	"github.com/lucasew/golisp/data"
 )
 
 type Byte byte
 
 func NewByte(b byte) Byte {
-    return Byte(b)
+	return Byte(b)
 }
 
 func (Byte) IsNil() bool {
-    return false
+	return false
 }
 
 func (b Byte) Repr() string {
-    return fmt.Sprintf("#c%d", b) // TODO: Improve
+	return fmt.Sprintf("#c%d", b) // TODO: Improve
 }
 
 func (b Byte) IsInfinite() bool {
-    return false
+	return false
 }
 
 func (b Byte) IsInt() bool {
-    return true
+	return true
 }
 
 func (b Byte) IsZero() bool {
-    return b == 0
+	return b == 0
 }
 
 func IsByte(v data.LispValue) bool {
-    _, ok := v.(Byte)
-    return ok
+	_, ok := v.(Byte)
+	return ok
 }
 
 func (Byte) LispTypeName() string {
-    return "byte"
+	return "byte"
 }
 
 func (b Byte) Sum(other Byte) Byte {
-    return b + other
+	return b + other
 }
 
 func (b Byte) Sub(other Byte) Byte {
-    return b - other
+	return b - other
 }
-

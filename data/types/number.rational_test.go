@@ -1,12 +1,13 @@
 package types
 
 import (
-    "testing"
+	"testing"
 )
 
 func TestRatType(t *testing.T) {
-    f, _ := NewRationalFromString("0")
-    t.Run("lisp_value", ValueTest(f))
-    t.Run("byte", RationalTest(f))
+	f, _ := NewRationalFromString("0")
+	t.Run("lisp_value", ValueTest(f))
+	t.Run("byte", RationalTest(f))
 }
+
 var RationalTest = NewTestHelper(IsRational)

@@ -1,14 +1,14 @@
 package main
 
 import (
-    "os"
-    "github.com/go-telegram-bot-api/telegram-bot-api"
-    "github.com/lucasew/golisp/vm/default"
-    "github.com/lucasew/golisp/parser/default"
-    "github.com/lucasew/golisp/data"
-    "github.com/davecgh/go-spew/spew"
-    "log"
-    "fmt"
+	"fmt"
+	"github.com/davecgh/go-spew/spew"
+	"github.com/go-telegram-bot-api/telegram-bot-api"
+	"github.com/lucasew/golisp/data"
+	"github.com/lucasew/golisp/parser/default"
+	"github.com/lucasew/golisp/vm/default"
+	"log"
+	"os"
 )
 
 var bot *tgbotapi.BotAPI
@@ -25,73 +25,71 @@ Funções de cálculo, como +, -, * e / só aceitam dois argumentos. Para realiz
 Digite /help para reexibir esta mensagem
 `
 
-
-
 func main() {
-    var err error
-    if len(os.Args) < 2 {
-        panic("Missing telegram bot api key")
-    }
-    eval := vm_default.NewVM(nil).Eval
-    parse := pdefault.Parse
-    bot, err = tgbotapi.NewBotAPI(os.Args[1])
-    if err != nil {
-        panic(err)
-    }
-    // bot.Debug = true
-    log.Printf("Authorized: @%s", bot.Self.UserName)
-    updchan, err := bot.GetUpdatesChan(tgbotapi.NewUpdate(0))
-    if err != nil {
-        panic(err)
-    }
-    for update := range updchan {
-        if update.Message == nil {
-            continue
-        }
-        log.Printf("MSG from: @%s: %s", update.Message.From.UserName, update.Message.Text)
-        if update.Message.Command() == "help" {
-            reply(&update, banner)
-            continue
-        }
-        if update.Message.Command() == "start" {
-            reply(&update, banner)
-            continue
-        }
-        stmt := ""
-        resp := func(v data.LispValue) string {
-            return v.Repr()
-        }
-        if update.Message.Command() == "spew" {
-            resp = func(v data.LispValue) string {
-                return spew.Sdump(v)
-            }
-            stmt = update.Message.CommandArguments()
-        } else {
-            stmt = update.Message.Text
-        }
-        if update.Message.Command() == "parse" {
-            stmt = update.Message.CommandArguments()
-        }
-        ast, err := parse(stmt)
-        if err != nil {
-            reply(&update, fmt.Sprintf("🤔 %s", err.Error()))
-            continue
-        }
-        if update.Message.Command() == "parse" {
-            reply(&update, spew.Sdump(ast))
-            continue
-        }
-        res, err := eval(ast)
-        if err != nil {
-            reply(&update, fmt.Sprintf("🤯 %s", err.Error()))
-            continue
-        }
-        reply(&update, fmt.Sprintf("👍 %s", resp(res)))
-    }
+	var err error
+	if len(os.Args) < 2 {
+		panic("Missing telegram bot api key")
+	}
+	eval := vm_default.NewVM(nil).Eval
+	parse := pdefault.Parse
+	bot, err = tgbotapi.NewBotAPI(os.Args[1])
+	if err != nil {
+		panic(err)
+	}
+	// bot.Debug = true
+	log.Printf("Authorized: @%s", bot.Self.UserName)
+	updchan, err := bot.GetUpdatesChan(tgbotapi.NewUpdate(0))
+	if err != nil {
+		panic(err)
+	}
+	for update := range updchan {
+		if update.Message == nil {
+			continue
+		}
+		log.Printf("MSG from: @%s: %s", update.Message.From.UserName, update.Message.Text)
+		if update.Message.Command() == "help" {
+			reply(&update, banner)
+			continue
+		}
+		if update.Message.Command() == "start" {
+			reply(&update, banner)
+			continue
+		}
+		stmt := ""
+		resp := func(v data.LispValue) string {
+			return v.Repr()
+		}
+		if update.Message.Command() == "spew" {
+			resp = func(v data.LispValue) string {
+				return spew.Sdump(v)
+			}
+			stmt = update.Message.CommandArguments()
+		} else {
+			stmt = update.Message.Text
+		}
+		if update.Message.Command() == "parse" {
+			stmt = update.Message.CommandArguments()
+		}
+		ast, err := parse(stmt)
+		if err != nil {
+			reply(&update, fmt.Sprintf("🤔 %s", err.Error()))
+			continue
+		}
+		if update.Message.Command() == "parse" {
+			reply(&update, spew.Sdump(ast))
+			continue
+		}
+		res, err := eval(ast)
+		if err != nil {
+			reply(&update, fmt.Sprintf("🤯 %s", err.Error()))
+			continue
+		}
+		reply(&update, fmt.Sprintf("👍 %s", resp(res)))
+	}
 }
 
 func reply(u *tgbotapi.Update, txt string) {
-    m := tgbotapi.NewMessage(int64(u.Message.From.ID), txt)
-    m.ReplyToMessageID = u.Message.MessageID
-    bot.Send(m)
+	m := tgbotapi.NewMessage(int64(u.Message.From.ID), txt)
+	m.ReplyToMessageID = u.Message.MessageID
+	bot.Send(m)
 }

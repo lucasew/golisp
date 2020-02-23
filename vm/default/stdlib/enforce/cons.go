@@ -1,14 +1,14 @@
 package enforce
 
 import (
-    "github.com/lucasew/golisp/data"
-    "github.com/lucasew/golisp/data/types"
-    "fmt"
+	"fmt"
+	"github.com/lucasew/golisp/data"
+	"github.com/lucasew/golisp/data/types"
 )
 
 func Cons(d data.LispValue, nth int) error {
-    if !types.IsCons(d) {
-        return fmt.Errorf("%d nth parameter expects a cons, got %s", nth, d.LispTypeName())
-    }
-    return nil
+	if !types.IsCons(d) {
+		return fmt.Errorf("%d nth parameter expects a cons, got %s", nth, d.LispTypeName())
+	}
+	return nil
 }

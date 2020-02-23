@@ -1,7 +1,7 @@
 package lex
 
 import (
-    "errors"
+	"errors"
 )
 
 var ErrEOF = errors.New("EOF")

@@ -1,14 +1,14 @@
 package enforce
 
 import (
-    "github.com/lucasew/golisp/data"
-    "github.com/lucasew/golisp/data/types"
-    "fmt"
+	"fmt"
+	"github.com/lucasew/golisp/data"
+	"github.com/lucasew/golisp/data/types"
 )
 
 func String(v data.LispValue, nth int) error {
-    if !types.IsString(v) {
-        return fmt.Errorf("%d nth element is not a string", nth)
-    }
-    return nil
+	if !types.IsString(v) {
+		return fmt.Errorf("%d nth element is not a string", nth)
+	}
+	return nil
 }

@@ -1,7 +1,7 @@
 package parser
 
 import (
-    "github.com/lucasew/golisp/data"
+	"github.com/lucasew/golisp/data"
 )
 
 type _comment uint8
@@ -9,19 +9,18 @@ type _comment uint8
 var Comment data.LispValue = _comment(0)
 
 func (_comment) IsNil() bool {
-    return true
+	return true
 }
 
 func (_comment) Repr() string {
-    return ""
+	return ""
 }
 
 func (_comment) LispTypeName() string {
-    return "comment"
+	return "comment"
 }
 
 func IsComment(lv data.LispValue) bool {
-    _, ok := lv.(_comment)
-    return ok
+	_, ok := lv.(_comment)
+	return ok
 }
-

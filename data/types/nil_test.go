@@ -1,10 +1,10 @@
 package types
 
 import (
-    "testing"
+	"testing"
 )
 
 func TestNilType(t *testing.T) {
-    t.Run("lisp_value", ValueTest(Nil))
-    t.Run("carcdr", CarCdrTest(Nil))
+	t.Run("lisp_value", ValueTest(Nil))
+	t.Run("carcdr", CarCdrTest(Nil))
 }

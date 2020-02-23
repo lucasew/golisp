@@ -1,34 +1,33 @@
 package types
 
 import (
-    "fmt"
-    "github.com/lucasew/golisp/data"
+	"fmt"
+	"github.com/lucasew/golisp/data"
 )
 
 type Atom string
 
 func NewAtom(s string) data.LispAtom {
-    return Atom(s)
+	return Atom(s)
 }
 
 func (a Atom) IsNil() bool {
-    return string(a) == "nil"
+	return string(a) == "nil"
 }
 
 func (a Atom) Repr() string {
-    return fmt.Sprintf(":%s", a)
+	return fmt.Sprintf(":%s", a)
 }
 
 func (Atom) LispTypeName() string {
-    return "atom"
+	return "atom"
 }
 
 func (a Atom) AtomString() string {
-    return string(a)
+	return string(a)
 }
 
 func IsAtom(v data.LispValue) bool {
-    _, ok := v.(data.LispAtom)
-    return ok
+	_, ok := v.(data.LispAtom)
+	return ok
 }
-

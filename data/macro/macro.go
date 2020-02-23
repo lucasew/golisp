@@ -1,28 +1,28 @@
 package macro
 
 import (
-    "github.com/lucasew/golisp/vm"
-    "github.com/lucasew/golisp/data"
+	"github.com/lucasew/golisp/data"
+	"github.com/lucasew/golisp/vm"
 )
 
 type LispMacro func(vm.LispVM, data.LispCons) (data.LispValue, error)
 
 func NewLispMacro(f func(vm.LispVM, data.LispCons) (data.LispValue, error)) LispMacro {
-    return f
+	return f
 }
 
 func (LispMacro) IsNil() bool {
-    return false
+	return false
 }
 
 func (LispMacro) Repr() string {
-    return "<native macro>"
+	return "<native macro>"
 }
 
 func (LispMacro) LispTypeName() string {
-    return "macro"
+	return "macro"
 }
 
 func (m LispMacro) LispCallMacro(v vm.LispVM, val data.LispCons) (data.LispValue, error) {
-    return m(v, val)
+	return m(v, val)
 }

@@ -39,9 +39,9 @@ type LispMap interface {
 	LispLen
 	Get(k LispValue) LispValue
 	Set(k LispValue, v LispValue) LispValue
-	Keys() LispValue   // Cons
-	Values() LispValue // Cons tbm
-	Tuples() LispValue // Cons de cons
+	Keys() LispCons   // Cons
+	Values() LispCons // Cons tbm
+	Tuples() LispCons // Cons de cons
 }
 
 type LispValue interface {

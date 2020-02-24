@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/lucasew/golisp/data"
 	"github.com/lucasew/golisp/data/types"
+	"github.com/lucasew/golisp/data/types/number"
 	"github.com/lucasew/golisp/stdlib/default/enforce"
 )
 
@@ -16,12 +17,12 @@ func init() {
 
 func ToFloat(v data.LispCons) (data.LispValue, error) {
 	switch n := v.Car().(type) {
-	case types.LispFloat:
+	case number.LispFloat:
 		return n, nil
-	case types.LispInt:
-		return types.NewFloatFromInt(n), nil
-	case types.LispRational:
-		return types.NewFloatFromRational(n), nil
+	case number.LispInt:
+		return number.NewFloatFromInt(n), nil
+	case number.LispRational:
+		return number.NewFloatFromRational(n), nil
 	default:
 		return types.Nil, fmt.Errorf("cant convert %T to float", n)
 	}
@@ -29,15 +30,15 @@ func ToFloat(v data.LispCons) (data.LispValue, error) {
 
 func ToRat(v data.LispCons) (data.LispValue, error) {
 	switch n := v.Car().(type) {
-	case types.LispFloat:
-		r, ok := types.NewRationalFromString(n.Repr())
+	case number.LispFloat:
+		r, ok := number.NewRationalFromString(n.Repr())
 		if !ok {
 			panic("invalid state: cant parse rational")
 		}
 		return r, nil
-	case types.LispInt:
-		return types.NewRationalFromInt(n), nil
-	case types.LispRational:
+	case number.LispInt:
+		return number.NewRationalFromInt(n), nil
+	case number.LispRational:
 		return n, nil
 	default:
 		return types.Nil, fmt.Errorf("cant convert %T to rational", n)
@@ -46,11 +47,11 @@ func ToRat(v data.LispCons) (data.LispValue, error) {
 
 func ToInt(v data.LispCons) (data.LispValue, error) {
 	switch n := v.Car().(type) {
-	case types.LispFloat:
-		return types.NewIntFromFloat(n)
-	case types.LispRational:
-		return types.NewIntFromFloat(types.NewFloatFromRational(n))
-	case types.LispInt:
+	case number.LispFloat:
+		return number.NewIntFromFloat(n)
+	case number.LispRational:
+		return number.NewIntFromFloat(number.NewFloatFromRational(n))
+	case number.LispInt:
 		return n, nil
 	default:
 		return types.Nil, fmt.Errorf("cant convert %T to int", n)
@@ -62,16 +63,16 @@ func ToByte(v data.LispCons) (data.LispValue, error) {
 	if err != nil {
 		return types.Nil, err
 	}
-	number := types.NewByte(0)
+	num := number.NewByte(0)
 	vnum := v.Car().(data.LispNumber)
 	switch n := vnum.(type) {
-	case types.LispInt:
+	case number.LispInt:
 		tmp, _ := n.Int64()
-		number = types.NewByte(byte(tmp))
-	case types.Byte:
-		number = n
+		num = number.NewByte(byte(tmp))
+	case number.Byte:
+		num = n
 	default:
 		return types.Nil, fmt.Errorf("invalid type for the first parameter, expected byte got %s", vnum.LispTypeName())
 	}
-	return number, nil
+	return num, nil
 }

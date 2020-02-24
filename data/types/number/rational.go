@@ -1,4 +1,4 @@
-package types
+package number
 
 import (
 	"github.com/lucasew/golisp/data"

@@ -2,6 +2,7 @@ package types
 
 import (
 	"github.com/lucasew/golisp/data"
+	"github.com/lucasew/golisp/data/types/number"
 )
 
 type Symbol string
@@ -40,7 +41,7 @@ func IsSymbol(v data.LispValue) bool {
 }
 
 func (s Symbol) Car() data.LispValue {
-	return NewByte(s[0])
+	return number.NewByte(s[0])
 }
 
 func (s Symbol) Cdr() data.LispCarCdr {

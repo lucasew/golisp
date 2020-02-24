@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/lucasew/golisp/data"
 	"github.com/lucasew/golisp/data/types"
+	"github.com/lucasew/golisp/data/types/number"
 )
 
 func init() {
@@ -16,9 +17,9 @@ func init() {
 }
 
 func NewPortal(v data.LispCons) (data.LispValue, error) {
-	n, ok := v.Car().(types.LispInt)
+	n, ok := v.Car().(number.LispInt)
 	if v.Car().IsNil() {
-		n = types.NewIntFromInt64(0)
+		n = number.NewIntFromInt64(0)
 	} else {
 		if !ok {
 			return types.Nil, fmt.Errorf("expected integer got %T", v.Car())

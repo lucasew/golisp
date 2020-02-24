@@ -2,13 +2,14 @@ package types
 
 import (
 	"testing"
+    "github.com/lucasew/golisp/data/types/number"
 )
 
 func TestIntType(t *testing.T) {
-	f := NewIntFromInt64(0)
+	f := number.NewIntFromInt64(0)
 	t.Run("lisp_value", ValueTest(f))
 	t.Run("number", NumberTest(f))
 	t.Run("int", IntTest(f))
 }
 
-var IntTest = NewTestHelper(IsInt)
+var IntTest = NewTestHelper(number.IsInt)

@@ -2,17 +2,14 @@ package types
 
 import (
 	"github.com/lucasew/golisp/data"
+	"github.com/lucasew/golisp/data/types/number"
 	"testing"
 )
 
-func IsNumber(v data.LispValue) bool {
-	_, ok := v.(data.LispNumber)
-	return ok
-}
 
 func NumberTest(v data.LispValue) func(t *testing.T) {
 	return func(t *testing.T) {
-		if !IsNumber(v) {
+		if !number.IsNumber(v) {
 			t.Fail()
 		}
 	}

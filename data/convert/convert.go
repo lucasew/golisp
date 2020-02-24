@@ -8,6 +8,7 @@ import (
 	"github.com/lucasew/golisp/data"
 	"github.com/lucasew/golisp/data/macro"
 	"github.com/lucasew/golisp/data/types"
+	"github.com/lucasew/golisp/data/types/number"
 	"github.com/lucasew/golisp/vm"
 )
 
@@ -45,13 +46,13 @@ func NewLispValue(v interface{}) (lv data.LispValue, err error) {
 			lv = types.Nil
 		}
 	case byte:
-		lv = types.NewByte(i)
+		lv = number.NewByte(i)
 	case float64:
-		lv = types.NewFloatFromFloat64(i)
+		lv = number.NewFloatFromFloat64(i)
 	case int64:
-		lv = types.NewIntFromInt64(i)
+		lv = number.NewIntFromInt64(i)
 	case int, int16, int32, uint16, uint32:
-		lv = types.NewIntFromInt64(reflect.ValueOf(i).Int())
+		lv = number.NewIntFromInt64(reflect.ValueOf(i).Int())
 	case func(data.LispCons) (data.LispValue, error):
 		lv = types.NewFunction(i)
 	case func(vm.LispVM, data.LispCons) (data.LispValue, error):

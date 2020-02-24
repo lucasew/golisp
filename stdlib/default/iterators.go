@@ -3,6 +3,7 @@ package stdlib
 import (
 	"github.com/lucasew/golisp/data"
 	"github.com/lucasew/golisp/data/types"
+	"github.com/lucasew/golisp/data/types/number"
 	"github.com/lucasew/golisp/data/types/iterator"
 	// "github.com/lucasew/golisp/data/convert"
 	"github.com/lucasew/golisp/stdlib/default/enforce"
@@ -19,7 +20,7 @@ func init() {
 
 func Range(v data.LispCons) (data.LispValue, error) {
 	a := v.Car()
-	to, ok := a.(types.LispInt)
+	to, ok := a.(number.LispInt)
 	if !ok {
 		return types.Nil, fmt.Errorf("first argument must be an integer")
 	}

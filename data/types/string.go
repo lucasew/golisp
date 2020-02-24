@@ -3,6 +3,7 @@ package types
 import (
 	"fmt"
 	"github.com/lucasew/golisp/data"
+	"github.com/lucasew/golisp/data/types/number"
 )
 
 type String string
@@ -15,7 +16,7 @@ func (c String) Get(k int) data.LispValue {
 	if k >= c.Len() {
 		return Nil
 	}
-	return NewByte(c[k])
+	return number.NewByte(c[k])
 }
 
 func (c String) Len() int {
@@ -31,7 +32,7 @@ func (c String) Car() data.LispValue {
 		return Nil
 	}
 	s := string(c)[0]
-	return NewByte(s)
+	return number.NewByte(s)
 }
 
 func (c String) Cdr() data.LispCarCdr {

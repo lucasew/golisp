@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/lucasew/golisp/data"
 	"github.com/lucasew/golisp/data/types"
+	"github.com/lucasew/golisp/data/types/number"
 	"github.com/lucasew/golisp/lex"
 	"strings"
 )
@@ -58,16 +59,16 @@ func ParseNumber(ctx *lex.Context) (data.LispValue, error) {
 		}
 		s := ctx.Slice(begin, ctx.Index())
 		s = strings.ReplaceAll(s, "_", "")
-		reti, ok := types.NewIntFromString(s)
+		reti, ok := number.NewIntFromString(s)
 		if ok {
 			return reti, nil
 		}
-		retf, ok := types.NewFloatFromString(s)
+		retf, ok := number.NewFloatFromString(s)
 		if ok {
 			return retf, nil
 		}
 
-		retr, ok := types.NewRationalFromString(s)
+		retr, ok := number.NewRationalFromString(s)
 		if ok {
 			return retr, nil
 		}

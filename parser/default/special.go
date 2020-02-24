@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/lucasew/golisp/data"
 	"github.com/lucasew/golisp/data/types"
+	"github.com/lucasew/golisp/data/types/number"
 	"github.com/lucasew/golisp/lex"
 	"github.com/lucasew/golisp/parser"
 	"math/big"
@@ -42,7 +43,7 @@ func ParseSpecialLiteral(ctx *lex.Context) (data.LispValue, error) {
 				ret := &big.Int{}
 				s := ctx.Slice(begin, ctx.Index())
 				ret.SetString(s, 2) // Parse in base 2
-				return types.NewIntFromBigInt(ret), nil
+				return number.NewIntFromBigInt(ret), nil
 			}
 			ctx.Increment()
 		}
@@ -59,7 +60,7 @@ func ParseSpecialLiteral(ctx *lex.Context) (data.LispValue, error) {
 				ret := &big.Int{}
 				s := ctx.Slice(begin, ctx.Index())
 				ret.SetString(s, 8) // Parse in base 8
-				return types.NewIntFromBigInt(ret), nil
+				return number.NewIntFromBigInt(ret), nil
 			}
 			ctx.Increment()
 		}
@@ -76,7 +77,7 @@ func ParseSpecialLiteral(ctx *lex.Context) (data.LispValue, error) {
 				ret := &big.Int{}
 				s := ctx.Slice(begin, ctx.Index())
 				ret.SetString(s, 16) // Parse in base 8
-				return types.NewIntFromBigInt(ret), nil
+				return number.NewIntFromBigInt(ret), nil
 			}
 			ctx.Increment()
 		}
@@ -87,12 +88,12 @@ func ParseSpecialLiteral(ctx *lex.Context) (data.LispValue, error) {
 		if err != nil {
 			return types.Nil, err
 		}
-		num, ok := n.(types.LispInt)
+		num, ok := n.(number.LispInt)
 		if !ok {
 			return types.Nil, fmt.Errorf("invalid syntax for byte parsing")
 		}
 		inum, _ := num.Int64()
-		return types.NewByte(byte(inum)), nil
+		return number.NewByte(byte(inum)), nil
 	}
 	return types.Nil, fmt.Errorf("%w: i do not understand this special literal expression: '%s'", parser.ErrInvalidChar, string(b))
 }

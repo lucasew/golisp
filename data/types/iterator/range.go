@@ -3,6 +3,7 @@ package iterator
 import (
 	"github.com/lucasew/golisp/data"
 	"github.com/lucasew/golisp/data/types"
+	"github.com/lucasew/golisp/data/types/number"
 )
 
 type RangeIterator struct {
@@ -37,7 +38,7 @@ func (r *RangeIterator) Next() data.LispValue {
 	if r.state > r.to {
 		return types.Nil
 	}
-	return types.NewIntFromInt64(int64(v))
+	return number.NewIntFromInt64(int64(v))
 }
 
 func (RangeIterator) Repr() string {

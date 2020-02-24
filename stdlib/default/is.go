@@ -4,6 +4,7 @@ import (
 	"github.com/lucasew/golisp/data"
 	"github.com/lucasew/golisp/data/convert"
 	"github.com/lucasew/golisp/data/types"
+	"github.com/lucasew/golisp/data/types/number"
 	"github.com/lucasew/golisp/stdlib/default/enforce"
 )
 
@@ -22,7 +23,7 @@ func IsNumber(v data.LispCons) (data.LispValue, error) {
 	if err != nil {
 		return types.Nil, err
 	}
-	return convert.NewLispValue(types.IsNumber(v.Car()))
+	return convert.NewLispValue(number.IsNumber(v.Car()))
 }
 
 func IsString(v data.LispCons) (data.LispValue, error) {

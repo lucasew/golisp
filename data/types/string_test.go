@@ -2,12 +2,13 @@ package types
 
 import (
 	"testing"
+    "github.com/lucasew/golisp/data/types/number"
 )
 
 func TestStringCar(t *testing.T) {
 	s := NewString("hello")
 	c := s.Car()
-	if c != NewByte('h') {
+	if c != number.NewByte('h') {
 		t.Errorf("expected 'h' got '%c'", c)
 	}
 }

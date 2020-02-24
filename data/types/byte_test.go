@@ -1,8 +1,8 @@
 package types
 
 import (
+	"github.com/lucasew/golisp/data/types/number"
 	"testing"
-    "github.com/lucasew/golisp/data/types/number"
 )
 
 func TestByteType(t *testing.T) {

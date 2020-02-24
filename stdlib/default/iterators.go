@@ -3,8 +3,8 @@ package stdlib
 import (
 	"github.com/lucasew/golisp/data"
 	"github.com/lucasew/golisp/data/types"
-	"github.com/lucasew/golisp/data/types/number"
 	"github.com/lucasew/golisp/data/types/iterator"
+	"github.com/lucasew/golisp/data/types/number"
 	// "github.com/lucasew/golisp/data/convert"
 	"github.com/lucasew/golisp/stdlib/default/enforce"
 	// "reflect"

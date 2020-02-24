@@ -6,7 +6,6 @@ import (
 	"testing"
 )
 
-
 func NumberTest(v data.LispValue) func(t *testing.T) {
 	return func(t *testing.T) {
 		if !number.IsNumber(v) {

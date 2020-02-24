@@ -7,7 +7,7 @@ import (
 	"github.com/lucasew/golisp/data/types"
 	common "github.com/lucasew/golisp/vm"
 	"github.com/lucasew/golisp/vm/components/env"
-	"github.com/lucasew/golisp/vm/default/stdlib"
+	"github.com/lucasew/golisp/stdlib/default"
 )
 
 type LispVM struct {

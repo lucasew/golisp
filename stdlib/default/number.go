@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/lucasew/golisp/data"
 	"github.com/lucasew/golisp/data/types"
-	"github.com/lucasew/golisp/vm/default/stdlib/enforce"
+	"github.com/lucasew/golisp/stdlib/default/enforce"
 )
 
 func init() {

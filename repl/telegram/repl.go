@@ -91,5 +91,8 @@ func main() {
 func reply(u *tgbotapi.Update, txt string) {
 	m := tgbotapi.NewMessage(int64(u.Message.From.ID), txt)
 	m.ReplyToMessageID = u.Message.MessageID
-	bot.Send(m)
+    _, err := bot.Send(m)
+    if err != nil {
+        reply(u, fmt.Sprintf("📡 %s", err.Error()))
+    }
 }

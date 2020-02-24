@@ -27,7 +27,7 @@ func NewMap(v data.LispCons) (data.LispValue, error) {
 func MapSet(v data.LispCons) (data.LispValue, error) {
 	err := enforce.Validate(
 		enforce.Length(v, 3),
-		enforce.Map(v.Car(), 1),
+		enforce.Namespace(v.Car(), 1),
 	)
 	if err != nil {
 		return types.Nil, err
@@ -39,7 +39,7 @@ func MapSet(v data.LispCons) (data.LispValue, error) {
 func MapGet(v data.LispCons) (data.LispValue, error) {
 	err := enforce.Validate(
 		enforce.Length(v, 2),
-		enforce.Map(v.Car(), 1),
+		enforce.Namespace(v.Car(), 1),
 	)
 	if err != nil {
 		return types.Nil, err

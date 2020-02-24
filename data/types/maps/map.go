@@ -1,7 +1,8 @@
-package types
+package maps
 
 import (
 	"github.com/lucasew/golisp/data"
+	"github.com/lucasew/golisp/data/types"
 )
 
 type LispMap map[data.LispValue]data.LispValue
@@ -13,7 +14,7 @@ func NewMap() data.LispMap {
 func (m LispMap) Get(k data.LispValue) data.LispValue {
 	r, ok := m[k]
 	if !ok {
-		return Nil
+		return types.Nil
 	}
 	return r
 }
@@ -30,7 +31,7 @@ func (m LispMap) Keys() data.LispCons {
 		ret[i] = k
 		i++
 	}
-	return Cons(ret)
+	return types.Cons(ret)
 }
 
 func (m LispMap) Values() data.LispCons {
@@ -40,17 +41,17 @@ func (m LispMap) Values() data.LispCons {
 		ret[i] = v
 		i++
 	}
-	return Cons(ret)
+	return types.Cons(ret)
 }
 
 func (m LispMap) Tuples() data.LispCons {
 	ret := make([]data.LispValue, len(m))
 	i := 0
 	for k, v := range m {
-		ret[i] = Cons([]data.LispValue{k, v})
+		ret[i] = types.Cons([]data.LispValue{k, v})
 		i++
 	}
-	return Cons(ret)
+	return types.Cons(ret)
 }
 
 func (m LispMap) Len() int {

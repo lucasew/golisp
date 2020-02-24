@@ -3,6 +3,7 @@ package stdlib
 import (
 	"github.com/lucasew/golisp/data"
 	"github.com/lucasew/golisp/data/types"
+	"github.com/lucasew/golisp/data/types/maps"
 	"github.com/lucasew/golisp/stdlib/default/enforce"
 )
 
@@ -20,7 +21,7 @@ func NewMap(v data.LispCons) (data.LispValue, error) {
 	if err != nil {
 		return types.Nil, err
 	}
-	return types.NewMap(), nil
+	return maps.NewMap(), nil
 }
 
 func MapSet(v data.LispCons) (data.LispValue, error) {

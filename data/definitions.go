@@ -34,11 +34,15 @@ type LispCons interface {
 	//Set(k int, v LispValue)
 }
 
-type LispMap interface {
+type LispNamespace interface {
 	LispValue
-	LispLen
-	Get(k LispValue) LispValue
+ 	Get(k LispValue) LispValue
 	Set(k LispValue, v LispValue) LispValue
+}
+
+type LispMap interface {
+    LispNamespace
+	LispLen
 	Keys() LispCons   // Cons
 	Values() LispCons // Cons tbm
 	Tuples() LispCons // Cons de cons

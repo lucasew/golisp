@@ -5,9 +5,7 @@ import (
 	"github.com/lucasew/golisp/data/types"
 	"github.com/lucasew/golisp/data/types/iterator"
 	"github.com/lucasew/golisp/data/types/number"
-	// "github.com/lucasew/golisp/data/convert"
 	"github.com/lucasew/golisp/stdlib/default/enforce"
-	// "reflect"
 	"fmt"
 )
 
@@ -29,12 +27,12 @@ func Range(v data.LispCons) (data.LispValue, error) {
 }
 
 func IntoIterator(v data.LispCons) (data.LispValue, error) {
-	err := enforce.Validate(enforce.Length(v, 1), enforce.Cons(v.Car(), 1))
+	err := enforce.Validate(enforce.Length(v, 1))
 	if err != nil {
 		return types.Nil, err
 	}
-	cons := v.Car().(data.LispCons)
-	return iterator.NewConsIterator(cons), nil
+	in := v.Car().(data.LispCons)
+    return iterator.NewIterator(in)
 }
 
 func Collect(v data.LispCons) (data.LispValue, error) {

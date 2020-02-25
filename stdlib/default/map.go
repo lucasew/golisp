@@ -3,6 +3,7 @@ package stdlib
 import (
 	"github.com/lucasew/golisp/data"
 	"github.com/lucasew/golisp/data/types"
+	"github.com/lucasew/golisp/data/types/iterator"
 	"github.com/lucasew/golisp/data/types/maps"
 	"github.com/lucasew/golisp/stdlib/default/enforce"
 )
@@ -57,7 +58,7 @@ func MapKeys(v data.LispCons) (data.LispValue, error) {
 		return types.Nil, err
 	}
 	m := v.Car().(data.LispMap)
-	return m.Keys(), nil
+	return iterator.NewIterator(m.Keys())
 }
 
 func MapValues(v data.LispCons) (data.LispValue, error) {
@@ -69,7 +70,7 @@ func MapValues(v data.LispCons) (data.LispValue, error) {
 		return types.Nil, err
 	}
 	m := v.Car().(data.LispMap)
-	return m.Values(), nil
+	return iterator.NewIterator(m.Values())
 }
 
 func MapTuples(v data.LispCons) (data.LispValue, error) {
@@ -81,5 +82,5 @@ func MapTuples(v data.LispCons) (data.LispValue, error) {
 		return types.Nil, err
 	}
 	m := v.Car().(data.LispMap)
-	return m.Tuples(), nil
+	return iterator.NewIterator(m.Tuples())
 }

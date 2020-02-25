@@ -4,6 +4,7 @@ import (
 	"github.com/lucasew/golisp/data"
 	"github.com/lucasew/golisp/data/convert"
 	"github.com/lucasew/golisp/data/types"
+	"github.com/lucasew/golisp/data/types/test"
 	"github.com/lucasew/golisp/stdlib/default/enforce"
 	"reflect"
 )
@@ -41,5 +42,5 @@ func EqType(v data.LispCons) (data.LispValue, error) {
 	}
 	a := v.Car()
 	b := v.Cdr().Car()
-	return convert.NewLispValue(types.IsSameType(a, b))
+	return convert.NewLispValue(test.IsSameType(a, b))
 }

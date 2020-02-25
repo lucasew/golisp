@@ -1,12 +1,12 @@
 package iterator
 
 import (
-	"github.com/lucasew/golisp/data/types"
+	"github.com/lucasew/golisp/data/types/test"
 	"testing"
 )
 
 func TestRangeIterator(t *testing.T) {
-	f := NewRangeIteratorTo(10)
-	t.Run("iterator", IteratorTest(f))
-	t.Run("value", types.ValueTest(f))
+	v := NewRangeIteratorTo(10)
+	t.Run("value", test.NewTestHelper(test.IsValue)(v))
+	t.Run("iterator", test.NewTestHelper(test.IsIterator)(v))
 }

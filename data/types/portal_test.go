@@ -2,12 +2,11 @@ package types
 
 import (
 	"testing"
+    "github.com/lucasew/golisp/data/types/test"
 )
 
 func TestPortalType(t *testing.T) {
-	f := NewPortal(0)
-	t.Run("lisp_value", ValueTest(f))
-	t.Run("portal", PortalTest(f))
+	v := NewPortal(0)
+	t.Run("lisp_value", test.NewTestHelper(test.IsValue)(v))
+	t.Run("portal", test.NewTestHelper(IsPortal)(v))
 }
-
-var PortalTest = NewTestHelper(IsPortal)

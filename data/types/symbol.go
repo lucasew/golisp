@@ -7,6 +7,11 @@ import (
 
 type Symbol string
 
+func IsSymbol(v data.LispValue) bool {
+	_, ok := v.(Symbol)
+	return ok
+}
+
 func NewSymbol(s string) data.LispString {
 	return Symbol(s)
 }
@@ -33,11 +38,6 @@ func (s Symbol) Repr() string {
 
 func (Symbol) LispTypeName() string {
 	return "symbol"
-}
-
-func IsSymbol(v data.LispValue) bool {
-	_, ok := v.(Symbol)
-	return ok
 }
 
 func (s Symbol) Car() data.LispValue {

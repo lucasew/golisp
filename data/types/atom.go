@@ -27,7 +27,3 @@ func (a Atom) AtomString() string {
 	return string(a)
 }
 
-func IsAtom(v data.LispValue) bool {
-	_, ok := v.(data.LispAtom)
-	return ok
-}

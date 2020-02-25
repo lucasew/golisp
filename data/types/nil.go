@@ -6,6 +6,10 @@ import (
 
 type _nil uint8
 
+func IsNil(v data.LispValue) bool {
+	return v.IsNil()
+}
+
 var Nil data.LispCarCdr = _nil(0)
 
 func (_nil) IsNil() bool {
@@ -28,6 +32,10 @@ func (_nil) LispTypeName() string {
 	return "cons"
 }
 
-func IsNil(v data.LispValue) bool {
-	return v.IsNil()
+func (_nil) Next() data.LispValue {
+    return Nil
+}
+
+func (_nil) IsEnd() bool {
+    return true
 }

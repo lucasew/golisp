@@ -7,6 +7,11 @@ import (
 
 type Byte byte
 
+func IsByte(v data.LispValue) bool {
+    _, ok := v.(Byte)
+    return ok
+}
+
 func NewByte(b byte) Byte {
 	return Byte(b)
 }
@@ -29,11 +34,6 @@ func (b Byte) IsInt() bool {
 
 func (b Byte) IsZero() bool {
 	return b == 0
-}
-
-func IsByte(v data.LispValue) bool {
-	_, ok := v.(Byte)
-	return ok
 }
 
 func (Byte) LispTypeName() string {

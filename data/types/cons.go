@@ -52,8 +52,3 @@ func (i Cons) Len() int {
 func (Cons) LispTypeName() string {
 	return "cons"
 }
-
-func IsCons(v data.LispValue) bool {
-	_, ok := v.(data.LispCons)
-	return ok
-}

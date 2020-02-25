@@ -3,46 +3,49 @@ package stdlib
 import (
 	"github.com/lucasew/golisp/data"
 	"github.com/lucasew/golisp/data/types"
+	"github.com/lucasew/golisp/data/types/iterator"
 	"github.com/lucasew/golisp/stdlib/default/enforce"
 )
 
 func init() {
 	register("map", Map)
+    register("filter", Filter)
 	register("reduce", Reduce)
 }
 
 func Map(v data.LispCons) (data.LispValue, error) {
-	err := enforce.Validate(enforce.Length(v, 2), enforce.Function(v.Car(), 1), enforce.Cons(v.Cdr().Car(), 2))
+	err := enforce.Validate(enforce.Length(v, 2), enforce.Function(v.Car(), 1), enforce.Iterator(v.Cdr().Car(), 2))
 	if err != nil {
 		return types.Nil, err
 	}
 	fn := v.Car().(data.LispFunction)
-	lst := v.Cdr().Car().(data.LispCons)
-	ret := make([]data.LispValue, lst.Len())
-	for i := 0; i < lst.Len(); i++ {
-		v := types.NewCons(lst.Get(i))
-		ret[i], err = fn.LispCall(v)
-		if err != nil {
-			return types.Nil, err
-		}
+	lst := v.Cdr().Car().(data.LispIterator)
+    return iterator.NewMapIterator(lst, fn), nil
+}
+
+func Filter(v data.LispCons) (data.LispValue, error) {
+	err := enforce.Validate(enforce.Length(v, 2), enforce.Function(v.Car(), 1), enforce.Iterator(v.Cdr().Car(), 2))
+	if err != nil {
+		return types.Nil, err
 	}
-	return types.NewCons(ret...), nil
+	fn := v.Car().(data.LispFunction)
+	lst := v.Cdr().Car().(data.LispIterator)
+    return iterator.NewFilterIterator(lst, fn), nil
 }
 
 func Reduce(v data.LispCons) (data.LispValue, error) {
-	err := enforce.Validate(enforce.Length(v, 2), enforce.Function(v.Car(), 1), enforce.Cons(v.Cdr().Car(), 2))
+	err := enforce.Validate(enforce.Length(v, 2), enforce.Function(v.Car(), 1), enforce.Iterator(v.Cdr().Car(), 2))
 	if err != nil {
 		return types.Nil, err
 	}
 	fn := v.Car().(data.LispFunction)
-	lst := v.Cdr().Car().(data.LispCarCdr)
-	ret := lst.Car()
+	lst := v.Cdr().Car().(data.LispIterator)
+	ret := lst.Next()
 next:
-	if lst.Cdr().IsNil() {
+	if lst.IsEnd() {
 		return ret, nil
 	}
-	lst = lst.Cdr()
-	ret, err = fn.LispCall(types.NewCons(ret, lst.Car()))
+	ret, err = fn.LispCall(types.NewCons(ret, lst.Next()))
 	if err != nil {
 		return types.Nil, err
 	}

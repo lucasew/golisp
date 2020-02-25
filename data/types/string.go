@@ -8,6 +8,11 @@ import (
 
 type String string
 
+func IsString(v data.LispValue) bool {
+	_, ok := v.(data.LispString)
+	return ok
+}
+
 func NewString(s string) data.LispString {
 	return String(s)
 }
@@ -55,7 +60,3 @@ func (String) LispTypeName() string {
 	return "string"
 }
 
-func IsString(v data.LispValue) bool {
-	_, ok := v.(data.LispString)
-	return ok
-}

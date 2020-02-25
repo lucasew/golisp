@@ -2,13 +2,12 @@ package types
 
 import (
 	"testing"
+    "github.com/lucasew/golisp/data/types/test"
 )
 
 func TestFunctionType(t *testing.T) {
-	fn := NewFunction(nil)
-	t.Run("lisp_value", ValueTest(fn))
-	t.Run("function", FunctionTest(fn))
+	v := NewFunction(nil)
+	t.Run("lisp_value", test.NewTestHelper(test.IsValue)(v))
+	t.Run("function", test.NewTestHelper(test.IsFunction)(v))
 }
 
-var FunctionTest = NewTestHelper(IsFunction)
-var NativeFunctionTest = NewTestHelper(IsNativeFunction)

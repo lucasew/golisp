@@ -2,11 +2,11 @@ package types
 
 import (
 	"testing"
+    "github.com/lucasew/golisp/data/types/test"
 )
 
 func TestAtomType(t *testing.T) {
-	t.Run("lisp_value", ValueTest(NewAtom("")))
-	t.Run("atom", AtomTest(NewAtom("")))
+    v := NewAtom("")
+	t.Run("lisp_value", test.NewTestHelper(test.IsValue)(v))
+	t.Run("atom", test.NewTestHelper(test.IsAtom)(v))
 }
-
-var AtomTest = NewTestHelper(IsAtom)

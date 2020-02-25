@@ -6,6 +6,11 @@ import (
 
 type Portal chan (data.LispValue)
 
+func IsPortal(v data.LispValue) bool {
+	_, ok := v.(data.LispPortal)
+	return ok
+}
+
 func NewPortal(buf int) data.LispPortal {
 	return Portal(make(chan (data.LispValue), buf))
 }
@@ -48,9 +53,4 @@ func (p Portal) RecvUnblocking() data.LispValue {
 
 func (Portal) LispTypeName() string {
 	return "portal"
-}
-
-func IsPortal(v data.LispValue) bool {
-	_, ok := v.(data.LispPortal)
-	return ok
 }

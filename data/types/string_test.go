@@ -2,6 +2,7 @@ package types
 
 import (
 	"github.com/lucasew/golisp/data/types/number"
+	"github.com/lucasew/golisp/data/types/test"
 	"testing"
 )
 
@@ -35,4 +36,11 @@ func TestStringCdrSmall(t *testing.T) {
 	}
 }
 
-var StringTest = NewTestHelper(IsString)
+func TestString(t *testing.T) {
+    v := NewString("hello")
+    t.Run("value", test.NewTestHelper(test.IsValue)(v))
+    t.Run("string", test.NewTestHelper(IsString)(v))
+    t.Run("carcdr", test.NewTestHelper(test.IsCarCdr)(v))
+    t.Run("len", test.NewTestHelper(test.IsLen)(v))
+    t.Run("cons", test.NewTestHelper(test.IsCons)(v))
+}

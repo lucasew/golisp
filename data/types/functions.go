@@ -6,6 +6,19 @@ import (
 
 type lispFunction func(data.LispCons) (data.LispValue, error)
 
+func IsFunction(v data.LispValue) bool {
+	_, ok := v.(data.LispFunction)
+	return ok
+}
+
+func IsNativeFunction(v data.LispValue) bool {
+	fn, ok := v.(data.LispFunction)
+	if !ok {
+		return false
+	}
+	return fn.IsFunctionNative()
+}
+
 func (f lispFunction) IsNil() bool {
 	return f == nil
 }
@@ -30,15 +43,3 @@ func (lispFunction) LispTypeName() string {
 	return "function"
 }
 
-func IsFunction(v data.LispValue) bool {
-	_, ok := v.(data.LispFunction)
-	return ok
-}
-
-func IsNativeFunction(v data.LispValue) bool {
-	fn, ok := v.(data.LispFunction)
-	if !ok {
-		return false
-	}
-	return fn.IsFunctionNative()
-}

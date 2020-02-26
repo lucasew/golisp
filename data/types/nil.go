@@ -39,3 +39,11 @@ func (_nil) Next() data.LispValue {
 func (_nil) IsEnd() bool {
     return true
 }
+
+func (_nil) LispCall(data.LispCons) (data.LispValue, error) {
+    return Nil, nil
+}
+
+func (_nil) IsFunctionNative() bool {
+    return true
+}

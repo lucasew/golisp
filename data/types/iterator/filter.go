@@ -8,21 +8,43 @@ import (
 type FilterIterator struct {
     in data.LispIterator
     f data.LispFunction
+    next data.LispValue
+    end bool
 }
 
 func NewFilterIterator(c data.LispIterator, f data.LispFunction) data.LispIterator {
-    return &FilterIterator{
+    r := &FilterIterator{
         in: c,
         f: f,
+        end: false,
     }
+    r.next = r.nextMatched()
+    return r
+}
+
+func (m *FilterIterator) nextMatched() data.LispValue {
+    begin:
+    if m.in.IsEnd() {
+        m.end = true
+        return types.Nil
+    }
+    v := m.in.Next()
+    r, err := m.f.LispCall(types.NewCons(v))
+    if err != nil {
+        return types.Nil
+    }
+    if r.IsNil() {
+        goto begin
+    }
+    return v
 }
 
 func (m FilterIterator) IsEnd() bool {
-    return m.in.IsEnd()
+    return m.end
 }
 
 func (m FilterIterator) IsNil() bool {
-    return m.in.IsNil()
+    return m.IsEnd()
 }
 
 func (FilterIterator) LispTypeName() string {
@@ -30,18 +52,9 @@ func (FilterIterator) LispTypeName() string {
 }
 
 func (m *FilterIterator) Next() data.LispValue {
-    for !m.IsEnd() {
-        v := m.Next()
-        r, err := m.f.LispCall(types.NewCons(v))
-        if err != nil {
-            return types.Nil
-        }
-        if r.IsNil() {
-            continue
-        }
-        return r
-    }
-    return types.Nil
+    r := m.next
+    m.next = m.nextMatched()
+    return r
 }
 
 func (FilterIterator) Repr() string {

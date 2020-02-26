@@ -20,6 +20,7 @@ func init() {
     register("is-map", IsMap)
     register("is-namespace", IsNamespace)
     register("is-iterator", IsIterator)
+    register("pass", Pass)
 }
 
 func IsNumber(v data.LispCons) (data.LispValue, error) {
@@ -100,4 +101,12 @@ func IsIterator(v data.LispCons) (data.LispValue, error) {
 		return types.Nil, err
 	}
 	return convert.NewLispValue(test.IsIterator(v.Car()))
+}
+
+func Pass(v data.LispCons) (data.LispValue, error) {
+    err := enforce.Length(v, 1)
+    if err != nil {
+        return types.Nil, err
+    }
+    return v.Car(), nil
 }

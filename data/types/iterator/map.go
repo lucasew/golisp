@@ -30,7 +30,10 @@ func (MapIterator) LispTypeName() string {
 }
 
 func (m *MapIterator) Next() data.LispValue {
-    v := m.Next()
+    if m.in.IsEnd() {
+        return types.Nil
+    }
+    v := m.in.Next()
     r, err := m.f.LispCall(types.NewCons(v))
     if err != nil {
         return types.Nil

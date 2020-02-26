@@ -27,3 +27,11 @@ func (_t) Car() data.LispValue {
 func (_t) Cdr() data.LispCarCdr {
 	return Nil
 }
+
+func (_t) LispCall(data.LispCons) (data.LispValue, error) {
+    return T, nil
+}
+
+func (_t) IsFunctionNative() bool {
+    return true
+}

@@ -27,7 +27,7 @@ func Map(v data.LispCons) (data.LispValue, error) {
 }
 
 func Filter(v data.LispCons) (data.LispValue, error) {
-	err := enforce.Validate(enforce.Length(v, 2), enforce.Function(v.Car(), 1), enforce.Iterator(v.Cdr().Car(), 2))
+	err := enforce.Validate(enforce.Length(v, 2), enforce.Function(v.Car(), 1))
 	if err != nil {
 		return types.Nil, err
 	}
@@ -40,7 +40,7 @@ func Filter(v data.LispCons) (data.LispValue, error) {
 }
 
 func Reduce(v data.LispCons) (data.LispValue, error) {
-	err := enforce.Validate(enforce.Length(v, 2), enforce.Function(v.Car(), 1), enforce.Iterator(v.Cdr().Car(), 2))
+	err := enforce.Validate(enforce.Length(v, 2), enforce.Function(v.Car(), 1))
 	if err != nil {
 		return types.Nil, err
 	}

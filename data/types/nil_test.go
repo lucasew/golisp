@@ -10,4 +10,5 @@ func TestNilType(t *testing.T) {
 	t.Run("lisp_value", test.NewTestHelper(test.IsValue)(v))
 	t.Run("carcdr", test.NewTestHelper(test.IsCarCdr)(v))
     t.Run("iterator", test.NewTestHelper(test.IsIterator)(v))
+    t.Run("function", test.NewTestHelper(test.IsFunction)(v))
 }

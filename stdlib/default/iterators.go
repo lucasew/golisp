@@ -31,8 +31,7 @@ func IntoIterator(v data.LispCons) (data.LispValue, error) {
 	if err != nil {
 		return types.Nil, err
 	}
-	in := v.Car().(data.LispCons)
-    return iterator.NewIterator(in)
+    return iterator.NewIterator(v.Car())
 }
 
 func Collect(v data.LispCons) (data.LispValue, error) {

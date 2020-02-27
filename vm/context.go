@@ -9,5 +9,5 @@ type LispVM interface {
 	EnvGet(key string) data.LispValue // if not exist return nil
 	EnvSetLocal(key string, value data.LispValue) data.LispValue
 	EnvSetGlobal(key string, value data.LispValue) data.LispValue
-    PushVM() LispVM
+	PushVM() LispVM
 }

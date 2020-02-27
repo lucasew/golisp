@@ -1,4 +1,3 @@
-
 package enforce
 
 import (

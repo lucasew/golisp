@@ -7,9 +7,9 @@ import (
 
 func TestRatType(t *testing.T) {
 	v, ok := NewRationalFromString("0")
-    if !ok {
-        t.Fail()
-    }
+	if !ok {
+		t.Fail()
+	}
 	t.Run("lisp_value", test.NewTestHelper(test.IsValue)(v))
 	t.Run("rational", test.NewTestHelper(IsRational)(v))
 }

@@ -8,8 +8,8 @@ import (
 type Byte byte
 
 func IsByte(v data.LispValue) bool {
-    _, ok := v.(Byte)
-    return ok
+	_, ok := v.(Byte)
+	return ok
 }
 
 func NewByte(b byte) Byte {

@@ -1,8 +1,8 @@
 package iterator
 
 import (
-	"github.com/lucasew/golisp/data/types/test"
 	"github.com/lucasew/golisp/data/types"
+	"github.com/lucasew/golisp/data/types/test"
 	"testing"
 )
 

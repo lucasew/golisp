@@ -1,12 +1,12 @@
 package stdlib
 
 import (
+	"fmt"
 	"github.com/lucasew/golisp/data"
 	"github.com/lucasew/golisp/data/types"
 	"github.com/lucasew/golisp/data/types/iterator"
 	"github.com/lucasew/golisp/data/types/number"
 	"github.com/lucasew/golisp/stdlib/default/enforce"
-	"fmt"
 )
 
 func init() {
@@ -31,7 +31,7 @@ func IntoIterator(v data.LispCons) (data.LispValue, error) {
 	if err != nil {
 		return types.Nil, err
 	}
-    return iterator.NewIterator(v.Car())
+	return iterator.NewIterator(v.Car())
 }
 
 func Collect(v data.LispCons) (data.LispValue, error) {

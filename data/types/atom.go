@@ -26,4 +26,3 @@ func (Atom) LispTypeName() string {
 func (a Atom) AtomString() string {
 	return string(a)
 }
-

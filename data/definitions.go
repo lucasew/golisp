@@ -36,12 +36,12 @@ type LispCons interface {
 
 type LispNamespace interface {
 	LispValue
- 	Get(k LispValue) LispValue
+	Get(k LispValue) LispValue
 	Set(k LispValue, v LispValue) LispValue
 }
 
 type LispMap interface {
-    LispNamespace
+	LispNamespace
 	LispLen
 	Keys() LispCons   // Cons
 	Values() LispCons // Cons tbm

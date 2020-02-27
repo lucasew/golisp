@@ -4,8 +4,8 @@ import (
 	"github.com/lucasew/golisp/data"
 	"github.com/lucasew/golisp/data/convert"
 	"github.com/lucasew/golisp/data/types"
-	"github.com/lucasew/golisp/data/types/test"
 	"github.com/lucasew/golisp/data/types/number"
+	"github.com/lucasew/golisp/data/types/test"
 	"github.com/lucasew/golisp/stdlib/default/enforce"
 )
 
@@ -17,10 +17,10 @@ func init() {
 	register("is-function-native", IsFunctionNative)
 	register("is-atom", IsAtom)
 	register("is-cons", IsCons)
-    register("is-map", IsMap)
-    register("is-namespace", IsNamespace)
-    register("is-iterator", IsIterator)
-    register("pass", Pass)
+	register("is-map", IsMap)
+	register("is-namespace", IsNamespace)
+	register("is-iterator", IsIterator)
+	register("pass", Pass)
 }
 
 func IsNumber(v data.LispCons) (data.LispValue, error) {
@@ -104,9 +104,9 @@ func IsIterator(v data.LispCons) (data.LispValue, error) {
 }
 
 func Pass(v data.LispCons) (data.LispValue, error) {
-    err := enforce.Length(v, 1)
-    if err != nil {
-        return types.Nil, err
-    }
-    return v.Car(), nil
+	err := enforce.Length(v, 1)
+	if err != nil {
+		return types.Nil, err
+	}
+	return v.Car(), nil
 }

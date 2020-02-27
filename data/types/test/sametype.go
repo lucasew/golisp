@@ -1,10 +1,10 @@
 package test
 
 import (
-    "reflect"
-    "github.com/lucasew/golisp/data"
+	"github.com/lucasew/golisp/data"
+	"reflect"
 )
 
 func IsSameType(a, b data.LispValue) bool {
-    return reflect.TypeOf(a) == reflect.TypeOf(b)
+	return reflect.TypeOf(a) == reflect.TypeOf(b)
 }

@@ -42,4 +42,3 @@ func NewFunction(f func(data.LispCons) (data.LispValue, error)) data.LispFunctio
 func (lispFunction) LispTypeName() string {
 	return "function"
 }
-

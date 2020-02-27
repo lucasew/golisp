@@ -1,8 +1,8 @@
 package types
 
 import (
+	"github.com/lucasew/golisp/data/types/test"
 	"testing"
-    "github.com/lucasew/golisp/data/types/test"
 )
 
 func TestPortalType(t *testing.T) {

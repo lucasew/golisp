@@ -59,4 +59,3 @@ func (c String) ToString() string {
 func (String) LispTypeName() string {
 	return "string"
 }
-

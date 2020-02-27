@@ -9,7 +9,7 @@ import (
 
 func init() {
 	register("map", Map)
-    register("filter", Filter)
+	register("filter", Filter)
 	register("reduce", Reduce)
 }
 
@@ -20,10 +20,10 @@ func Map(v data.LispCons) (data.LispValue, error) {
 	}
 	fn := v.Car().(data.LispFunction)
 	lst, err := iterator.NewIterator(v.Cdr().Car())
-    if err != nil {
-        return types.Nil, err
-    }
-    return iterator.NewMapIterator(lst, fn), nil
+	if err != nil {
+		return types.Nil, err
+	}
+	return iterator.NewMapIterator(lst, fn), nil
 }
 
 func Filter(v data.LispCons) (data.LispValue, error) {
@@ -32,11 +32,11 @@ func Filter(v data.LispCons) (data.LispValue, error) {
 		return types.Nil, err
 	}
 	fn := v.Car().(data.LispFunction)
-    lst, err := iterator.NewIterator(v.Cdr().Car())
-    if err != nil {
-        return types.Nil, err
-    }
-    return iterator.NewFilterIterator(lst, fn), nil
+	lst, err := iterator.NewIterator(v.Cdr().Car())
+	if err != nil {
+		return types.Nil, err
+	}
+	return iterator.NewFilterIterator(lst, fn), nil
 }
 
 func Reduce(v data.LispCons) (data.LispValue, error) {
@@ -45,10 +45,10 @@ func Reduce(v data.LispCons) (data.LispValue, error) {
 		return types.Nil, err
 	}
 	fn := v.Car().(data.LispFunction)
-    lst, err := iterator.NewIterator(v.Cdr().Car())
-    if err != nil {
-        return types.Nil, err
-    }
+	lst, err := iterator.NewIterator(v.Cdr().Car())
+	if err != nil {
+		return types.Nil, err
+	}
 	ret := lst.Next()
 next:
 	if lst.IsEnd() {

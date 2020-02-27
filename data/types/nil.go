@@ -33,17 +33,17 @@ func (_nil) LispTypeName() string {
 }
 
 func (_nil) Next() data.LispValue {
-    return Nil
+	return Nil
 }
 
 func (_nil) IsEnd() bool {
-    return true
+	return true
 }
 
 func (_nil) LispCall(data.LispCons) (data.LispValue, error) {
-    return Nil, nil
+	return Nil, nil
 }
 
 func (_nil) IsFunctionNative() bool {
-    return true
+	return true
 }

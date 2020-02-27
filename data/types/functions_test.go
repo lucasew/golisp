@@ -1,8 +1,8 @@
 package types
 
 import (
+	"github.com/lucasew/golisp/data/types/test"
 	"testing"
-    "github.com/lucasew/golisp/data/types/test"
 )
 
 func TestFunctionType(t *testing.T) {
@@ -10,4 +10,3 @@ func TestFunctionType(t *testing.T) {
 	t.Run("lisp_value", test.NewTestHelper(test.IsValue)(v))
 	t.Run("function", test.NewTestHelper(test.IsFunction)(v))
 }
-

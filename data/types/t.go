@@ -29,9 +29,9 @@ func (_t) Cdr() data.LispCarCdr {
 }
 
 func (_t) LispCall(data.LispCons) (data.LispValue, error) {
-    return T, nil
+	return T, nil
 }
 
 func (_t) IsFunctionNative() bool {
-    return true
+	return true
 }

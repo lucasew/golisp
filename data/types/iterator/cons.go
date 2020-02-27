@@ -18,10 +18,10 @@ func NewConsIterator(c data.LispCons) data.LispIterator {
 }
 
 func (c *ConsIterator) Next() data.LispValue {
-	v := c.cons.Get(c.index)
 	if c.IsEnd() {
 		return types.Nil
 	}
+	v := c.cons.Get(c.index)
 	c.index++
 	return v
 }

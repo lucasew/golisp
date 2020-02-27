@@ -21,7 +21,7 @@ func NewVM(e *env.LispEnv) common.LispVM {
 	return &vm
 }
 
-func (vm *LispVM) PushVM() *LispVM {
+func (vm *LispVM) PushVM() common.LispVM {
 	return &LispVM{
 		env: env.NewLispEnv(vm.env),
 	}

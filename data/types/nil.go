@@ -1,6 +1,7 @@
 package types
 
 import (
+	"fmt"
 	"github.com/lucasew/golisp/data"
 )
 
@@ -41,7 +42,7 @@ func (_nil) IsEnd() bool {
 }
 
 func (_nil) LispCall(data.LispCons) (data.LispValue, error) {
-	return Nil, nil
+	return Nil, fmt.Errorf("you are calling nil")
 }
 
 func (_nil) IsFunctionNative() bool {

@@ -11,9 +11,10 @@ import (
 
 func init() {
 	register("range", Range)
-	register("into-iterator", IntoIterator)
+	register("new-iterator", NewIterator)
 	register("collect", Collect)
 	register("next", Next)
+	register("is-end", IsEnd)
 }
 
 func Range(v data.LispCons) (data.LispValue, error) {
@@ -26,7 +27,7 @@ func Range(v data.LispCons) (data.LispValue, error) {
 	return iterator.NewRangeIteratorTo(int(to_num)), nil
 }
 
-func IntoIterator(v data.LispCons) (data.LispValue, error) {
+func NewIterator(v data.LispCons) (data.LispValue, error) {
 	err := enforce.Validate(enforce.Length(v, 1))
 	if err != nil {
 		return types.Nil, err
@@ -57,4 +58,17 @@ func Next(v data.LispCons) (data.LispValue, error) {
 		return types.Nil, fmt.Errorf("empty iterator")
 	}
 	return iter.Next(), nil
+}
+
+func IsEnd(v data.LispCons) (data.LispValue, error) {
+	err := enforce.Iterator(v.Car(), 1)
+	if err != nil {
+		return types.Nil, err
+	}
+	iter := v.Car().(data.LispIterator)
+	if iter.IsEnd() {
+		return types.T, nil
+	} else {
+		return types.Nil, nil
+	}
 }

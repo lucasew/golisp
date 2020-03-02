@@ -11,7 +11,7 @@ func init() {
 }
 
 func Repr(v ...data.LispValue) (data.LispValue, error) {
-	err := enforce.Length(v, 1)
+	err := enforce.Validate(enforce.Length(v, 1))
 	if err != nil {
 		return types.Nil, err
 	}

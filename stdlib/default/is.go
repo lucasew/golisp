@@ -24,7 +24,7 @@ func init() {
 }
 
 func IsNumber(v ...data.LispValue) (data.LispValue, error) {
-	err := enforce.Length(v, 1)
+	err := enforce.Validate(enforce.Length(v, 1))
 	if err != nil {
 		return types.Nil, err
 	}
@@ -32,7 +32,7 @@ func IsNumber(v ...data.LispValue) (data.LispValue, error) {
 }
 
 func IsString(v ...data.LispValue) (data.LispValue, error) {
-	err := enforce.Length(v, 1)
+	err := enforce.Validate(enforce.Length(v, 1))
 	if err != nil {
 		return types.Nil, err
 	}
@@ -40,7 +40,7 @@ func IsString(v ...data.LispValue) (data.LispValue, error) {
 }
 
 func IsSymbol(v ...data.LispValue) (data.LispValue, error) {
-	err := enforce.Length(v, 1)
+	err := enforce.Validate(enforce.Length(v, 1))
 	if err != nil {
 		return types.Nil, err
 	}
@@ -48,7 +48,7 @@ func IsSymbol(v ...data.LispValue) (data.LispValue, error) {
 }
 
 func IsFunction(v ...data.LispValue) (data.LispValue, error) {
-	err := enforce.Length(v, 1)
+	err := enforce.Validate(enforce.Length(v, 1))
 	if err != nil {
 		return types.Nil, err
 	}
@@ -56,7 +56,7 @@ func IsFunction(v ...data.LispValue) (data.LispValue, error) {
 }
 
 func IsFunctionNative(v ...data.LispValue) (data.LispValue, error) {
-	err := enforce.Length(v, 1)
+	err := enforce.Validate(enforce.Length(v, 1))
 	if err != nil {
 		return types.Nil, err
 	}
@@ -64,7 +64,7 @@ func IsFunctionNative(v ...data.LispValue) (data.LispValue, error) {
 }
 
 func IsAtom(v ...data.LispValue) (data.LispValue, error) {
-	err := enforce.Length(v, 1)
+	err := enforce.Validate(enforce.Length(v, 1))
 	if err != nil {
 		return types.Nil, err
 	}
@@ -72,7 +72,7 @@ func IsAtom(v ...data.LispValue) (data.LispValue, error) {
 }
 
 func IsCons(v ...data.LispValue) (data.LispValue, error) {
-	err := enforce.Length(v, 1)
+	err := enforce.Validate(enforce.Length(v, 1))
 	if err != nil {
 		return types.Nil, err
 	}
@@ -80,7 +80,7 @@ func IsCons(v ...data.LispValue) (data.LispValue, error) {
 }
 
 func IsMap(v ...data.LispValue) (data.LispValue, error) {
-	err := enforce.Length(v, 1)
+	err := enforce.Validate(enforce.Length(v, 1))
 	if err != nil {
 		return types.Nil, err
 	}
@@ -88,7 +88,7 @@ func IsMap(v ...data.LispValue) (data.LispValue, error) {
 }
 
 func IsNamespace(v ...data.LispValue) (data.LispValue, error) {
-	err := enforce.Length(v, 1)
+	err := enforce.Validate(enforce.Length(v, 1))
 	if err != nil {
 		return types.Nil, err
 	}
@@ -96,7 +96,7 @@ func IsNamespace(v ...data.LispValue) (data.LispValue, error) {
 }
 
 func IsIterator(v ...data.LispValue) (data.LispValue, error) {
-	err := enforce.Length(v, 1)
+	err := enforce.Validate(enforce.Length(v, 1))
 	if err != nil {
 		return types.Nil, err
 	}
@@ -104,7 +104,7 @@ func IsIterator(v ...data.LispValue) (data.LispValue, error) {
 }
 
 func Pass(v ...data.LispValue) (data.LispValue, error) {
-	err := enforce.Length(v, 1)
+	err := enforce.Validate(enforce.Length(v, 1))
 	if err != nil {
 		return types.Nil, err
 	}

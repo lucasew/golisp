@@ -1,7 +1,8 @@
 package enforce
 
-func Validate(e ...error) error {
-	for _, err := range e {
+func Validate(e ...func()error) error {
+	for _, f := range e {
+        err := f()
 		if err != nil {
 			return err
 		}

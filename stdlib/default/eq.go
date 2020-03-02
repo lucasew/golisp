@@ -16,7 +16,7 @@ func init() {
 }
 
 func Eq(v ...data.LispValue) (data.LispValue, error) {
-	err := enforce.Length(v, 2)
+	err := enforce.Validate(enforce.Length(v, 2))
 	if err != nil {
 		return types.Nil, err
 	}
@@ -26,7 +26,7 @@ func Eq(v ...data.LispValue) (data.LispValue, error) {
 }
 
 func EqDeep(v ...data.LispValue) (data.LispValue, error) {
-	err := enforce.Length(v, 2)
+	err := enforce.Validate(enforce.Length(v, 2))
 	if err != nil {
 		return types.Nil, err
 	}
@@ -36,7 +36,7 @@ func EqDeep(v ...data.LispValue) (data.LispValue, error) {
 }
 
 func EqType(v ...data.LispValue) (data.LispValue, error) {
-	err := enforce.Length(v, 2)
+	err := enforce.Validate(enforce.Length(v, 2))
 	if err != nil {
 		return types.Nil, err
 	}

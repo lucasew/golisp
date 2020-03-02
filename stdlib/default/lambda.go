@@ -15,7 +15,7 @@ func init() {
 }
 
 func Lambda(vm vm.LispVM, v ...data.LispValue) (data.LispValue, error) {
-	err := enforce.Cons(v[0], 1)
+	err := enforce.Validate(enforce.Cons(v[0], 1))
 	if err != nil {
 		return types.Nil, err
 	}

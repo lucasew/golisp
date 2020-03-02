@@ -18,7 +18,7 @@ func init() {
 }
 
 func NewMap(v ...data.LispValue) (data.LispValue, error) {
-	err := enforce.Length(v, 0)
+	err := enforce.Validate(enforce.Length(v, 0))
 	if err != nil {
 		return types.Nil, err
 	}

@@ -12,7 +12,7 @@ func init() {
 }
 
 func If(env vm.LispVM, v ...data.LispValue) (data.LispValue, error) {
-	err := enforce.Length(v, 3)
+	err := enforce.Validate(enforce.Length(v, 3))
 	if err != nil {
 		return types.Nil, err
 	}

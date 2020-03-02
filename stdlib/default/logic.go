@@ -13,30 +13,30 @@ func init() {
 	register("or", Or)
 }
 
-func Not(v data.LispCons) (data.LispValue, error) {
+func Not(v ...data.LispValue) (data.LispValue, error) {
 	err := enforce.Length(v, 1)
 	if err != nil {
 		return types.Nil, err
 	}
-	return convert.NewLispValue(!v.Car().IsNil())
+	return convert.NewLispValue(!v[0].IsNil())
 }
 
-func And(v data.LispCons) (data.LispValue, error) {
-	if v.Car().IsNil() {
+func And(v ...data.LispValue) (data.LispValue, error) {
+	if v[0].IsNil() {
 		return types.Nil, nil
 	}
-	if v.Cdr().IsNil() {
-		return v.Car(), nil
+	if len(v) == 1 {
+		return v[0], nil
 	}
-	return And(v.Cdr().(data.LispCons))
+	return And(v[1:]...)
 }
 
-func Or(v data.LispCons) (data.LispValue, error) {
-	if v.IsNil() {
+func Or(v ...data.LispValue) (data.LispValue, error) {
+	if len(v) == 0 {
 		return types.Nil, nil
 	}
-	if !v.Car().IsNil() {
-		return v.Car(), nil
+	if !v[0].IsNil() {
+		return v[0], nil
 	}
-	return Or(v.Cdr().(data.LispCons))
+	return Or(v[1:]...)
 }

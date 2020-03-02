@@ -15,8 +15,8 @@ func init() {
 	register("to-byte", ToByte)
 }
 
-func ToFloat(v data.LispCons) (data.LispValue, error) {
-	switch n := v.Car().(type) {
+func ToFloat(v ...data.LispValue) (data.LispValue, error) {
+	switch n := v[0].(type) {
 	case number.LispFloat:
 		return n, nil
 	case number.LispInt:
@@ -28,8 +28,8 @@ func ToFloat(v data.LispCons) (data.LispValue, error) {
 	}
 }
 
-func ToRat(v data.LispCons) (data.LispValue, error) {
-	switch n := v.Car().(type) {
+func ToRat(v ...data.LispValue) (data.LispValue, error) {
+	switch n := v[0].(type) {
 	case number.LispFloat:
 		r, ok := number.NewRationalFromString(n.Repr())
 		if !ok {
@@ -45,8 +45,8 @@ func ToRat(v data.LispCons) (data.LispValue, error) {
 	}
 }
 
-func ToInt(v data.LispCons) (data.LispValue, error) {
-	switch n := v.Car().(type) {
+func ToInt(v ...data.LispValue) (data.LispValue, error) {
+	switch n := v[0].(type) {
 	case number.LispFloat:
 		return number.NewIntFromFloat(n)
 	case number.LispRational:
@@ -58,13 +58,13 @@ func ToInt(v data.LispCons) (data.LispValue, error) {
 	}
 }
 
-func ToByte(v data.LispCons) (data.LispValue, error) {
-	err := enforce.Validate(enforce.Length(v, 1), enforce.Number(v.Car()))
+func ToByte(v ...data.LispValue) (data.LispValue, error) {
+	err := enforce.Validate(enforce.Length(v, 1), enforce.Number(v[0], 1))
 	if err != nil {
 		return types.Nil, err
 	}
 	num := number.NewByte(0)
-	vnum := v.Car().(data.LispNumber)
+	vnum := v[0].(data.LispNumber)
 	switch n := vnum.(type) {
 	case number.LispInt:
 		tmp, _ := n.Int64()

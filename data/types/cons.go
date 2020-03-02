@@ -12,6 +12,10 @@ func NewCons(v ...data.LispValue) data.LispCons {
 	return Cons(v)
 }
 
+func (i Cons) UnwrapCons() ([]data.LispValue, error) {
+	return []data.LispValue(i), nil
+}
+
 func (i Cons) Car() data.LispValue {
 	if len(i) == 0 {
 		return Nil

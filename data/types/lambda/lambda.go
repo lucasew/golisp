@@ -2,7 +2,6 @@ package lambda
 
 import (
 	"github.com/lucasew/golisp/data"
-	"github.com/lucasew/golisp/data/types/iterator"
 	"github.com/lucasew/golisp/vm"
 )
 
@@ -24,11 +23,10 @@ func (f lispLambda) IsNil() bool {
 	return false
 }
 
-func (f lispLambda) LispCall(i data.LispCons) (data.LispValue, error) {
+func (f lispLambda) LispCall(i ...data.LispValue) (data.LispValue, error) {
 	vm := f.vm.PushVM()
-	params := iterator.NewConsIterator(i)
-	for _, v := range f.params {
-		vm.EnvSetLocal(v, params.Next())
+	for k := range f.params {
+		vm.EnvSetLocal(f.params[k], i[k])
 	}
 	return vm.Eval(f.ast)
 }

@@ -16,6 +16,10 @@ func NewSymbol(s string) data.LispString {
 	return Symbol(s)
 }
 
+func (s Symbol) UnwrapCons() ([]data.LispValue, error) {
+	return String(s).UnwrapCons()
+}
+
 func (s Symbol) Get(k int) data.LispValue {
 	return String(k).Get(k)
 }

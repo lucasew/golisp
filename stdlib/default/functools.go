@@ -13,39 +13,39 @@ func init() {
 	register("reduce", Reduce)
 }
 
-func Map(v data.LispCons) (data.LispValue, error) {
-	err := enforce.Validate(enforce.Length(v, 2), enforce.Function(v.Car(), 1))
+func Map(v ...data.LispValue) (data.LispValue, error) {
+	err := enforce.Validate(enforce.Length(v, 2), enforce.Function(v[0], 1))
 	if err != nil {
 		return types.Nil, err
 	}
-	fn := v.Car().(data.LispFunction)
-	lst, err := iterator.NewIterator(v.Cdr().Car())
+	fn := v[0].(data.LispFunction)
+	lst, err := iterator.NewIterator(v[1])
 	if err != nil {
 		return types.Nil, err
 	}
 	return iterator.NewMapIterator(lst, fn), nil
 }
 
-func Filter(v data.LispCons) (data.LispValue, error) {
-	err := enforce.Validate(enforce.Length(v, 2), enforce.Function(v.Car(), 1))
+func Filter(v ...data.LispValue) (data.LispValue, error) {
+	err := enforce.Validate(enforce.Length(v, 2), enforce.Function(v[0], 1))
 	if err != nil {
 		return types.Nil, err
 	}
-	fn := v.Car().(data.LispFunction)
-	lst, err := iterator.NewIterator(v.Cdr().Car())
+	fn := v[0].(data.LispFunction)
+	lst, err := iterator.NewIterator(v[1])
 	if err != nil {
 		return types.Nil, err
 	}
 	return iterator.NewFilterIterator(lst, fn), nil
 }
 
-func Reduce(v data.LispCons) (data.LispValue, error) {
-	err := enforce.Validate(enforce.Length(v, 2), enforce.Function(v.Car(), 1))
+func Reduce(v ...data.LispValue) (data.LispValue, error) {
+	err := enforce.Validate(enforce.Length(v, 2), enforce.Function(v[0], 1))
 	if err != nil {
 		return types.Nil, err
 	}
-	fn := v.Car().(data.LispFunction)
-	lst, err := iterator.NewIterator(v.Cdr().Car())
+	fn := v[0].(data.LispFunction)
+	lst, err := iterator.NewIterator(v[1])
 	if err != nil {
 		return types.Nil, err
 	}

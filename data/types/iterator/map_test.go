@@ -7,8 +7,8 @@ import (
 	"testing"
 )
 
-func justReturnFirst(v data.LispCons) (data.LispValue, error) {
-	return v.Car(), nil
+func justReturnFirst(v ...data.LispValue) (data.LispValue, error) {
+	return v[0].(data.LispCarCdr).Car(), nil
 }
 
 func TestMapIterator(t *testing.T) {

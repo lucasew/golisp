@@ -4,7 +4,7 @@ import (
 	"github.com/lucasew/golisp/data"
 )
 
-type lispFunction func(data.LispCons) (data.LispValue, error)
+type lispFunction func(...data.LispValue) (data.LispValue, error)
 
 func IsFunction(v data.LispValue) bool {
 	_, ok := v.(data.LispFunction)
@@ -23,8 +23,8 @@ func (f lispFunction) IsNil() bool {
 	return f == nil
 }
 
-func (f lispFunction) LispCall(i data.LispCons) (data.LispValue, error) {
-	return f(i)
+func (f lispFunction) LispCall(i ...data.LispValue) (data.LispValue, error) {
+	return f(i...)
 }
 
 func (f lispFunction) Repr() string {
@@ -35,7 +35,7 @@ func (f lispFunction) IsFunctionNative() bool {
 	return true
 }
 
-func NewFunction(f func(data.LispCons) (data.LispValue, error)) data.LispFunction {
+func NewFunction(f func(...data.LispValue) (data.LispValue, error)) data.LispFunction {
 	return lispFunction(f)
 }
 

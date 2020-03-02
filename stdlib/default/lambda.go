@@ -14,12 +14,12 @@ func init() {
 	register("lambda", Lambda)
 }
 
-func Lambda(vm vm.LispVM, v data.LispCons) (data.LispValue, error) {
-	err := enforce.Cons(v.Car(), 1)
+func Lambda(vm vm.LispVM, v ...data.LispValue) (data.LispValue, error) {
+	err := enforce.Cons(v[0], 1)
 	if err != nil {
 		return types.Nil, err
 	}
-	old_params := iterator.NewConsIterator(v.Car().(data.LispCons))
+	old_params := iterator.NewConsIterator(v[0].(data.LispCons))
 	params := []string{}
 	for !old_params.IsEnd() {
 		param, ok := old_params.Next().(types.Symbol)
@@ -28,9 +28,6 @@ func Lambda(vm vm.LispVM, v data.LispCons) (data.LispValue, error) {
 		}
 		params = append(params, param.ToString())
 	}
-	ast, ok := v.Cdr().(data.LispCons)
-	if !ok {
-		return types.Nil, fmt.Errorf("ast need to be a cons")
-	}
+	ast := types.NewCons(v[1:]...)
 	return lambda.NewLambda(vm, ast, params), nil
 }

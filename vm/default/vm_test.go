@@ -62,7 +62,6 @@ func TestSetg(t *testing.T) {
 	if s.ToString() != "teste" {
 		t.Fail()
 	}
-
 }
 
 func TestIfYes(t *testing.T) {

@@ -8,9 +8,9 @@ import (
 
 var ErrNotANumber = fmt.Errorf("not a number")
 
-func Number(v data.LispValue) error {
+func Number(v data.LispValue, nth int) error {
 	if !number.IsNumber(v) {
-		return ErrNotANumber
+		return fmt.Errorf("%d nth parameter expects a number, got %s", nth, v.LispTypeName())
 	}
 	return nil
 }

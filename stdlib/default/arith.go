@@ -23,65 +23,66 @@ func init() {
 	register("is-int", IsInt)
 }
 
-func Sum(v data.LispCons) (data.LispValue, error) {
+func Sum(v ...data.LispValue) (data.LispValue, error) {
 	return pairOp("Sum", v)
 }
 
-func Sub(v data.LispCons) (data.LispValue, error) {
+func Sub(v ...data.LispValue) (data.LispValue, error) {
 	return pairOp("Sub", v)
 }
 
-func Neg(v data.LispCons) (data.LispValue, error) {
+func Neg(v ...data.LispValue) (data.LispValue, error) {
 	return singleOp("Neg", v)
 }
 
-func Mul(v data.LispCons) (data.LispValue, error) {
+func Mul(v ...data.LispValue) (data.LispValue, error) {
 	return pairOp("Mul", v)
 }
 
-func Div(v data.LispCons) (data.LispValue, error) {
+func Div(v ...data.LispValue) (data.LispValue, error) {
 	return pairOp("Div", v)
 }
 
-func Rem(v data.LispCons) (data.LispValue, error) {
+func Rem(v ...data.LispValue) (data.LispValue, error) {
 	return pairOp("Rem", v)
 }
 
-func Sqrt(v data.LispCons) (data.LispValue, error) {
+func Sqrt(v ...data.LispValue) (data.LispValue, error) {
 	return singleOp("Sqrt", v)
 }
 
-func Exp(v data.LispCons) (data.LispValue, error) {
+func Exp(v ...data.LispValue) (data.LispValue, error) {
 	return pairOp("Exp", v)
 }
 
-func Abs(v data.LispCons) (data.LispValue, error) {
+func Abs(v ...data.LispValue) (data.LispValue, error) {
 	return singleOp("Abs", v)
 }
 
-func IsZero(v data.LispCons) (data.LispValue, error) {
-	n := v.Car()
-	num, ok := n.(data.LispNumber)
-	if !ok {
-		return types.Nil, fmt.Errorf("parameter should be a number")
-	}
-	return convert.NewLispValue(num.IsZero())
-}
-
-func IsInt(v data.LispCons) (data.LispValue, error) {
-	n, ok := v.Car().(data.LispNumber)
-	if !ok {
-		return types.Nil, fmt.Errorf("parameter should be a number")
-	}
-	return convert.NewLispValue(n.IsInt())
-}
-
-func singleOp(method string, v data.LispCons) (data.LispValue, error) {
-	a := v.Car()
-	err := enforce.Validate(enforce.Length(v, 1), enforce.Number(a))
+func IsZero(v ...data.LispValue) (data.LispValue, error) {
+	err := enforce.Validate(enforce.Length(v, 1), enforce.Number(v[0], 1))
 	if err != nil {
 		return types.Nil, err
 	}
+	num := v[0].(data.LispNumber)
+	return convert.NewLispValue(num.IsZero())
+}
+
+func IsInt(v ...data.LispValue) (data.LispValue, error) {
+	err := enforce.Validate(enforce.Length(v, 1), enforce.Number(v[0], 1))
+	if err != nil {
+		return types.Nil, err
+	}
+	n := v[0].(data.LispNumber)
+	return convert.NewLispValue(n.IsInt())
+}
+
+func singleOp(method string, v []data.LispValue) (data.LispValue, error) {
+	err := enforce.Validate(enforce.Length(v, 1), enforce.Number(v[0], 1))
+	if err != nil {
+		return types.Nil, err
+	}
+	a := v[0]
 	if reflect.ValueOf(a).MethodByName(method).IsValid() {
 		ret, ok := reflect.ValueOf(a).MethodByName(method).Call([]reflect.Value{})[0].Interface().(data.LispValue)
 		if !ok {
@@ -92,13 +93,13 @@ func singleOp(method string, v data.LispCons) (data.LispValue, error) {
 	return types.Nil, fmt.Errorf("invalid state: none of the conditions were satisfied")
 }
 
-func pairOp(method string, v data.LispCons) (data.LispValue, error) {
-	a := v.Car()
-	b := v.Cdr().Car()
-	err := enforce.Validate(enforce.Length(v, 2), enforce.SameType(a, b), enforce.Number(a), enforce.Number(b))
+func pairOp(method string, v []data.LispValue) (data.LispValue, error) {
+	err := enforce.Validate(enforce.Length(v, 2), enforce.Number(v[0], 1), enforce.Number(v[1], 2), enforce.SameType(v[0], v[1]))
 	if err != nil {
 		return types.Nil, err
 	}
+	a := v[0]
+	b := v[1]
 	if reflect.ValueOf(a).MethodByName(method).IsValid() {
 		rv := reflect.ValueOf(b)
 		ret, ok := reflect.ValueOf(a).MethodByName(method).Call([]reflect.Value{rv})[0].Interface().(data.LispValue)

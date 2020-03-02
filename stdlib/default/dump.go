@@ -12,7 +12,7 @@ func init() {
 	register("env-dump", EnvDump)
 }
 
-func EnvDump(env vm.LispVM, v data.LispCons) (data.LispValue, error) {
+func EnvDump(env vm.LispVM, v ...data.LispValue) (data.LispValue, error) {
 	err := enforce.Length(v, 0)
 	if err != nil {
 		return types.Nil, err

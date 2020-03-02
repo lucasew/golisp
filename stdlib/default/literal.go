@@ -13,24 +13,24 @@ func init() {
 	register("call", Call)
 }
 
-func Quote(env vm.LispVM, v data.LispCons) (data.LispValue, error) {
+func Quote(env vm.LispVM, v ...data.LispValue) (data.LispValue, error) {
 	err := enforce.Length(v, 1)
 	if err != nil {
 		return types.Nil, err
 	}
-	return v.Car(), nil
+	return v[0], nil
 }
 
-func List(v data.LispCons) (data.LispValue, error) {
-	return v, nil
+func List(v ...data.LispValue) (data.LispValue, error) {
+	return v[0], nil
 }
 
-func Call(v data.LispCons) (data.LispValue, error) {
-	err := enforce.Validate(enforce.Function(v.Car(), 1), enforce.Cons(v.Cdr().Car(), 2))
+func Call(v ...data.LispValue) (data.LispValue, error) {
+	err := enforce.Validate(enforce.Length(v, 2), enforce.Function(v[0], 1), enforce.Cons(v[1], 2))
 	if err != nil {
 		return types.Nil, err
 	}
-	fn := v.Car().(data.LispFunction)
-	val := v.Cdr().Car().(data.LispCons)
+	fn := v[0].(data.LispFunction)
+	val := v[1].(data.LispCons)
 	return fn.LispCall(val)
 }

@@ -31,6 +31,7 @@ type LispCons interface {
 	LispCarCdr
 	LispLen
 	Get(k int) LispValue
+	UnwrapCons() ([]LispValue, error)
 	//Set(k int, v LispValue)
 }
 
@@ -60,7 +61,7 @@ type IntoLispValue interface {
 
 type LispFunction interface {
 	LispValue
-	LispCall(LispCons) (LispValue, error)
+	LispCall(...LispValue) (LispValue, error)
 	IsFunctionNative() bool
 }
 

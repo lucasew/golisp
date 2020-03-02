@@ -17,6 +17,14 @@ func NewString(s string) data.LispString {
 	return String(s)
 }
 
+func (c String) UnwrapCons() ([]data.LispValue, error) {
+	ret := make([]data.LispValue, len(c))
+	for k := range c {
+		ret[k] = number.NewByte(c[k])
+	}
+	return ret, nil
+}
+
 func (c String) Get(k int) data.LispValue {
 	if k >= c.Len() {
 		return Nil

@@ -17,7 +17,7 @@ func init() {
 	register("map-tuples", MapTuples)
 }
 
-func NewMap(v data.LispCons) (data.LispValue, error) {
+func NewMap(v ...data.LispValue) (data.LispValue, error) {
 	err := enforce.Length(v, 0)
 	if err != nil {
 		return types.Nil, err
@@ -25,62 +25,62 @@ func NewMap(v data.LispCons) (data.LispValue, error) {
 	return maps.NewMap(), nil
 }
 
-func MapSet(v data.LispCons) (data.LispValue, error) {
+func MapSet(v ...data.LispValue) (data.LispValue, error) {
 	err := enforce.Validate(
 		enforce.Length(v, 3),
-		enforce.Namespace(v.Car(), 1),
+		enforce.Namespace(v[0], 1),
 	)
 	if err != nil {
 		return types.Nil, err
 	}
-	m := v.Car().(data.LispMap)
-	return m.Set(v.Cdr().Car(), v.Cdr().Cdr().Car()), nil
+	m := v[0].(data.LispNamespace)
+	return m.Set(v[1], v[2]), nil
 }
 
-func MapGet(v data.LispCons) (data.LispValue, error) {
+func MapGet(v ...data.LispValue) (data.LispValue, error) {
 	err := enforce.Validate(
 		enforce.Length(v, 2),
-		enforce.Namespace(v.Car(), 1),
+		enforce.Namespace(v[0], 1),
 	)
 	if err != nil {
 		return types.Nil, err
 	}
-	m := v.Car().(data.LispMap)
-	return m.Get(v.Cdr().Car()), nil
+	m := v[0].(data.LispNamespace)
+	return m.Get(v[1]), nil
 }
 
-func MapKeys(v data.LispCons) (data.LispValue, error) {
+func MapKeys(v ...data.LispValue) (data.LispValue, error) {
 	err := enforce.Validate(
 		enforce.Length(v, 1),
-		enforce.Map(v.Car(), 1),
+		enforce.Map(v[0], 1),
 	)
 	if err != nil {
 		return types.Nil, err
 	}
-	m := v.Car().(data.LispMap)
+	m := v[0].(data.LispMap)
 	return iterator.NewIterator(m.Keys())
 }
 
-func MapValues(v data.LispCons) (data.LispValue, error) {
+func MapValues(v ...data.LispValue) (data.LispValue, error) {
 	err := enforce.Validate(
 		enforce.Length(v, 1),
-		enforce.Map(v.Car(), 1),
+		enforce.Map(v[0], 1),
 	)
 	if err != nil {
 		return types.Nil, err
 	}
-	m := v.Car().(data.LispMap)
+	m := v[0].(data.LispMap)
 	return iterator.NewIterator(m.Values())
 }
 
-func MapTuples(v data.LispCons) (data.LispValue, error) {
+func MapTuples(v ...data.LispValue) (data.LispValue, error) {
 	err := enforce.Validate(
 		enforce.Length(v, 1),
-		enforce.Map(v.Car(), 1),
+		enforce.Map(v[0], 1),
 	)
 	if err != nil {
 		return types.Nil, err
 	}
-	m := v.Car().(data.LispMap)
+	m := v[0].(data.LispMap)
 	return iterator.NewIterator(m.Tuples())
 }

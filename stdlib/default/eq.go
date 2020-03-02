@@ -15,32 +15,32 @@ func init() {
 	register("eqt", EqType)
 }
 
-func Eq(v data.LispCons) (data.LispValue, error) {
+func Eq(v ...data.LispValue) (data.LispValue, error) {
 	err := enforce.Length(v, 2)
 	if err != nil {
 		return types.Nil, err
 	}
-	a := v.Car()
-	b := v.Cdr().Car()
+	a := v[0]
+	b := v[1]
 	return convert.NewLispValue(a == b)
 }
 
-func EqDeep(v data.LispCons) (data.LispValue, error) {
+func EqDeep(v ...data.LispValue) (data.LispValue, error) {
 	err := enforce.Length(v, 2)
 	if err != nil {
 		return types.Nil, err
 	}
-	a := v.Car()
-	b := v.Cdr().Car()
+	a := v[0]
+	b := v[1]
 	return convert.NewLispValue(reflect.DeepEqual(a, b))
 }
 
-func EqType(v data.LispCons) (data.LispValue, error) {
+func EqType(v ...data.LispValue) (data.LispValue, error) {
 	err := enforce.Length(v, 2)
 	if err != nil {
 		return types.Nil, err
 	}
-	a := v.Car()
-	b := v.Cdr().Car()
+	a := v[0]
+	b := v[1]
 	return convert.NewLispValue(test.IsSameType(a, b))
 }

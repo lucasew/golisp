@@ -28,7 +28,7 @@ func (_t) Cdr() data.LispCarCdr {
 	return Nil
 }
 
-func (_t) LispCall(data.LispCons) (data.LispValue, error) {
+func (_t) LispCall(...data.LispValue) (data.LispValue, error) {
 	return T, nil
 }
 

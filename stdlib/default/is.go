@@ -23,90 +23,90 @@ func init() {
 	register("pass", Pass)
 }
 
-func IsNumber(v data.LispCons) (data.LispValue, error) {
+func IsNumber(v ...data.LispValue) (data.LispValue, error) {
 	err := enforce.Length(v, 1)
 	if err != nil {
 		return types.Nil, err
 	}
-	return convert.NewLispValue(number.IsNumber(v.Car()))
+	return convert.NewLispValue(number.IsNumber(v[0]))
 }
 
-func IsString(v data.LispCons) (data.LispValue, error) {
+func IsString(v ...data.LispValue) (data.LispValue, error) {
 	err := enforce.Length(v, 1)
 	if err != nil {
 		return types.Nil, err
 	}
-	return convert.NewLispValue(types.IsString(v.Car()))
+	return convert.NewLispValue(types.IsString(v[0]))
 }
 
-func IsSymbol(v data.LispCons) (data.LispValue, error) {
+func IsSymbol(v ...data.LispValue) (data.LispValue, error) {
 	err := enforce.Length(v, 1)
 	if err != nil {
 		return types.Nil, err
 	}
-	return convert.NewLispValue(types.IsSymbol(v.Car()))
+	return convert.NewLispValue(types.IsSymbol(v[0]))
 }
 
-func IsFunction(v data.LispCons) (data.LispValue, error) {
+func IsFunction(v ...data.LispValue) (data.LispValue, error) {
 	err := enforce.Length(v, 1)
 	if err != nil {
 		return types.Nil, err
 	}
-	return convert.NewLispValue(types.IsFunction(v.Car()))
+	return convert.NewLispValue(types.IsFunction(v[0]))
 }
 
-func IsFunctionNative(v data.LispCons) (data.LispValue, error) {
+func IsFunctionNative(v ...data.LispValue) (data.LispValue, error) {
 	err := enforce.Length(v, 1)
 	if err != nil {
 		return types.Nil, err
 	}
-	return convert.NewLispValue(types.IsNativeFunction(v.Car()))
+	return convert.NewLispValue(types.IsNativeFunction(v[0]))
 }
 
-func IsAtom(v data.LispCons) (data.LispValue, error) {
+func IsAtom(v ...data.LispValue) (data.LispValue, error) {
 	err := enforce.Length(v, 1)
 	if err != nil {
 		return types.Nil, err
 	}
-	return convert.NewLispValue(test.IsAtom(v.Car()))
+	return convert.NewLispValue(test.IsAtom(v[0]))
 }
 
-func IsCons(v data.LispCons) (data.LispValue, error) {
+func IsCons(v ...data.LispValue) (data.LispValue, error) {
 	err := enforce.Length(v, 1)
 	if err != nil {
 		return types.Nil, err
 	}
-	return convert.NewLispValue(test.IsCons(v.Car()))
+	return convert.NewLispValue(test.IsCons(v[0]))
 }
 
-func IsMap(v data.LispCons) (data.LispValue, error) {
+func IsMap(v ...data.LispValue) (data.LispValue, error) {
 	err := enforce.Length(v, 1)
 	if err != nil {
 		return types.Nil, err
 	}
-	return convert.NewLispValue(test.IsMap(v.Car()))
+	return convert.NewLispValue(test.IsMap(v[0]))
 }
 
-func IsNamespace(v data.LispCons) (data.LispValue, error) {
+func IsNamespace(v ...data.LispValue) (data.LispValue, error) {
 	err := enforce.Length(v, 1)
 	if err != nil {
 		return types.Nil, err
 	}
-	return convert.NewLispValue(test.IsNamespace(v.Car()))
+	return convert.NewLispValue(test.IsNamespace(v[0]))
 }
 
-func IsIterator(v data.LispCons) (data.LispValue, error) {
+func IsIterator(v ...data.LispValue) (data.LispValue, error) {
 	err := enforce.Length(v, 1)
 	if err != nil {
 		return types.Nil, err
 	}
-	return convert.NewLispValue(test.IsIterator(v.Car()))
+	return convert.NewLispValue(test.IsIterator(v[0]))
 }
 
-func Pass(v data.LispCons) (data.LispValue, error) {
+func Pass(v ...data.LispValue) (data.LispValue, error) {
 	err := enforce.Length(v, 1)
 	if err != nil {
 		return types.Nil, err
 	}
-	return v.Car(), nil
+	return v[0], nil
 }

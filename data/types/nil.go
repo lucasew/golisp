@@ -41,7 +41,7 @@ func (_nil) IsEnd() bool {
 	return true
 }
 
-func (_nil) LispCall(data.LispCons) (data.LispValue, error) {
+func (_nil) LispCall(...data.LispValue) (data.LispValue, error) {
 	return Nil, fmt.Errorf("you are calling nil")
 }
 

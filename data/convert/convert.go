@@ -53,9 +53,9 @@ func NewLispValue(v interface{}) (lv data.LispValue, err error) {
 		lv = number.NewIntFromInt64(i)
 	case int, int16, int32, uint16, uint32:
 		lv = number.NewIntFromInt64(reflect.ValueOf(i).Int())
-	case func(data.LispCons) (data.LispValue, error):
+	case func(...data.LispValue) (data.LispValue, error):
 		lv = types.NewFunction(i)
-	case func(vm.LispVM, data.LispCons) (data.LispValue, error):
+	case func(vm.LispVM, ...data.LispValue) (data.LispValue, error):
 		lv = macro.NewLispMacro(i)
 	case data.IntoLispValue:
 		lv = i.ToLispValue()

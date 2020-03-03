@@ -54,7 +54,7 @@ next:
 	if lst.IsEnd() {
 		return ret, nil
 	}
-	ret, err = fn.LispCall(types.NewCons(ret, lst.Next()))
+	ret, err = fn.LispCall(ret, lst.Next())
 	if err != nil {
 		return types.Nil, err
 	}

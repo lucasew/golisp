@@ -6,10 +6,11 @@ import (
     "github.com/lucasew/golisp/data/types/test"
 )
 
-func CarCdr(d data.LispValue, nth int) func()error {
+func CarCdr(d []data.LispValue, nth int) func()error {
     return func()error {
-        if !test.IsCarCdr(d) {
-            return fmt.Errorf("%d nth parameter expects a carcdr, got %s", nth, d.LispTypeName())
+        v := d[nth - 1]
+        if !test.IsCarCdr(v) {
+            return fmt.Errorf("%d nth parameter expects a carcdr, got %s", nth, v.LispTypeName())
         }
         return nil
     }

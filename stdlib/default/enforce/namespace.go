@@ -6,10 +6,11 @@ import (
     "github.com/lucasew/golisp/data/types/test"
 )
 
-func Namespace(d data.LispValue, nth int) func()error {
+func Namespace(d []data.LispValue, nth int) func()error {
     return func()error {
-        if !test.IsNamespace(d) {
-            return fmt.Errorf("%d nth parameter expects a namespace, got %s", nth, d.LispTypeName())
+        v := d[nth - 1]
+        if !test.IsNamespace(v) {
+            return fmt.Errorf("%d nth parameter expects a namespace, got %s", nth, v.LispTypeName())
         }
         return nil
     }

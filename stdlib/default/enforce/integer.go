@@ -6,8 +6,9 @@ import (
     "github.com/lucasew/golisp/data/types/number"
 )
 
-func Integer(v data.LispValue, nth int) func()error {
+func Integer(d []data.LispValue, nth int) func()error {
     return func()error {
+        v := d[nth - 1]
         if !number.IsInt(v) {
             return fmt.Errorf("%d nth parameter expects a int, got %s", nth, v.LispTypeName())
         }

@@ -28,7 +28,7 @@ func NewMap(v ...data.LispValue) (data.LispValue, error) {
 func MapSet(v ...data.LispValue) (data.LispValue, error) {
 	err := enforce.Validate(
 		enforce.Length(v, 3),
-		enforce.Namespace(v[0], 1),
+		enforce.Namespace(v, 1),
 	)
 	if err != nil {
 		return types.Nil, err
@@ -40,7 +40,7 @@ func MapSet(v ...data.LispValue) (data.LispValue, error) {
 func MapGet(v ...data.LispValue) (data.LispValue, error) {
 	err := enforce.Validate(
 		enforce.Length(v, 2),
-		enforce.Namespace(v[0], 1),
+		enforce.Namespace(v, 1),
 	)
 	if err != nil {
 		return types.Nil, err
@@ -52,7 +52,7 @@ func MapGet(v ...data.LispValue) (data.LispValue, error) {
 func MapKeys(v ...data.LispValue) (data.LispValue, error) {
 	err := enforce.Validate(
 		enforce.Length(v, 1),
-		enforce.Map(v[0], 1),
+		enforce.Map(v, 1),
 	)
 	if err != nil {
 		return types.Nil, err
@@ -64,7 +64,7 @@ func MapKeys(v ...data.LispValue) (data.LispValue, error) {
 func MapValues(v ...data.LispValue) (data.LispValue, error) {
 	err := enforce.Validate(
 		enforce.Length(v, 1),
-		enforce.Map(v[0], 1),
+		enforce.Map(v, 1),
 	)
 	if err != nil {
 		return types.Nil, err
@@ -76,7 +76,7 @@ func MapValues(v ...data.LispValue) (data.LispValue, error) {
 func MapTuples(v ...data.LispValue) (data.LispValue, error) {
 	err := enforce.Validate(
 		enforce.Length(v, 1),
-		enforce.Map(v[0], 1),
+		enforce.Map(v, 1),
 	)
 	if err != nil {
 		return types.Nil, err

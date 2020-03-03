@@ -6,10 +6,11 @@ import (
     "github.com/lucasew/golisp/data/types/test"
 )
 
-func Cons(d data.LispValue, nth int) func()error {
+func Cons(d []data.LispValue, nth int) func()error {
     return func()error {
-        if !test.IsCons(d) {
-            return fmt.Errorf("%d nth parameter expects a cons, got %s", nth, d.LispTypeName())
+        v := d[nth - 1]
+        if !test.IsCons(v) {
+            return fmt.Errorf("%d nth parameter expects a cons, got %s", nth, v.LispTypeName())
         }
         return nil
     }

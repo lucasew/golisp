@@ -60,7 +60,7 @@ func Abs(v ...data.LispValue) (data.LispValue, error) {
 }
 
 func IsZero(v ...data.LispValue) (data.LispValue, error) {
-	err := enforce.Validate(enforce.Length(v, 1), enforce.Number(v[0], 1))
+	err := enforce.Validate(enforce.Length(v, 1), enforce.Number(v, 1))
 	if err != nil {
 		return types.Nil, err
 	}
@@ -69,7 +69,7 @@ func IsZero(v ...data.LispValue) (data.LispValue, error) {
 }
 
 func IsInt(v ...data.LispValue) (data.LispValue, error) {
-	err := enforce.Validate(enforce.Length(v, 1), enforce.Number(v[0], 1))
+	err := enforce.Validate(enforce.Length(v, 1), enforce.Number(v, 1))
 	if err != nil {
 		return types.Nil, err
 	}
@@ -78,7 +78,7 @@ func IsInt(v ...data.LispValue) (data.LispValue, error) {
 }
 
 func singleOp(method string, v []data.LispValue) (data.LispValue, error) {
-	err := enforce.Validate(enforce.Length(v, 1), enforce.Number(v[0], 1))
+	err := enforce.Validate(enforce.Length(v, 1), enforce.Number(v, 1))
 	if err != nil {
 		return types.Nil, err
 	}
@@ -94,7 +94,7 @@ func singleOp(method string, v []data.LispValue) (data.LispValue, error) {
 }
 
 func pairOp(method string, v []data.LispValue) (data.LispValue, error) {
-	err := enforce.Validate(enforce.Length(v, 2), enforce.Number(v[0], 1), enforce.Number(v[1], 2), enforce.SameType(v[0], v[1]))
+	err := enforce.Validate(enforce.Length(v, 2), enforce.Number(v, 1), enforce.Number(v, 2), enforce.SameType(v, 1, 2))
 	if err != nil {
 		return types.Nil, err
 	}

@@ -6,10 +6,11 @@ import (
     "github.com/lucasew/golisp/data/types"
 )
 
-func Function(d data.LispValue, nth int) func()error {
+func Function(d []data.LispValue, nth int) func()error {
     return func()error {
-        if !types.IsFunction(d) {
-            return fmt.Errorf("%d nth parameter expects a function, got %s", nth, d.LispTypeName())
+        v := d[nth - 1]
+        if !types.IsFunction(v) {
+            return fmt.Errorf("%d nth parameter expects a function, got %s", nth, v.LispTypeName())
         }
         return nil
     }

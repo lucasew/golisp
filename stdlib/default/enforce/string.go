@@ -6,8 +6,9 @@ import (
     "github.com/lucasew/golisp/data/types"
 )
 
-func String(v data.LispValue, nth int) func()error {
+func String(d []data.LispValue, nth int) func()error {
     return func()error {
+        v := d[nth - 1]
         if !types.IsString(v) {
             return fmt.Errorf("%d nth element is not a string", nth)
         }

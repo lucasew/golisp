@@ -49,7 +49,6 @@ func main() {
 			ret, err := vm.Eval(ast)
 			if err != nil {
 				println(err.Error())
-				break
 			}
 			println(ret.Repr())
 		}

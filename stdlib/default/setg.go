@@ -12,7 +12,7 @@ func init() {
 }
 
 func Setg(env vm.LispVM, v ...data.LispValue) (data.LispValue, error) {
-	err := enforce.Validate(enforce.Length(v, 2), enforce.Symbol(v[0], 1))
+	err := enforce.Validate(enforce.Length(v, 2), enforce.Symbol(v, 1))
 	if err != nil {
 		return types.Nil, err
 	}

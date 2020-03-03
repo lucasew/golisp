@@ -14,7 +14,7 @@ func init() {
 }
 
 func Map(v ...data.LispValue) (data.LispValue, error) {
-	err := enforce.Validate(enforce.Length(v, 2), enforce.Function(v[0], 1))
+	err := enforce.Validate(enforce.Length(v, 2), enforce.Function(v, 1))
 	if err != nil {
 		return types.Nil, err
 	}
@@ -27,7 +27,7 @@ func Map(v ...data.LispValue) (data.LispValue, error) {
 }
 
 func Filter(v ...data.LispValue) (data.LispValue, error) {
-	err := enforce.Validate(enforce.Length(v, 2), enforce.Function(v[0], 1))
+	err := enforce.Validate(enforce.Length(v, 2), enforce.Function(v, 1))
 	if err != nil {
 		return types.Nil, err
 	}
@@ -40,7 +40,7 @@ func Filter(v ...data.LispValue) (data.LispValue, error) {
 }
 
 func Reduce(v ...data.LispValue) (data.LispValue, error) {
-	err := enforce.Validate(enforce.Length(v, 2), enforce.Function(v[0], 1))
+	err := enforce.Validate(enforce.Length(v, 2), enforce.Function(v, 1))
 	if err != nil {
 		return types.Nil, err
 	}

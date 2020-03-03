@@ -19,7 +19,7 @@ func init() {
 func NewPortal(v ...data.LispValue) (data.LispValue, error) {
 	n := 0
 	if len(v) != 0 {
-		err := enforce.Validate(enforce.Length(v, 1), enforce.Integer(v[0], 1))
+		err := enforce.Validate(enforce.Length(v, 1), enforce.Integer(v, 1))
 		if err != nil {
 			return types.Nil, err
 		}
@@ -39,7 +39,7 @@ func IsPortal(v ...data.LispValue) (data.LispValue, error) {
 }
 
 func PortalSend(v ...data.LispValue) (data.LispValue, error) {
-	err := enforce.Validate(enforce.Length(v, 2), enforce.Portal(v[0], 1))
+	err := enforce.Validate(enforce.Length(v, 2), enforce.Portal(v, 1))
 	if err != nil {
 		return types.Nil, err
 	}
@@ -49,7 +49,7 @@ func PortalSend(v ...data.LispValue) (data.LispValue, error) {
 }
 
 func PortalSendUnblocking(v ...data.LispValue) (data.LispValue, error) {
-	err := enforce.Validate(enforce.Length(v, 2), enforce.Portal(v[0], 1))
+	err := enforce.Validate(enforce.Length(v, 2), enforce.Portal(v, 1))
 	if err != nil {
 		return types.Nil, err
 	}
@@ -59,7 +59,7 @@ func PortalSendUnblocking(v ...data.LispValue) (data.LispValue, error) {
 }
 
 func PortalRecv(v ...data.LispValue) (data.LispValue, error) {
-	err := enforce.Validate(enforce.Length(v, 1), enforce.Portal(v[0], 1))
+	err := enforce.Validate(enforce.Length(v, 1), enforce.Portal(v, 1))
 	if err != nil {
 		return types.Nil, err
 	}
@@ -68,7 +68,7 @@ func PortalRecv(v ...data.LispValue) (data.LispValue, error) {
 }
 
 func PortalRecvUnblocking(v ...data.LispValue) (data.LispValue, error) {
-	err := enforce.Validate(enforce.Length(v, 1), enforce.Portal(v[0], 1))
+	err := enforce.Validate(enforce.Length(v, 1), enforce.Portal(v, 1))
 	if err != nil {
 		return types.Nil, err
 	}

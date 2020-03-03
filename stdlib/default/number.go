@@ -59,7 +59,7 @@ func ToInt(v ...data.LispValue) (data.LispValue, error) {
 }
 
 func ToByte(v ...data.LispValue) (data.LispValue, error) {
-	err := enforce.Validate(enforce.Length(v, 1), enforce.Number(v[0], 1))
+	err := enforce.Validate(enforce.Length(v, 1), enforce.Number(v, 1))
 	if err != nil {
 		return types.Nil, err
 	}

@@ -15,7 +15,7 @@ func Print(v ...data.LispValue) (data.LispValue, error) {
 	if len(v) == 0 {
 		return types.NewString(""), nil
 	}
-	err := enforce.Validate(enforce.Length(v, 1), enforce.String(v[0], 1))
+	err := enforce.Validate(enforce.Length(v, 1), enforce.String(v, 1))
 	if err != nil {
 		return types.Nil, err
 	}
@@ -28,7 +28,7 @@ func Println(v ...data.LispValue) (data.LispValue, error) {
 	if len(v) == 0 {
 		return types.NewString(""), nil
 	}
-	err := enforce.Validate(enforce.Length(v, 1), enforce.String(v[0], 1))
+	err := enforce.Validate(enforce.Length(v, 1), enforce.String(v, 1))
 	if err != nil {
 		return types.Nil, err
 	}

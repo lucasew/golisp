@@ -47,3 +47,7 @@ func (b Byte) Sum(other Byte) Byte {
 func (b Byte) Sub(other Byte) Byte {
 	return b - other
 }
+
+func (b Byte) Cmp(other Byte) int {
+	return int(b) - int(other)
+}

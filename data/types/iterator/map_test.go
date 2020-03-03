@@ -8,7 +8,7 @@ import (
 )
 
 func justReturnFirst(v ...data.LispValue) (data.LispValue, error) {
-	return v[0].(data.LispCarCdr).Car(), nil
+	return v[0], nil
 }
 
 func TestMapIterator(t *testing.T) {

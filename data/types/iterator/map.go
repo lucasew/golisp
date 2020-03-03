@@ -34,7 +34,7 @@ func (m *MapIterator) Next() data.LispValue {
 		return types.Nil
 	}
 	v := m.in.Next()
-	r, err := m.f.LispCall(types.NewCons(v))
+	r, err := m.f.LispCall(v)
 	if err != nil {
 		return types.Nil
 	}

@@ -97,3 +97,23 @@ func TestIfNo(t *testing.T) {
 		t.Error("expected: ", expected, " got: ", got)
 	}
 }
+
+func TestMap(t *testing.T) {
+	ast, err := parser.Parse(`
+    (setg incr (lambda (x) (+ x 1)))
+    (collect (map incr '(1 2 3)))
+    `)
+	if err != nil {
+		t.Error(err)
+	}
+	vm := NewVM(nil)
+	ret, err := vm.Eval(ast)
+	if err != nil {
+		t.Error(err)
+	}
+	expected := " (2 3 4) "
+	got := ret.Repr()
+	if expected != got {
+		t.Errorf("expected: %s got: %s", expected, got)
+	}
+}

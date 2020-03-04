@@ -1,4 +1,4 @@
-package stdlib
+package libdump
 
 import (
 	"github.com/lucasew/golisp/data"

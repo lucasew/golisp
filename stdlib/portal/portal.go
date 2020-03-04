@@ -1,4 +1,4 @@
-package stdlib
+package libportal
 
 import (
 	"github.com/lucasew/golisp/data"

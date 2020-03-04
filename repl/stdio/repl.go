@@ -3,6 +3,8 @@ package main
 import (
 	"bufio"
 	parser "github.com/lucasew/golisp/parser/default"
+	"github.com/lucasew/golisp/stdlib/dump"
+	"github.com/lucasew/golisp/stdlib/portal"
 	vm_lib "github.com/lucasew/golisp/vm/default"
 	"os"
 	"strings"
@@ -22,6 +24,8 @@ const banner = `
 
 func main() {
 	vm := vm_lib.NewVM(nil)
+	vm.Import(libdump.ELEMENTS)
+	vm.Import(libportal.ELEMENTS)
 	in := bufio.NewReader(os.Stdin)
 	lines := []string{}
 	println(banner)

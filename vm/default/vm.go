@@ -12,12 +12,16 @@ import (
 
 type LispVM struct {
 	env *env.LispEnv
+    imported *env.LispEnv
 }
 
 func NewVM(e *env.LispEnv) common.LispVM {
+    imported := env.NewLispEnv(env.NewLispEnv(nil))
 	vm := LispVM{
-		env: stdlib.NewDefaultEnv(e),
+		env: env.NewLispEnv(imported),
+        imported: imported,
 	}
+    vm.Import(stdlib.ELEMENTS)
 	return &vm
 }
 
@@ -25,6 +29,12 @@ func (vm *LispVM) PushVM() common.LispVM {
 	return &LispVM{
 		env: env.NewLispEnv(vm.env),
 	}
+}
+
+func (vm *LispVM) Import(m map[string]data.LispValue) {
+    for k, v := range m {
+        vm.imported.SetLocal(k, v)
+    }
 }
 
 func (vm *LispVM) EnvGet(k string) data.LispValue {

@@ -12,7 +12,7 @@ func IsSymbol(v data.LispValue) bool {
 	return ok
 }
 
-func NewSymbol(s string) data.LispString {
+func NewSymbol(s string) Symbol {
 	return Symbol(s)
 }
 

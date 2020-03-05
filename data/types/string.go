@@ -13,7 +13,7 @@ func IsString(v data.LispValue) bool {
 	return ok
 }
 
-func NewString(s string) data.LispString {
+func NewString(s string) String {
 	return String(s)
 }
 

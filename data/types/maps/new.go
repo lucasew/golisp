@@ -58,3 +58,8 @@ func MappeableTuples(m Mappeable) data.LispCons {
     }
     return types.NewCons(kv...)
 }
+
+func MappeableLen(m Mappeable) int {
+    // TODO: Colocar settable em consideração
+    return len(m.GettableElements())
+}

@@ -55,7 +55,7 @@ func (t Time) Tuples() data.LispCons {
 }
 
 func (t Time) Len() int {
-    return len(t.GettableElements())
+    return maps.MappeableLen(t)
 }
 
 func (t Time) GettableElements() map[string]func()data.LispValue {

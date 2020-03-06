@@ -29,6 +29,10 @@ func NewIntFromString(s string) (LispInt, bool) {
 
 }
 
+func NewIntFromInt(n int) (LispInt) {
+    return NewIntFromInt64(int64(n))
+}
+
 func NewIntFromFloat(n LispFloat) (LispInt, error) {
 	i, _ := n.n.Int(nil)
 	if i == nil {

@@ -114,5 +114,4 @@ func (lw LispWrapper) Repr() string {
 }
 
 func init() {
-	print(0.0 == 0)
 }

@@ -62,7 +62,7 @@ func GlobalState(ctx *lex.Context) (data.LispValue, error) {
 	if b.IsStringMark() {
 		return parser.ParseString(ctx)
 	}
-	if b.IsByteNumber() {
+	if b.IsByteNumber() || b.IsByte('.') {
 		return parser.ParseNumber(ctx)
 	}
 	if b.IsHash() {

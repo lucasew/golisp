@@ -18,7 +18,7 @@ type LispNumber interface {
 }
 
 type LispString interface {
-    LispValue
+	LispValue
 	ToString() string
 }
 
@@ -31,7 +31,6 @@ type LispCons interface {
 	LispCarCdr
 	LispLen
 	Get(k int) LispValue
-	UnwrapCons() ([]LispValue, error)
 	//Set(k int, v LispValue)
 }
 
@@ -71,6 +70,7 @@ type LispPortal interface {
 	SendUnblocking(v LispValue) LispValue
 	Recv() LispValue
 	RecvUnblocking() LispValue
+	Close()
 }
 
 type LispLen interface {

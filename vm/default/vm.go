@@ -3,8 +3,9 @@ package vm_default
 import (
 	"errors"
 	"github.com/lucasew/golisp/data"
-	"github.com/lucasew/golisp/data/macro"
 	"github.com/lucasew/golisp/data/types"
+	"github.com/lucasew/golisp/data/types/macro"
+	"github.com/lucasew/golisp/data/types/raw"
 	"github.com/lucasew/golisp/stdlib/default"
 	common "github.com/lucasew/golisp/vm"
 	"github.com/lucasew/golisp/vm/components/env"
@@ -31,8 +32,9 @@ func (vm *LispVM) PushVM() common.LispVM {
 	}
 }
 
-func (vm *LispVM) Import(m map[string]data.LispValue) {
+func (vm *LispVM) Import(m map[string]interface{}) {
 	for k, v := range m {
+		v := raw.NewLispWrapper(v)
 		vm.imported.SetLocal(k, v)
 	}
 }
@@ -73,11 +75,12 @@ func (vm *LispVM) Eval(v data.LispValue) (data.LispValue, error) {
 				if !ok {
 					l = types.NewCons(v)
 				}
-				c, err := l.UnwrapCons()
-				if err != nil {
-					return types.Nil, err
+				switch c := l.(type) {
+				case types.Cons:
+					return fn.LispCallMacro(vm, c...)
+				default:
+					return types.Nil, errors.New("evaluation of not []LispValue cons not supported yet")
 				}
-				return fn.LispCallMacro(vm, c...)
 			default:
 				return types.Nil, errors.New("cant call the variable")
 			}

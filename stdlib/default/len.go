@@ -2,8 +2,8 @@ package stdlib
 
 import (
 	"github.com/lucasew/golisp/data"
-	"github.com/lucasew/golisp/data/convert"
 	"github.com/lucasew/golisp/data/types"
+	"github.com/lucasew/golisp/data/types/raw"
 	"github.com/lucasew/golisp/utils/enforce"
 )
 
@@ -16,7 +16,7 @@ func Len(v ...data.LispValue) (data.LispValue, error) {
 	if err != nil {
 		return types.Nil, err
 	}
-	return convert.NewLispValue(_len(v[0]))
+	return raw.NewLispWrapper(_len(v[0])), nil
 }
 
 func _len(v data.LispValue) int {

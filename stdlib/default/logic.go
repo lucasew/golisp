@@ -2,8 +2,8 @@ package stdlib
 
 import (
 	"github.com/lucasew/golisp/data"
-	"github.com/lucasew/golisp/data/convert"
 	"github.com/lucasew/golisp/data/types"
+	"github.com/lucasew/golisp/data/types/raw"
 	"github.com/lucasew/golisp/utils/enforce"
 )
 
@@ -18,7 +18,7 @@ func Not(v ...data.LispValue) (data.LispValue, error) {
 	if err != nil {
 		return types.Nil, err
 	}
-	return convert.NewLispValue(!v[0].IsNil())
+	return raw.NewLispWrapper(!v[0].IsNil()), nil
 }
 
 func And(v ...data.LispValue) (data.LispValue, error) {

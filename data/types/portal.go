@@ -23,6 +23,10 @@ func (p Portal) Repr() string {
 	return "<native portal>"
 }
 
+func (p Portal) Close() {
+	close(p)
+}
+
 func (p Portal) Send(v data.LispValue) data.LispValue {
 	p <- v
 	return v

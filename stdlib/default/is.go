@@ -2,14 +2,15 @@ package stdlib
 
 import (
 	"github.com/lucasew/golisp/data"
-	"github.com/lucasew/golisp/data/convert"
 	"github.com/lucasew/golisp/data/types"
 	"github.com/lucasew/golisp/data/types/number"
+	"github.com/lucasew/golisp/data/types/raw"
 	"github.com/lucasew/golisp/data/types/test"
 	"github.com/lucasew/golisp/utils/enforce"
 )
 
 func init() {
+	register("is-native", IsNative)
 	register("is-number", IsNumber)
 	register("is-string", IsString)
 	register("is-symbol", IsSymbol)
@@ -23,12 +24,21 @@ func init() {
 	register("pass", Pass)
 }
 
+func IsNative(v ...data.LispValue) (data.LispValue, error) {
+	err := enforce.Validate(enforce.Length(v, 1))
+	if err != nil {
+		return types.Nil, err
+	}
+	_, ok := v[0].(raw.LispWrapper)
+	return raw.NewLispWrapper(ok), nil
+}
+
 func IsNumber(v ...data.LispValue) (data.LispValue, error) {
 	err := enforce.Validate(enforce.Length(v, 1))
 	if err != nil {
 		return types.Nil, err
 	}
-	return convert.NewLispValue(number.IsNumber(v[0]))
+	return raw.NewLispWrapper(number.IsNumber(v[0])), nil
 }
 
 func IsString(v ...data.LispValue) (data.LispValue, error) {
@@ -36,7 +46,7 @@ func IsString(v ...data.LispValue) (data.LispValue, error) {
 	if err != nil {
 		return types.Nil, err
 	}
-	return convert.NewLispValue(types.IsString(v[0]))
+	return raw.NewLispWrapper(types.IsString(v[0])), nil
 }
 
 func IsSymbol(v ...data.LispValue) (data.LispValue, error) {
@@ -44,7 +54,7 @@ func IsSymbol(v ...data.LispValue) (data.LispValue, error) {
 	if err != nil {
 		return types.Nil, err
 	}
-	return convert.NewLispValue(types.IsSymbol(v[0]))
+	return raw.NewLispWrapper(types.IsSymbol(v[0])), nil
 }
 
 func IsFunction(v ...data.LispValue) (data.LispValue, error) {
@@ -52,7 +62,7 @@ func IsFunction(v ...data.LispValue) (data.LispValue, error) {
 	if err != nil {
 		return types.Nil, err
 	}
-	return convert.NewLispValue(types.IsFunction(v[0]))
+	return raw.NewLispWrapper(types.IsFunction(v[0])), nil
 }
 
 func IsFunctionNative(v ...data.LispValue) (data.LispValue, error) {
@@ -60,7 +70,7 @@ func IsFunctionNative(v ...data.LispValue) (data.LispValue, error) {
 	if err != nil {
 		return types.Nil, err
 	}
-	return convert.NewLispValue(types.IsNativeFunction(v[0]))
+	return raw.NewLispWrapper(types.IsNativeFunction(v[0])), nil
 }
 
 func IsAtom(v ...data.LispValue) (data.LispValue, error) {
@@ -68,7 +78,7 @@ func IsAtom(v ...data.LispValue) (data.LispValue, error) {
 	if err != nil {
 		return types.Nil, err
 	}
-	return convert.NewLispValue(test.IsAtom(v[0]))
+	return raw.NewLispWrapper(test.IsAtom(v[0])), nil
 }
 
 func IsCons(v ...data.LispValue) (data.LispValue, error) {
@@ -76,7 +86,7 @@ func IsCons(v ...data.LispValue) (data.LispValue, error) {
 	if err != nil {
 		return types.Nil, err
 	}
-	return convert.NewLispValue(test.IsCons(v[0]))
+	return raw.NewLispWrapper(test.IsCons(v[0])), nil
 }
 
 func IsMap(v ...data.LispValue) (data.LispValue, error) {
@@ -84,7 +94,7 @@ func IsMap(v ...data.LispValue) (data.LispValue, error) {
 	if err != nil {
 		return types.Nil, err
 	}
-	return convert.NewLispValue(test.IsMap(v[0]))
+	return raw.NewLispWrapper(test.IsMap(v[0])), nil
 }
 
 func IsNamespace(v ...data.LispValue) (data.LispValue, error) {
@@ -92,7 +102,7 @@ func IsNamespace(v ...data.LispValue) (data.LispValue, error) {
 	if err != nil {
 		return types.Nil, err
 	}
-	return convert.NewLispValue(test.IsNamespace(v[0]))
+	return raw.NewLispWrapper(test.IsNamespace(v[0])), nil
 }
 
 func IsIterator(v ...data.LispValue) (data.LispValue, error) {
@@ -100,7 +110,7 @@ func IsIterator(v ...data.LispValue) (data.LispValue, error) {
 	if err != nil {
 		return types.Nil, err
 	}
-	return convert.NewLispValue(test.IsIterator(v[0]))
+	return raw.NewLispWrapper(test.IsIterator(v[0])), nil
 }
 
 func Pass(v ...data.LispValue) (data.LispValue, error) {

@@ -7,7 +7,7 @@ import (
 )
 
 type LispEnv struct {
-    e *env.LispEnv
+	e *env.LispEnv
 }
 
 func NewLispNamespaceFromEnv(e *env.LispEnv) data.LispNamespace {
@@ -15,7 +15,7 @@ func NewLispNamespaceFromEnv(e *env.LispEnv) data.LispNamespace {
 }
 
 func (e LispEnv) Unwrap() *env.LispEnv {
-    return e.e
+	return e.e
 }
 
 func (e LispEnv) Get(k data.LispValue) data.LispValue {
@@ -47,6 +47,6 @@ func (e LispEnv) Repr() string {
 }
 
 func init() {
-    var e data.LispValue = NewLispNamespaceFromEnv(env.NewLispEnv(nil))
-    print(e.(data.LispNamespace))
+	var e data.LispValue = NewLispNamespaceFromEnv(env.NewLispEnv(nil))
+	print(e.(data.LispNamespace))
 }

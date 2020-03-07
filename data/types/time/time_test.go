@@ -3,7 +3,7 @@ package time
 import (
 	"github.com/lucasew/golisp/data/types/test"
 	"testing"
-    "time"
+	"time"
 )
 
 func TestTimeType(t *testing.T) {

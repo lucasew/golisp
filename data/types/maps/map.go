@@ -12,7 +12,7 @@ func NewMap() data.LispMap {
 }
 
 func (m LispMap) Unwrap() map[data.LispValue]data.LispValue {
-    return map[data.LispValue]data.LispValue(m)
+	return map[data.LispValue]data.LispValue(m)
 }
 
 func (m LispMap) Get(k data.LispValue) data.LispValue {

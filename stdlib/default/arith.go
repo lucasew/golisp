@@ -3,8 +3,8 @@ package stdlib
 import (
 	"fmt"
 	"github.com/lucasew/golisp/data"
-	"github.com/lucasew/golisp/data/convert"
 	"github.com/lucasew/golisp/data/types"
+	"github.com/lucasew/golisp/data/types/raw"
 	"github.com/lucasew/golisp/utils/enforce"
 	"reflect"
 )
@@ -65,7 +65,7 @@ func IsZero(v ...data.LispValue) (data.LispValue, error) {
 		return types.Nil, err
 	}
 	num := v[0].(data.LispNumber)
-	return convert.NewLispValue(num.IsZero())
+	return raw.NewLispWrapper(num.IsZero()), nil
 }
 
 func IsInt(v ...data.LispValue) (data.LispValue, error) {
@@ -74,7 +74,7 @@ func IsInt(v ...data.LispValue) (data.LispValue, error) {
 		return types.Nil, err
 	}
 	n := v[0].(data.LispNumber)
-	return convert.NewLispValue(n.IsInt())
+	return raw.NewLispWrapper(n.IsInt()), nil
 }
 
 func singleOp(method string, v []data.LispValue) (data.LispValue, error) {

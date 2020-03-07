@@ -7,11 +7,15 @@ import (
 )
 
 type LispEnv struct {
-	env.LispEnv
+    e *env.LispEnv
 }
 
-func NewLispNamespaceFromEnv(e env.LispEnv) data.LispNamespace {
+func NewLispNamespaceFromEnv(e *env.LispEnv) data.LispNamespace {
 	return LispEnv{e}
+}
+
+func (e LispEnv) Unwrap() *env.LispEnv {
+    return e.e
 }
 
 func (e LispEnv) Get(k data.LispValue) data.LispValue {
@@ -19,7 +23,7 @@ func (e LispEnv) Get(k data.LispValue) data.LispValue {
 	if !ok {
 		return types.Nil
 	}
-	return e.Get(ks)
+	return e.e.Get(ks.ToString())
 }
 
 func (e LispEnv) Set(k data.LispValue, v data.LispValue) data.LispValue {
@@ -27,7 +31,7 @@ func (e LispEnv) Set(k data.LispValue, v data.LispValue) data.LispValue {
 	if !ok {
 		return types.Nil
 	}
-	return e.SetLocal(ks.ToString(), v)
+	return e.e.SetLocal(ks.ToString(), v)
 }
 
 func (e LispEnv) IsNil() bool {
@@ -40,4 +44,9 @@ func (e LispEnv) LispTypeName() string {
 
 func (e LispEnv) Repr() string {
 	return "< lisp env >"
+}
+
+func init() {
+    var e data.LispValue = NewLispNamespaceFromEnv(env.NewLispEnv(nil))
+    print(e.(data.LispNamespace))
 }

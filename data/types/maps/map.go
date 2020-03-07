@@ -11,6 +11,10 @@ func NewMap() data.LispMap {
 	return LispMap(map[data.LispValue]data.LispValue{})
 }
 
+func (m LispMap) Unwrap() map[data.LispValue]data.LispValue {
+    return map[data.LispValue]data.LispValue(m)
+}
+
 func (m LispMap) Get(k data.LispValue) data.LispValue {
 	r, ok := m[k]
 	if !ok {

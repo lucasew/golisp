@@ -5,8 +5,55 @@ import (
     "github.com/lucasew/golisp/data/types"
 )
 
+type MapMappeable struct {
+    m Mappeable
+}
+
+func NewMapFromMappeable(m Mappeable) data.LispMap {
+    return MapMappeable{m}
+}
+
+func (m MapMappeable) Unwrap() Mappeable {
+    return m.m
+}
+
+func (m MapMappeable) Get(k data.LispValue) data.LispValue {
+    return MappeableGet(m.m, k)
+}
+
+func (m MapMappeable) IsNil() bool {
+    return m.Len() == 0
+}
+
+func (m MapMappeable) Set(k data.LispValue, v data.LispValue) data.LispValue {
+    return MappeableSet(m.m, k, v)
+}
+
+func (m MapMappeable) Keys() data.LispCons {
+    return MappeableKeys(m.m)
+}
+
+func (m MapMappeable) Values() data.LispCons {
+    return MappeableValues(m.m)
+}
+
+func (m MapMappeable) Tuples() data.LispCons {
+    return MappeableTuples(m.m)
+}
+
+func (m MapMappeable) Len() int {
+    return MappeableLen(m.m)
+}
+
+func (m MapMappeable) LispTypeName() string {
+    return "map"
+}
+
+func (m MapMappeable) Repr() string {
+    return "< map mappeable >"
+}
+
 type Mappeable interface {
-    data.LispValue
     GettableElements() map[string]func()data.LispValue
     SettableElements() map[string]func(data.LispValue)data.LispValue
 }

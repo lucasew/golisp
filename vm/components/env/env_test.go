@@ -1,13 +1,18 @@
 package env
 
 import (
-	"github.com/lucasew/golisp/data/convert"
+	"github.com/lucasew/golisp/data/types"
+	"github.com/lucasew/golisp/data/types/number"
 	"testing"
 )
 
 func TestEnvGetSet(t *testing.T) {
 	e := NewLispEnv(nil)
-	l, _ := convert.NewLispList(1, "2", 3.3)
+    l := types.NewCons(
+        number.NewIntFromInt(1),
+        types.NewString("2"),
+        number.NewFloatFromFloat64(3.3),
+    )
 	e.SetLocal("valor", l)
 	if e.Get("valor").Repr() != l.Repr() {
 		t.Fail()
@@ -16,7 +21,11 @@ func TestEnvGetSet(t *testing.T) {
 
 func TestHierarquicalEnvSet(t *testing.T) {
 	a := NewLispEnv(nil)
-	l, _ := convert.NewLispList(1, "2", 3.3)
+    l := types.NewCons(
+        number.NewIntFromInt(1),
+        types.NewString("2"),
+        number.NewFloatFromFloat64(3.3),
+    )
 	a.SetLocal("valor", l)
 	b := NewLispEnv(a)
 	if b.Get("valor").Repr() != l.Repr() {

@@ -5,8 +5,7 @@ import (
 	"github.com/davecgh/go-spew/spew"
 	"github.com/go-telegram-bot-api/telegram-bot-api"
 	"github.com/lucasew/golisp/data"
-	"github.com/lucasew/golisp/parser/default"
-	"github.com/lucasew/golisp/vm/default"
+	"github.com/lucasew/golisp/toolchain/default"
 	"log"
 	"os"
 )
@@ -30,8 +29,7 @@ func main() {
 	if len(os.Args) < 2 {
 		panic("Missing telegram bot api key")
 	}
-	eval := vm_default.NewVM(nil).Eval
-	parse := pdefault.Parse
+    tc := tdefault.NewDefaultToolchain(nil)
 	bot, err = tgbotapi.NewBotAPI(os.Args[1])
 	if err != nil {
 		panic(err)
@@ -70,7 +68,7 @@ func main() {
 		if update.Message.Command() == "parse" {
 			stmt = update.Message.CommandArguments()
 		}
-		ast, err := parse(stmt)
+		ast, err := tc.ParseString(stmt)
 		if err != nil {
 			reply(&update, fmt.Sprintf("🤔 %s", err.Error()))
 			continue
@@ -79,7 +77,7 @@ func main() {
 			reply(&update, spew.Sdump(ast))
 			continue
 		}
-		res, err := eval(ast)
+		res, err := tc.Eval(ast)
 		if err != nil {
 			reply(&update, fmt.Sprintf("🤯 %s", err.Error()))
 			continue

@@ -3,15 +3,13 @@ package main
 import (
 	"github.com/davecgh/go-spew/spew"
 	"github.com/gin-gonic/gin"
-	"github.com/lucasew/golisp/parser/default"
-	"github.com/lucasew/golisp/vm/default"
+	"github.com/lucasew/golisp/toolchain/default"
 	"sync"
 )
 
 func main() {
 	var err error
-	eval := vm_default.NewVM(nil).Eval
-	parse := pdefault.Parse
+    tc := tdefault.NewDefaultToolchain(nil)
 	var mutex sync.Mutex
 	r := gin.Default()
 	r.GET("/eval", func(c *gin.Context) {
@@ -20,13 +18,13 @@ func main() {
 			handleError(c, err)
 			return
 		}
-		ast, err := parse(string(buf))
+		ast, err := tc.ParseBytes(buf)
 		if err != nil {
 			handleError(c, err)
 			return
 		}
 		mutex.Lock()
-		res, err := eval(ast)
+		res, err := tc.Eval(ast)
 		mutex.Unlock()
 		c.JSON(200, gin.H{
 			"result": res.Repr(),
@@ -39,13 +37,13 @@ func main() {
 			handleError(c, err)
 			return
 		}
-		ast, err := parse(string(buf))
+		ast, err := tc.ParseBytes(buf)
 		if err != nil {
 			handleError(c, err)
 			return
 		}
 		mutex.Lock()
-		res, err := eval(ast)
+		res, err := tc.Eval(ast)
 		mutex.Unlock()
 		c.JSON(200, gin.H{
 			"result": spew.Sdump(res),

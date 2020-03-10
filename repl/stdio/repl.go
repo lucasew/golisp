@@ -2,10 +2,9 @@ package main
 
 import (
 	"bufio"
-	parser "github.com/lucasew/golisp/parser/default"
 	"github.com/lucasew/golisp/stdlib/dump"
 	"github.com/lucasew/golisp/stdlib/portal"
-	vm_lib "github.com/lucasew/golisp/vm/default"
+	"github.com/lucasew/golisp/toolchain/default"
 	"os"
 	"strings"
 )
@@ -23,9 +22,9 @@ const banner = `
 `
 
 func main() {
-	vm := vm_lib.NewVM(nil)
-	vm.Import(libdump.ELEMENTS)
-	vm.Import(libportal.ELEMENTS)
+    tc := tdefault.NewDefaultToolchain(nil)
+	tc.Import(libdump.ELEMENTS)
+	tc.Import(libportal.ELEMENTS)
 	in := bufio.NewReader(os.Stdin)
 	lines := []string{}
 	println(banner)
@@ -45,12 +44,7 @@ func main() {
 		if parenthesis == 0 {
 			stmt := strings.Join(lines, "\n")
 			lines = []string{}
-			ast, err := parser.Parse(stmt)
-			if err != nil {
-				println(err.Error())
-				break
-			}
-			ret, err := vm.Eval(ast)
+            ret, err := tc.EvalString(stmt)
 			if err != nil {
 				println(err.Error())
 			}

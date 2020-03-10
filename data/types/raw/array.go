@@ -4,6 +4,8 @@ import (
 	"github.com/lucasew/golisp/data"
 	"github.com/lucasew/golisp/data/types"
 	"reflect"
+    "strings"
+    "fmt"
 )
 
 type LispConsWrapper struct {
@@ -13,7 +15,7 @@ type LispConsWrapper struct {
 func NewConsWrapper(v interface{}) data.LispValue {
 	if reflect.TypeOf(v).Kind() != reflect.Slice {
 		if reflect.TypeOf(v).Kind() != reflect.Array {
-			return nil
+			return types.Nil
 		}
 	}
 	return LispConsWrapper{
@@ -34,7 +36,11 @@ func (c LispConsWrapper) LispTypeName() string {
 }
 
 func (c LispConsWrapper) Repr() string {
-	return "< todo lisp cons wrapper >"
+    ret := make([]string, c.Len())
+    for k := range(ret) {
+        ret[k] = c.Get(k).Repr()
+    }
+	return fmt.Sprintf("( %s )", strings.Join(ret, " "))
 }
 
 func (c LispConsWrapper) Car() data.LispValue {
@@ -58,7 +64,7 @@ func (c LispConsWrapper) Cdr() data.LispCarCdr {
 
 func (c LispConsWrapper) Get(k int) data.LispValue {
 	if c.Len() > k {
-		return NewLispWrapper(reflect.ValueOf(c.v).Index(k))
+		return NewLispWrapper(reflect.ValueOf(c.v).Index(k).Interface())
 	}
 	return types.Nil
 }

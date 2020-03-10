@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"github.com/lucasew/golisp/stdlib/dump"
 	"github.com/lucasew/golisp/stdlib/portal"
+	"github.com/lucasew/golisp/stdlib/loader"
 	"github.com/lucasew/golisp/toolchain/default"
 	"os"
 	"strings"
@@ -23,8 +24,11 @@ const banner = `
 
 func main() {
     tc := tdefault.NewDefaultToolchain(nil)
-	tc.Import(libdump.ELEMENTS)
-	tc.Import(libportal.ELEMENTS)
+    tc.Import(
+        map[string]interface{}{
+            "import": loader.NewImporter(libdump.ELEMENTS, libportal.ELEMENTS).IntoLispValue(),
+        },
+    )
 	in := bufio.NewReader(os.Stdin)
 	lines := []string{}
 	println(banner)

@@ -7,6 +7,7 @@ import (
 	"github.com/lucasew/golisp/data/types/macro"
 	"github.com/lucasew/golisp/data/types/raw"
 	"github.com/lucasew/golisp/stdlib/default"
+	"github.com/lucasew/golisp/stdlib/loader"
 	common "github.com/lucasew/golisp/vm"
 	"github.com/lucasew/golisp/vm/components/env"
 )
@@ -22,7 +23,7 @@ func NewVM(e *env.LispEnv) common.LispVM {
 		env:      env.NewLispEnv(imported),
 		imported: imported,
 	}
-	vm.Import(stdlib.ELEMENTS)
+    loader.NewImporter(stdlib.ELEMENTS).ImportOnVM(&vm, "stdlib")
 	return &vm
 }
 

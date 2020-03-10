@@ -5,6 +5,7 @@ import (
 	"github.com/lucasew/golisp/stdlib/dump"
 	"github.com/lucasew/golisp/stdlib/portal"
 	"github.com/lucasew/golisp/stdlib/loader"
+	"github.com/lucasew/golisp/stdlib/rand"
 	"github.com/lucasew/golisp/toolchain/default"
 	"os"
 	"strings"
@@ -26,7 +27,11 @@ func main() {
     tc := tdefault.NewDefaultToolchain(nil)
     tc.Import(
         map[string]interface{}{
-            "import": loader.NewImporter(libdump.ELEMENTS, libportal.ELEMENTS).IntoLispValue(),
+            "import": loader.NewImporter(
+                libdump.ELEMENTS,
+                libportal.ELEMENTS,
+                rand.ELEMENTS,
+            ).IntoLispValue(),
         },
     )
 	in := bufio.NewReader(os.Stdin)

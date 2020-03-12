@@ -58,7 +58,7 @@ func (i Importer) ImportOnVM(vm vm.LispVM, module string) []string {
     return imported
 }
 
-func (i *Importer) Keys() data.LispCons {
+func (i Importer) Keys() data.LispCons {
     ret := []string{}
     for _, repo := range i.repositories {
         for k, _ := range repo.packages {
@@ -68,7 +68,7 @@ func (i *Importer) Keys() data.LispCons {
     return raw.NewConsWrapper(ret).(data.LispCons)
 }
 
-func (i *Importer) Values() data.LispCons {
+func (i Importer) Values() data.LispCons {
     ret := []data.LispValue{}
     for _, repo := range i.repositories {
         for _, v := range repo.packages {
@@ -79,7 +79,7 @@ func (i *Importer) Values() data.LispCons {
     return raw.NewConsWrapper(ret).(data.LispCons)
 }
 
-func (i *Importer) Tuples() data.LispCons {
+func (i Importer) Tuples() data.LispCons {
     ret := []data.LispValue{}
     for _, repo := range i.repositories {
         for k, v := range repo.packages {
@@ -90,7 +90,7 @@ func (i *Importer) Tuples() data.LispCons {
     return raw.NewConsWrapper(ret).(data.LispCons)
 }
 
-func (i *Importer) Get(lv data.LispValue) data.LispValue {
+func (i Importer) Get(lv data.LispValue) data.LispValue {
     key, ok := lv.(data.LispString)
     if !ok {
         return types.Nil
@@ -105,7 +105,7 @@ func (i *Importer) Get(lv data.LispValue) data.LispValue {
     return types.Nil
 }
 
-func (i *Importer) IsNil() bool {
+func (i Importer) IsNil() bool {
     if len(i.repositories) == 0 {
         return true
     }
@@ -117,7 +117,7 @@ func (i *Importer) IsNil() bool {
     return true
 }
 
-func (i *Importer) Len() int {
+func (i Importer) Len() int {
     acc := 0
     for _, repo := range i.repositories {
         acc += len(repo.packages)
@@ -125,18 +125,19 @@ func (i *Importer) Len() int {
     return acc
 }
 
-func (i *Importer) LispTypeName() string {
+func (i Importer) LispTypeName() string {
     return "importer"
 }
 
-func (i *Importer) Repr() string {
+func (i Importer) Repr() string {
     return "< reporter >"
 }
 
-func (i *Importer) Set(k data.LispValue, v data.LispValue) data.LispValue {
+func (i Importer) Set(k data.LispValue, v data.LispValue) data.LispValue {
     return types.Nil
 }
 
 func init() {
     var _ data.LispMap = NewImporter()
+    var _ data.LispValue = NewImporter()
 }

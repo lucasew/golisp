@@ -29,3 +29,43 @@ func (r Repository) ImportOnVM(vm vm.LispVM, module string) []string {
 func (r Repository) IntoLispValue() data.LispValue {
     return NewImporter(r).IntoLispValue()
 }
+
+func init() {
+    var _ data.LispMap = NewRepository()
+}
+
+func (r Repository) Get(k data.LispValue) data.LispValue {
+    return NewImporter(r).Get(k)
+}
+
+func (r Repository) IsNil() bool {
+    return NewImporter(r).IsNil()
+}
+
+func (r Repository) Keys() data.LispCons {
+    return NewImporter(r).Keys()
+}
+
+func (r Repository) Len() int {
+    return NewImporter(r).Len()
+}
+
+func (r Repository) LispTypeName() string {
+    return "repository"
+}
+
+func (r Repository) Repr() string {
+    return NewImporter(r).Repr()
+}
+
+func (r Repository) Set(k data.LispValue, v data.LispValue) data.LispValue {
+    return NewImporter(r).Set(k, v)
+}
+
+func (r Repository) Tuples() data.LispCons {
+    return NewImporter(r).Tuples()
+}
+
+func (r Repository) Values() data.LispCons {
+    return NewImporter(r).Values()
+}

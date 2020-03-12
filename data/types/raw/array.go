@@ -1,11 +1,11 @@
 package raw
 
 import (
+	"fmt"
 	"github.com/lucasew/golisp/data"
 	"github.com/lucasew/golisp/data/types"
 	"reflect"
-    "strings"
-    "fmt"
+	"strings"
 )
 
 type LispConsWrapper struct {
@@ -36,10 +36,10 @@ func (c LispConsWrapper) LispTypeName() string {
 }
 
 func (c LispConsWrapper) Repr() string {
-    ret := make([]string, c.Len())
-    for k := range(ret) {
-        ret[k] = c.Get(k).Repr()
-    }
+	ret := make([]string, c.Len())
+	for k := range ret {
+		ret[k] = c.Get(k).Repr()
+	}
 	return fmt.Sprintf("( %s )", strings.Join(ret, " "))
 }
 

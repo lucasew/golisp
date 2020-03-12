@@ -29,7 +29,7 @@ func main() {
 	if len(os.Args) < 2 {
 		panic("Missing telegram bot api key")
 	}
-    tc := tdefault.NewDefaultToolchain(nil)
+	tc := tdefault.NewDefaultToolchain(nil)
 	bot, err = tgbotapi.NewBotAPI(os.Args[1])
 	if err != nil {
 		panic(err)

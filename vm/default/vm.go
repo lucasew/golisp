@@ -22,7 +22,7 @@ func NewVM(e *env.LispEnv) common.LispVM {
 		env:      env.NewLispEnv(imported),
 		imported: imported,
 	}
-    stdlib.ELEMENTS.ImportOnVM(&vm, "default")
+	stdlib.ELEMENTS.ImportOnVM(&vm, "default")
 	return &vm
 }
 

@@ -48,5 +48,5 @@ func (e LispEnv) Repr() string {
 
 func init() {
 	var e data.LispValue = NewLispNamespaceFromEnv(env.NewLispEnv(nil))
-    _ = e.(data.LispNamespace)
+	_ = e.(data.LispNamespace)
 }

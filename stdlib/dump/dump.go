@@ -10,6 +10,7 @@ import (
 
 func init() {
 	register("env-dump", EnvDump)
+	register("spew", Dump)
 }
 
 func EnvDump(env vm.LispVM, v ...data.LispValue) (data.LispValue, error) {
@@ -18,4 +19,12 @@ func EnvDump(env vm.LispVM, v ...data.LispValue) (data.LispValue, error) {
 		return types.Nil, err
 	}
 	return types.NewString(spew.Sdump(env)), nil
+}
+
+func Dump(v ...data.LispValue) (data.LispValue, error) {
+	err := enforce.Validate(enforce.Length(v, 1))
+	if err != nil {
+		return types.Nil, err
+	}
+	return types.NewString(spew.Sdump(v[0])), nil
 }

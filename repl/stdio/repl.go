@@ -3,8 +3,8 @@ package main
 import (
 	"bufio"
 	"github.com/lucasew/golisp/stdlib/dump"
-	"github.com/lucasew/golisp/stdlib/portal"
 	"github.com/lucasew/golisp/stdlib/loader"
+	"github.com/lucasew/golisp/stdlib/portal"
 	"github.com/lucasew/golisp/stdlib/rand"
 	"github.com/lucasew/golisp/toolchain/default"
 	"os"
@@ -12,7 +12,7 @@ import (
 )
 
 const banner = `
-  ▄████ ▒█████  ██▓    ██▓ ██████ ██▓███  
+▄████ ▒█████  ██▓    ██▓ ██████ ██▓███  
  ██▒ ▀█▒██▒  ██▓██▒   ▓██▒██    ▒▓██░  ██▒
 ▒██░▄▄▄▒██░  ██▒██░   ▒██░ ▓██▄  ▓██░ ██▓▒
 ░▓█  ██▒██   ██▒██░   ░██░ ▒   ██▒██▄█▓▒ ▒
@@ -24,16 +24,18 @@ const banner = `
 `
 
 func main() {
-    tc := tdefault.NewDefaultToolchain(nil)
-    tc.Import(
-        map[string]interface{}{
-            "import": loader.NewImporter(
-                libdump.ELEMENTS,
-                libportal.ELEMENTS,
-                rand.ELEMENTS,
-            ).IntoLispValue(),
-        },
-    )
+	tc := tdefault.NewDefaultToolchain(nil)
+	repo := loader.NewImporter(
+		libdump.ELEMENTS,
+		libportal.ELEMENTS,
+		rand.ELEMENTS,
+	)
+	tc.Import(
+		map[string]interface{}{
+			"import": repo.IntoLispValue(),
+			"repo":   repo,
+		},
+	)
 	in := bufio.NewReader(os.Stdin)
 	lines := []string{}
 	println(banner)
@@ -53,7 +55,7 @@ func main() {
 		if parenthesis == 0 {
 			stmt := strings.Join(lines, "\n")
 			lines = []string{}
-            ret, err := tc.EvalString(stmt)
+			ret, err := tc.EvalString(stmt)
 			if err != nil {
 				println(err.Error())
 			}

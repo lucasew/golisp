@@ -6,6 +6,7 @@ import (
 	"github.com/lucasew/golisp/data/types/iterator"
 	"github.com/lucasew/golisp/data/types/maps"
 	"github.com/lucasew/golisp/utils/enforce"
+	"github.com/lucasew/golisp/utils/params"
 )
 
 func init() {
@@ -18,11 +19,12 @@ func init() {
 }
 
 func NewMap(v ...data.LispValue) (data.LispValue, error) {
-	err := enforce.Validate(enforce.Length(v, 0))
+    p := params.NewParameterLookup(v...)
+	err := enforce.Validate(enforce.Length(p.Args, 0))
 	if err != nil {
 		return types.Nil, err
 	}
-	return maps.NewMap(), nil
+	return maps.NewMapFromMapString(p.KwArgs), nil
 }
 
 func MapSet(v ...data.LispValue) (data.LispValue, error) {

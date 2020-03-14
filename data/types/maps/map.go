@@ -3,6 +3,8 @@ package maps
 import (
 	"github.com/lucasew/golisp/data"
 	"github.com/lucasew/golisp/data/types"
+    "fmt"
+    "strings"
 )
 
 type LispMap map[data.LispValue]data.LispValue
@@ -67,8 +69,19 @@ func (m LispMap) LispTypeName() string {
 }
 
 func (m LispMap) Repr() string {
-	// TODO: Repr
-	return "< todo: map >"
+    ret := []string{"( new-map "}
+    for k, v := range m {
+        kf := ""
+        switch ks := k.(type) {
+        case data.LispString:
+            kf = ks.ToString()
+        default:
+            kf = fmt.Sprintf(":invalid[%s]", ks.Repr())
+        }
+        ret = append(ret, fmt.Sprintf("%s '%s ", kf, v.Repr()))
+    }
+    ret = append(ret, ")")
+    return strings.Join(ret, " ")
 }
 
 func (m LispMap) IsNil() bool {

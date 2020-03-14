@@ -3,6 +3,8 @@ package maps
 import (
 	"github.com/lucasew/golisp/data"
 	"github.com/lucasew/golisp/data/types"
+    "fmt"
+    "strings"
 )
 
 type MapString map[string]data.LispValue
@@ -24,7 +26,12 @@ func (m MapString) LispTypeName() string {
 }
 
 func (m MapString) Repr() string {
-	return "< todo map >"
+    ret := []string{"( new-map "}
+    for k, v := range m {
+        ret = append(ret, fmt.Sprintf("%s '%s ", k, v.Repr()))
+    }
+    ret = append(ret, ")")
+    return strings.Join(ret, " ")
 }
 
 func (m MapString) Get(k data.LispValue) data.LispValue {

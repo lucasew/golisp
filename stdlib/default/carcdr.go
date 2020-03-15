@@ -12,7 +12,7 @@ func init() {
 }
 
 func Car(v ...data.LispValue) (data.LispValue, error) {
-	err := enforce.Validate(enforce.Length(v, 1), enforce.CarCdr(v, 1))
+	err := enforce.Validate(enforce.Length(v, 1), enforce.Entity("lisp_carcdr", v, 1))
 	if err != nil {
 		return types.Nil, err
 	}
@@ -20,7 +20,7 @@ func Car(v ...data.LispValue) (data.LispValue, error) {
 }
 
 func Cdr(v ...data.LispValue) (data.LispValue, error) {
-	err := enforce.Validate(enforce.Length(v, 1), enforce.CarCdr(v, 1))
+	err := enforce.Validate(enforce.Length(v, 1), enforce.Entity("lisp_carcdr", v, 1))
 	if err != nil {
 		return types.Nil, err
 	}

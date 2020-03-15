@@ -3,10 +3,18 @@ package raw
 import (
 	"fmt"
 	"github.com/lucasew/golisp/data"
+	"github.com/lucasew/golisp/data/entity/register"
 	"github.com/lucasew/golisp/data/types"
 	"reflect"
 	"strings"
 )
+
+func init() {
+	register.Register("cons_wrapper", func(v data.LispValue) bool {
+		_, ok := v.(LispConsWrapper)
+		return ok
+	})
+}
 
 type LispConsWrapper struct {
 	v interface{}

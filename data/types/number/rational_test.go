@@ -1,7 +1,7 @@
 package number
 
 import (
-	"github.com/lucasew/golisp/data/types/test"
+	"github.com/lucasew/golisp/data/entity/test"
 	"testing"
 )
 
@@ -10,6 +10,5 @@ func TestRatType(t *testing.T) {
 	if !ok {
 		t.Fail()
 	}
-	t.Run("lisp_value", test.NewTestHelper(test.IsValue)(v))
-	t.Run("rational", test.NewTestHelper(IsRational)(v))
+	test.TestValues(v, t, "rational", "lisp_number")
 }

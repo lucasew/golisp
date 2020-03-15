@@ -2,8 +2,16 @@ package iterator
 
 import (
 	"github.com/lucasew/golisp/data"
+	"github.com/lucasew/golisp/data/entity/register"
 	"github.com/lucasew/golisp/data/types"
 )
+
+func init() {
+	register.Register("filter_iterator", func(v data.LispValue) bool {
+		_, ok := v.(FilterIterator)
+		return ok
+	})
+}
 
 type FilterIterator struct {
 	in   data.LispIterator

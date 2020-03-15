@@ -12,7 +12,7 @@ import (
 func init() {
 	register("env-dump", EnvDump)
 	register("spew", Dump)
-    register("dump-call", DumpCall)
+	register("dump-call", DumpCall)
 }
 
 func EnvDump(env vm.LispVM, v ...data.LispValue) (data.LispValue, error) {
@@ -32,6 +32,6 @@ func Dump(v ...data.LispValue) (data.LispValue, error) {
 }
 
 func DumpCall(v ...data.LispValue) (data.LispValue, error) {
-    p := params.NewParameterLookup(v...)
-    return types.NewString(spew.Sdump(p)), nil
+	p := params.NewParameterLookup(v...)
+	return types.NewString(spew.Sdump(p)), nil
 }

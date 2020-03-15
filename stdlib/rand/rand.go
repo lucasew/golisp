@@ -17,7 +17,7 @@ func init() {
 func RandInt(v ...data.LispValue) (data.LispValue, error) {
 	err := enforce.Validate(
 		enforce.Length(v, 1),
-		enforce.Integer(v, 1),
+		enforce.Entity("int", v, 1),
 	)
 	if err != nil {
 		return types.Nil, err
@@ -30,7 +30,7 @@ func RandInt(v ...data.LispValue) (data.LispValue, error) {
 func RandCons(v ...data.LispValue) (data.LispValue, error) {
 	err := enforce.Validate(
 		enforce.Length(v, 1),
-		enforce.Cons(v, 1),
+		enforce.Entity("lisp_cons", v, 1),
 	)
 	if err != nil {
 		return types.Nil, err
@@ -43,7 +43,7 @@ func RandCons(v ...data.LispValue) (data.LispValue, error) {
 func RandMap(v ...data.LispValue) (data.LispValue, error) {
 	err := enforce.Validate(
 		enforce.Length(v, 1),
-		enforce.Map(v, 1),
+		enforce.Entity("lisp_map", v, 1),
 	)
 	if err != nil {
 		return types.Nil, err

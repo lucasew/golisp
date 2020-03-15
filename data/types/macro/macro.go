@@ -2,8 +2,16 @@ package macro
 
 import (
 	"github.com/lucasew/golisp/data"
+	"github.com/lucasew/golisp/data/entity/register"
 	"github.com/lucasew/golisp/vm"
 )
+
+func init() {
+	register.Register("macro", func(v data.LispValue) bool {
+		_, ok := v.(LispMacro)
+		return ok
+	})
+}
 
 type LispMacro func(vm.LispVM, ...data.LispValue) (data.LispValue, error)
 

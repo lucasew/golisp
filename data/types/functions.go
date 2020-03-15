@@ -2,9 +2,17 @@ package types
 
 import (
 	"github.com/lucasew/golisp/data"
+	"github.com/lucasew/golisp/data/entity/register"
 )
 
-type lispFunction func(...data.LispValue) (data.LispValue, error)
+func init() {
+	register.Register("native_function", func(v data.LispValue) bool {
+		_, ok := v.(NativeFunction)
+		return ok
+	})
+}
+
+type NativeFunction func(...data.LispValue) (data.LispValue, error)
 
 func IsFunction(v data.LispValue) bool {
 	_, ok := v.(data.LispFunction)
@@ -19,26 +27,26 @@ func IsNativeFunction(v data.LispValue) bool {
 	return fn.IsFunctionNative()
 }
 
-func (f lispFunction) IsNil() bool {
+func (f NativeFunction) IsNil() bool {
 	return f == nil
 }
 
-func (f lispFunction) LispCall(i ...data.LispValue) (data.LispValue, error) {
+func (f NativeFunction) LispCall(i ...data.LispValue) (data.LispValue, error) {
 	return f(i...)
 }
 
-func (f lispFunction) Repr() string {
+func (f NativeFunction) Repr() string {
 	return "<native function>"
 }
 
-func (f lispFunction) IsFunctionNative() bool {
+func (f NativeFunction) IsFunctionNative() bool {
 	return true
 }
 
 func NewFunction(f func(...data.LispValue) (data.LispValue, error)) data.LispFunction {
-	return lispFunction(f)
+	return NativeFunction(f)
 }
 
-func (lispFunction) LispTypeName() string {
+func (NativeFunction) LispTypeName() string {
 	return "function"
 }

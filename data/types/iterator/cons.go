@@ -2,8 +2,16 @@ package iterator
 
 import (
 	"github.com/lucasew/golisp/data"
+	"github.com/lucasew/golisp/data/entity/register"
 	"github.com/lucasew/golisp/data/types"
 )
+
+func init() {
+	register.Register("cons_iterator", func(v data.LispValue) bool {
+		_, ok := v.(ConsIterator)
+		return ok
+	})
+}
 
 type ConsIterator struct {
 	cons  data.LispCons

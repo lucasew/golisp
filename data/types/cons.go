@@ -3,8 +3,16 @@ package types
 import (
 	"fmt"
 	"github.com/lucasew/golisp/data"
+	"github.com/lucasew/golisp/data/entity/register"
 	"strings"
 )
+
+func init() {
+	register.Register("cons", func(v data.LispValue) bool {
+		_, ok := v.(Cons)
+		return ok
+	})
+}
 
 type Cons []data.LispValue
 

@@ -2,8 +2,8 @@ package iterator
 
 import (
 	"github.com/lucasew/golisp/data"
+	"github.com/lucasew/golisp/data/entity/test"
 	"github.com/lucasew/golisp/data/types"
-	"github.com/lucasew/golisp/data/types/test"
 	"testing"
 )
 
@@ -13,8 +13,7 @@ func justReturnFirst(v ...data.LispValue) (data.LispValue, error) {
 
 func TestMapIterator(t *testing.T) {
 	v := NewMapIterator(NewRangeIteratorTo(3), types.NewFunction(justReturnFirst))
-	t.Run("value", test.NewTestHelper(test.IsValue)(v))
-	t.Run("iterator", test.NewTestHelper(test.IsIterator)(v))
+	test.TestValues(v, t, "lisp_iterator")
 	expected := NewRangeIteratorTo(3)
 	for i := 0; i < 3; i++ {
 		if expected.Next().Repr() != v.Next().Repr() {

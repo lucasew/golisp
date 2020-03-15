@@ -2,8 +2,8 @@ package main
 
 import (
 	"bufio"
+	"github.com/lucasew/golisp/stdlib"
 	"github.com/lucasew/golisp/stdlib/dump"
-	"github.com/lucasew/golisp/stdlib/loader"
 	"github.com/lucasew/golisp/stdlib/portal"
 	"github.com/lucasew/golisp/stdlib/rand"
 	"github.com/lucasew/golisp/toolchain/default"
@@ -12,7 +12,7 @@ import (
 )
 
 const banner = `
-▄████ ▒█████  ██▓    ██▓ ██████ ██▓███  
+ ▄████ ▒█████  ██▓    ██▓ ██████ ██▓███  
  ██▒ ▀█▒██▒  ██▓██▒   ▓██▒██    ▒▓██░  ██▒
 ▒██░▄▄▄▒██░  ██▒██░   ▒██░ ▓██▄  ▓██░ ██▓▒
 ░▓█  ██▒██   ██▒██░   ░██░ ▒   ██▒██▄█▓▒ ▒
@@ -25,14 +25,14 @@ const banner = `
 
 func main() {
 	tc := tdefault.NewDefaultToolchain(nil)
-	repo := loader.NewImporter(
+	repo := stdlib.NewImporter(
 		libdump.ELEMENTS,
 		libportal.ELEMENTS,
 		rand.ELEMENTS,
 	)
 	tc.Import(
 		map[string]interface{}{
-			"import": repo.IntoLispValue(),
+			"import": stdlib.AsMacro(repo),
 			"repo":   repo,
 		},
 	)

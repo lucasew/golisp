@@ -3,6 +3,7 @@ package vm_default
 import (
 	"errors"
 	"github.com/lucasew/golisp/data"
+	"github.com/lucasew/golisp/data/entity/repo"
 	"github.com/lucasew/golisp/data/types"
 	"github.com/lucasew/golisp/data/types/macro"
 	"github.com/lucasew/golisp/data/types/raw"
@@ -23,6 +24,7 @@ func NewVM(e *env.LispEnv) common.LispVM {
 		imported: imported,
 	}
 	stdlib.ELEMENTS.ImportOnVM(&vm, "default")
+	repo.ImportOnVM(&vm)
 	return &vm
 }
 

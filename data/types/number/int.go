@@ -3,8 +3,16 @@ package number
 import (
 	"errors"
 	"github.com/lucasew/golisp/data"
+	"github.com/lucasew/golisp/data/entity/register"
 	"math/big"
 )
+
+func init() {
+	register.Register("int", func(v data.LispValue) bool {
+		_, ok := v.(LispInt)
+		return ok
+	})
+}
 
 type LispInt struct {
 	n *big.Int
@@ -151,9 +159,4 @@ func (i LispInt) Repr() string {
 
 func (LispInt) LispTypeName() string {
 	return "int"
-}
-
-func IsInt(v data.LispValue) bool {
-	_, ok := v.(LispInt)
-	return ok
 }

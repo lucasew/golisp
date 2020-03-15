@@ -1,4 +1,4 @@
-package loader
+package stdlib
 
 import (
 	"github.com/lucasew/golisp/data"
@@ -22,12 +22,23 @@ func (r *Repository) Register(module string, name string, value func() interface
 	r.packages[module][name] = value
 }
 
-func (r Repository) ImportOnVM(vm vm.LispVM, module string) []string {
-	return NewImporter(r).ImportOnVM(vm, module)
+func (r Repository) IsFunctionNative() bool {
+	return true
 }
 
-func (r Repository) IntoLispValue() data.LispValue {
-	return NewImporter(r).IntoLispValue()
+func (r Repository) ImportOnVM(vm vm.LispVM, module string) []string {
+	mod, ok := r.packages[module]
+	imported := []string{}
+	toimport := map[string]interface{}{}
+	if !ok {
+		return imported
+	}
+	for k, thing := range mod {
+		toimport[k] = thing()
+		imported = append(imported, k)
+	}
+	vm.Import(toimport)
+	return imported
 }
 
 func init() {

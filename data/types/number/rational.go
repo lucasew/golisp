@@ -2,8 +2,16 @@ package number
 
 import (
 	"github.com/lucasew/golisp/data"
+	"github.com/lucasew/golisp/data/entity/register"
 	"math/big"
 )
+
+func init() {
+	register.Register("rational", func(v data.LispValue) bool {
+		_, ok := v.(LispRational)
+		return ok
+	})
+}
 
 type LispRational struct {
 	n *big.Rat
@@ -95,9 +103,4 @@ func (i LispRational) Repr() string {
 
 func (LispRational) LispTypeName() string {
 	return "rational"
-}
-
-func IsRational(v data.LispValue) bool {
-	_, ok := v.(LispRational)
-	return ok
 }

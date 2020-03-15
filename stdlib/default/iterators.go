@@ -36,7 +36,7 @@ func NewIterator(v ...data.LispValue) (data.LispValue, error) {
 }
 
 func Collect(v ...data.LispValue) (data.LispValue, error) {
-	err := enforce.Validate(enforce.Length(v, 1), enforce.Iterator(v, 1))
+	err := enforce.Validate(enforce.Length(v, 1), enforce.Entity("lisp_iterator", v, 1))
 	if err != nil {
 		return types.Nil, err
 	}
@@ -49,7 +49,7 @@ func Collect(v ...data.LispValue) (data.LispValue, error) {
 }
 
 func Next(v ...data.LispValue) (data.LispValue, error) {
-	err := enforce.Validate(enforce.Length(v, 1), enforce.Iterator(v, 1))
+	err := enforce.Validate(enforce.Length(v, 1), enforce.Entity("lisp_iterator", v, 1))
 	if err != nil {
 		return types.Nil, err
 	}
@@ -61,7 +61,7 @@ func Next(v ...data.LispValue) (data.LispValue, error) {
 }
 
 func IsEnd(v ...data.LispValue) (data.LispValue, error) {
-	err := enforce.Validate(enforce.Length(v, 1), enforce.Iterator(v, 1))
+	err := enforce.Validate(enforce.Length(v, 1), enforce.Entity("lisp_iterator", v, 1))
 	if err != nil {
 		return types.Nil, err
 	}

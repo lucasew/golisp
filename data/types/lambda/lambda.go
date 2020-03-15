@@ -2,8 +2,16 @@ package lambda
 
 import (
 	"github.com/lucasew/golisp/data"
+	"github.com/lucasew/golisp/data/entity/register"
 	"github.com/lucasew/golisp/vm"
 )
+
+func init() {
+	register.Register("lambda_function", func(v data.LispValue) bool {
+		_, ok := v.(lispLambda)
+		return ok
+	})
+}
 
 type lispLambda struct {
 	vm     vm.LispVM

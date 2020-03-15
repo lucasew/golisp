@@ -2,8 +2,16 @@ package maps
 
 import (
 	"github.com/lucasew/golisp/data"
+	"github.com/lucasew/golisp/data/entity/register"
 	"github.com/lucasew/golisp/data/types"
 )
+
+func init() {
+	register.Register("map_mappeable", func(v data.LispValue) bool {
+		_, ok := v.(MapMappeable)
+		return ok
+	})
+}
 
 type MapMappeable struct {
 	m Mappeable

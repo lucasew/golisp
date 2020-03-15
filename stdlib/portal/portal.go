@@ -19,7 +19,7 @@ func init() {
 func NewPortal(v ...data.LispValue) (data.LispValue, error) {
 	n := 0
 	if len(v) != 0 {
-		err := enforce.Validate(enforce.Length(v, 1), enforce.Integer(v, 1))
+		err := enforce.Validate(enforce.Length(v, 1), enforce.Entity("int", v, 1))
 		if err != nil {
 			return types.Nil, err
 		}

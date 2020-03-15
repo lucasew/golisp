@@ -26,7 +26,11 @@ func List(v ...data.LispValue) (data.LispValue, error) {
 }
 
 func Call(v ...data.LispValue) (data.LispValue, error) {
-	err := enforce.Validate(enforce.Length(v, 2), enforce.Function(v, 1), enforce.Cons(v, 2))
+	err := enforce.Validate(
+		enforce.Length(v, 2),
+		enforce.Entity("lisp_function", v, 1),
+		enforce.Entity("lisp_cons", v, 2),
+	)
 	if err != nil {
 		return types.Nil, err
 	}

@@ -1,11 +1,19 @@
 package maps
 
 import (
+	"fmt"
 	"github.com/lucasew/golisp/data"
+	"github.com/lucasew/golisp/data/entity/register"
 	"github.com/lucasew/golisp/data/types"
-    "fmt"
-    "strings"
+	"strings"
 )
+
+func init() {
+	register.Register("map_string", func(v data.LispValue) bool {
+		_, ok := v.(MapString)
+		return ok
+	})
+}
 
 type MapString map[string]data.LispValue
 
@@ -26,12 +34,12 @@ func (m MapString) LispTypeName() string {
 }
 
 func (m MapString) Repr() string {
-    ret := []string{"( new-map "}
-    for k, v := range m {
-        ret = append(ret, fmt.Sprintf("%s '%s ", k, v.Repr()))
-    }
-    ret = append(ret, ")")
-    return strings.Join(ret, " ")
+	ret := []string{"( new-map "}
+	for k, v := range m {
+		ret = append(ret, fmt.Sprintf("%s '%s ", k, v.Repr()))
+	}
+	ret = append(ret, ")")
+	return strings.Join(ret, " ")
 }
 
 func (m MapString) Get(k data.LispValue) data.LispValue {

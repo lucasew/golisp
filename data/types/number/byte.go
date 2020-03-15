@@ -3,14 +3,17 @@ package number
 import (
 	"fmt"
 	"github.com/lucasew/golisp/data"
+	"github.com/lucasew/golisp/data/entity/register"
 )
 
-type Byte byte
-
-func IsByte(v data.LispValue) bool {
-	_, ok := v.(Byte)
-	return ok
+func init() {
+	register.Register("byte", func(v data.LispValue) bool {
+		_, ok := v.(Byte)
+		return ok
+	})
 }
+
+type Byte byte
 
 func NewByte(b byte) Byte {
 	return Byte(b)

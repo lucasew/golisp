@@ -1,11 +1,12 @@
 package stdlib
 
 import (
+	"errors"
 	"github.com/lucasew/golisp/data"
+	eregister "github.com/lucasew/golisp/data/entity/register"
 	"github.com/lucasew/golisp/data/types"
 	"github.com/lucasew/golisp/data/types/number"
 	"github.com/lucasew/golisp/data/types/raw"
-	"github.com/lucasew/golisp/data/types/test"
 	"github.com/lucasew/golisp/utils/enforce"
 )
 
@@ -21,7 +22,23 @@ func init() {
 	register("is-map", IsMap)
 	register("is-namespace", IsNamespace)
 	register("is-iterator", IsIterator)
+	register("is-entity", IsEntity)
 	register("pass", Pass)
+}
+
+func IsEntity(v ...data.LispValue) (data.LispValue, error) {
+	err := enforce.Validate(
+		enforce.Length(v, 2),
+		enforce.Entity("lisp_string", v, 1),
+	)
+	if err != nil {
+		return types.Nil, err
+	}
+	e, ok := eregister.Get(v[0].(data.LispString).ToString())
+	if !ok {
+		return types.Nil, errors.New("entity not found")
+	}
+	return raw.NewLispWrapper(e.Isfn(v[1])), nil
 }
 
 func IsNative(v ...data.LispValue) (data.LispValue, error) {
@@ -78,7 +95,7 @@ func IsAtom(v ...data.LispValue) (data.LispValue, error) {
 	if err != nil {
 		return types.Nil, err
 	}
-	return raw.NewLispWrapper(test.IsAtom(v[0])), nil
+	return raw.NewLispWrapper(eregister.Is("lisp_atom", v[0])), nil
 }
 
 func IsCons(v ...data.LispValue) (data.LispValue, error) {
@@ -86,7 +103,7 @@ func IsCons(v ...data.LispValue) (data.LispValue, error) {
 	if err != nil {
 		return types.Nil, err
 	}
-	return raw.NewLispWrapper(test.IsCons(v[0])), nil
+	return raw.NewLispWrapper(eregister.Is("lisp_cons", v[0])), nil
 }
 
 func IsMap(v ...data.LispValue) (data.LispValue, error) {
@@ -94,7 +111,7 @@ func IsMap(v ...data.LispValue) (data.LispValue, error) {
 	if err != nil {
 		return types.Nil, err
 	}
-	return raw.NewLispWrapper(test.IsMap(v[0])), nil
+	return raw.NewLispWrapper(eregister.Is("lisp_map", v[0])), nil
 }
 
 func IsNamespace(v ...data.LispValue) (data.LispValue, error) {
@@ -102,7 +119,7 @@ func IsNamespace(v ...data.LispValue) (data.LispValue, error) {
 	if err != nil {
 		return types.Nil, err
 	}
-	return raw.NewLispWrapper(test.IsNamespace(v[0])), nil
+	return raw.NewLispWrapper(eregister.Is("lisp_namespace", v[0])), nil
 }
 
 func IsIterator(v ...data.LispValue) (data.LispValue, error) {
@@ -110,7 +127,7 @@ func IsIterator(v ...data.LispValue) (data.LispValue, error) {
 	if err != nil {
 		return types.Nil, err
 	}
-	return raw.NewLispWrapper(test.IsIterator(v[0])), nil
+	return raw.NewLispWrapper(eregister.Is("lisp_iterator", v[0])), nil
 }
 
 func Pass(v ...data.LispValue) (data.LispValue, error) {

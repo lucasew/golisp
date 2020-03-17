@@ -1,5 +1,12 @@
 package data
 
+import (
+	"context"
+	"errors"
+)
+
+var ErrContextCancelled = errors.New("context canceled")
+
 type LispAccuracy int
 
 const (
@@ -60,7 +67,7 @@ type IntoLispValue interface {
 
 type LispFunction interface {
 	LispValue
-	LispCall(...LispValue) (LispValue, error)
+	LispCall(context.Context, ...LispValue) (LispValue, error)
 	IsFunctionNative() bool
 }
 
@@ -85,6 +92,6 @@ type LispCarCdr interface {
 
 type LispIterator interface {
 	LispValue
-	Next() LispValue
-	IsEnd() bool
+	Next(context.Context) LispValue
+	IsEnd(context.Context) bool
 }

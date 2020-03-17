@@ -7,23 +7,23 @@ import (
 	"github.com/lucasew/golisp/lex"
 )
 
-func ParseSymbol(ctx *lex.Context) (data.LispValue, error) {
-	b, ok := ctx.GetByte()
+func ParseSymbol(ctx lex.ParseContext) (data.LispValue, error) {
+	b, ok := ctx.Lex().GetByte()
 	if !ok {
 		return types.Nil, fmt.Errorf("%w: symbol", ErrEOFWhile)
 	}
 	if !(b.IsByteLetter() || b.IsByteSpecialSymbol()) {
 		return types.Nil, fmt.Errorf("%w: symbol", ErrInvalidEntryPoint)
 	}
-	begin := ctx.Index()
+	begin := ctx.Lex().Index()
 	for {
-		ctx.Increment()
-		b, ok = ctx.GetByte()
+		ctx.Lex().Increment()
+		b, ok = ctx.Lex().GetByte()
 		if !ok {
 			return types.Nil, fmt.Errorf("%w: symbol", ErrPrematureEOF)
 		}
 		if !(b.IsByteLetter() || b.IsByteSpecialSymbol()) {
-			s := ctx.Slice(begin, ctx.Index())
+			s := ctx.Lex().Slice(begin, ctx.Lex().Index())
 			return types.NewSymbol(s), nil
 		}
 	}

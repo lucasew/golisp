@@ -1,9 +1,11 @@
 package raw
 
 import (
+	"context"
 	"fmt"
 	"github.com/davecgh/go-spew/spew"
 	"github.com/lucasew/golisp/data"
+	"github.com/lucasew/golisp/data/entity/register"
 	"github.com/lucasew/golisp/data/types"
 	"github.com/lucasew/golisp/data/types/macro"
 	"github.com/lucasew/golisp/data/types/maps"
@@ -12,6 +14,13 @@ import (
 	"math/big"
 	"reflect"
 )
+
+func init() {
+	register.Register("wrapper", func(v data.LispValue) bool {
+		_, ok := v.(LispWrapper)
+		return ok
+	})
+}
 
 type LispWrapper struct {
 	v interface{}
@@ -44,7 +53,7 @@ func NewLispWrapper(v interface{}) data.LispValue {
 	case map[string]data.LispValue:
 		return maps.NewMapFromMapString(v)
 	case map[data.LispValue]data.LispValue:
-		return maps.NewMapFromMapValue(v)
+		return maps.NewMapValue(v)
 	case int, int16, int32, int64, int8, uint, uint16, uint32, uint8:
 		return number.NewIntFromInt64(reflect.ValueOf(v).Int())
 	case uint64:
@@ -62,9 +71,9 @@ func NewLispWrapper(v interface{}) data.LispValue {
 		return number.NewRationalFromBigRat(v)
 	case big.Int, big.Float, big.Rat:
 		return NewLispWrapper(&v)
-	case func(vm.LispVM, ...data.LispValue) (data.LispValue, error):
+	case func(context.Context, vm.LispVM, ...data.LispValue) (data.LispValue, error):
 		return macro.NewLispMacro(v)
-	case func(...data.LispValue) (data.LispValue, error):
+	case func(context.Context, ...data.LispValue) (data.LispValue, error):
 		return types.NewFunction(v)
 	}
 	return LispWrapper{v}
@@ -111,7 +120,4 @@ func (lw LispWrapper) LispTypeName() string {
 
 func (lw LispWrapper) Repr() string {
 	return fmt.Sprintf("<native %s >", spew.Sdump(lw.v))
-}
-
-func init() {
 }

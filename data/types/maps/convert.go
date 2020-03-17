@@ -3,6 +3,7 @@ package maps
 import (
 	"fmt"
 	"github.com/lucasew/golisp/data"
+	_ "github.com/lucasew/golisp/data/types/number"
 )
 
 func NewMapFromInterface(v interface{}) (data.LispMap, error) {
@@ -12,7 +13,7 @@ func NewMapFromInterface(v interface{}) (data.LispMap, error) {
 	case map[string]data.LispValue:
 		return NewMapFromMapString(mi), nil
 	case map[data.LispValue]data.LispValue:
-		return NewMapFromMapValue(mi), nil
+		return NewMapValue(mi), nil
 	case Mappeable:
 		return NewMapFromMappeable(mi), nil
 	default:

@@ -2,8 +2,9 @@ package main
 
 import (
 	"bufio"
+	"context"
+	"github.com/lucasew/golisp/stdlib"
 	"github.com/lucasew/golisp/stdlib/dump"
-	"github.com/lucasew/golisp/stdlib/loader"
 	"github.com/lucasew/golisp/stdlib/portal"
 	"github.com/lucasew/golisp/stdlib/rand"
 	"github.com/lucasew/golisp/toolchain/default"
@@ -12,7 +13,7 @@ import (
 )
 
 const banner = `
-▄████ ▒█████  ██▓    ██▓ ██████ ██▓███  
+ ▄████ ▒█████  ██▓    ██▓ ██████ ██▓███  
  ██▒ ▀█▒██▒  ██▓██▒   ▓██▒██    ▒▓██░  ██▒
 ▒██░▄▄▄▒██░  ██▒██░   ▒██░ ▓██▄  ▓██░ ██▓▒
 ░▓█  ██▒██   ██▒██░   ░██░ ▒   ██▒██▄█▓▒ ▒
@@ -25,14 +26,15 @@ const banner = `
 
 func main() {
 	tc := tdefault.NewDefaultToolchain(nil)
-	repo := loader.NewImporter(
+	ctx := context.Background()
+	repo := stdlib.NewImporter(
 		libdump.ELEMENTS,
 		libportal.ELEMENTS,
 		rand.ELEMENTS,
 	)
 	tc.Import(
 		map[string]interface{}{
-			"import": repo.IntoLispValue(),
+			"import": stdlib.AsMacro(repo),
 			"repo":   repo,
 		},
 	)
@@ -55,7 +57,7 @@ func main() {
 		if parenthesis == 0 {
 			stmt := strings.Join(lines, "\n")
 			lines = []string{}
-			ret, err := tc.EvalString(stmt)
+			ret, err := tc.EvalString(ctx, stmt)
 			if err != nil {
 				println(err.Error())
 			}

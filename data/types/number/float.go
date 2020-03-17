@@ -2,8 +2,16 @@ package number
 
 import (
 	"github.com/lucasew/golisp/data"
+	"github.com/lucasew/golisp/data/entity/register"
 	"math/big"
 )
+
+func init() {
+	register.Register("float", func(v data.LispValue) bool {
+		_, ok := v.(LispFloat)
+		return ok
+	})
+}
 
 type LispFloat struct {
 	n *big.Float
@@ -100,9 +108,4 @@ func (i LispFloat) Repr() string {
 
 func (LispFloat) LispTypeName() string {
 	return "float"
-}
-
-func IsFloat(v data.LispValue) bool {
-	_, ok := v.(LispFloat)
-	return ok
 }

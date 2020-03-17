@@ -1,6 +1,7 @@
 package stdlib
 
 import (
+	"context"
 	"fmt"
 	"github.com/lucasew/golisp/data"
 	"github.com/lucasew/golisp/data/types"
@@ -15,7 +16,7 @@ func init() {
 	register("to-byte", ToByte)
 }
 
-func ToFloat(v ...data.LispValue) (data.LispValue, error) {
+func ToFloat(ctx context.Context, v ...data.LispValue) (data.LispValue, error) {
 	switch n := v[0].(type) {
 	case number.LispFloat:
 		return n, nil
@@ -28,7 +29,7 @@ func ToFloat(v ...data.LispValue) (data.LispValue, error) {
 	}
 }
 
-func ToRat(v ...data.LispValue) (data.LispValue, error) {
+func ToRat(ctx context.Context, v ...data.LispValue) (data.LispValue, error) {
 	switch n := v[0].(type) {
 	case number.LispFloat:
 		r, ok := number.NewRationalFromString(n.Repr())
@@ -45,7 +46,7 @@ func ToRat(v ...data.LispValue) (data.LispValue, error) {
 	}
 }
 
-func ToInt(v ...data.LispValue) (data.LispValue, error) {
+func ToInt(ctx context.Context, v ...data.LispValue) (data.LispValue, error) {
 	switch n := v[0].(type) {
 	case number.LispFloat:
 		return number.NewIntFromFloat(n)
@@ -58,7 +59,7 @@ func ToInt(v ...data.LispValue) (data.LispValue, error) {
 	}
 }
 
-func ToByte(v ...data.LispValue) (data.LispValue, error) {
+func ToByte(ctx context.Context, v ...data.LispValue) (data.LispValue, error) {
 	err := enforce.Validate(enforce.Length(v, 1), enforce.Number(v, 1))
 	if err != nil {
 		return types.Nil, err

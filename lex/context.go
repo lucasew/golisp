@@ -1,16 +1,33 @@
 package lex
 
 import (
+	"context"
 	"fmt"
 )
+
+type ParseContext struct {
+	context.Context
+	l *Context
+}
+
+func (pc ParseContext) Lex() *Context {
+	return pc.l
+}
+
+func NewParseContextFromContext(ctx context.Context, l *Context) ParseContext {
+	return ParseContext{
+		ctx,
+		l,
+	}
+}
 
 type Context struct {
 	data  []byte
 	index int
 }
 
-func NewContext(data []byte) Context {
-	return Context{
+func NewContext(data []byte) *Context {
+	return &Context{
 		data:  data,
 		index: 0,
 	}

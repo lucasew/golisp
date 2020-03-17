@@ -1,6 +1,7 @@
 package stdlib
 
 import (
+	"context"
 	"github.com/lucasew/golisp/data"
 	"github.com/lucasew/golisp/data/types"
 	"github.com/lucasew/golisp/utils/enforce"
@@ -12,13 +13,13 @@ func init() {
 	register("let", Let)
 }
 
-func Setg(env vm.LispVM, v ...data.LispValue) (data.LispValue, error) {
+func Setg(ctx context.Context, env vm.LispVM, v ...data.LispValue) (data.LispValue, error) {
 	err := enforce.Validate(enforce.Length(v, 2), enforce.Symbol(v, 1))
 	if err != nil {
 		return types.Nil, err
 	}
 	key := v[0].(types.Symbol)
-	value, err := env.Eval(v[1])
+	value, err := env.Eval(ctx, v[1])
 	if err != nil {
 		return types.Nil, err
 	}
@@ -26,13 +27,13 @@ func Setg(env vm.LispVM, v ...data.LispValue) (data.LispValue, error) {
 	return value, nil
 }
 
-func Let(env vm.LispVM, v ...data.LispValue) (data.LispValue, error) {
+func Let(ctx context.Context, env vm.LispVM, v ...data.LispValue) (data.LispValue, error) {
 	err := enforce.Validate(enforce.Length(v, 2), enforce.Symbol(v, 1))
 	if err != nil {
 		return types.Nil, err
 	}
 	key := v[0].(types.Symbol)
-	value, err := env.Eval(v[1])
+	value, err := env.Eval(ctx, v[1])
 	if err != nil {
 		return types.Nil, err
 	}

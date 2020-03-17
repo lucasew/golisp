@@ -1,6 +1,7 @@
 package stdlib
 
 import (
+	"context"
 	"github.com/lucasew/golisp/data"
 	"github.com/lucasew/golisp/data/types"
 	"github.com/lucasew/golisp/data/types/iterator"
@@ -18,8 +19,8 @@ func init() {
 	register("map-tuples", MapTuples)
 }
 
-func NewMap(v ...data.LispValue) (data.LispValue, error) {
-    p := params.NewParameterLookup(v...)
+func NewMap(ctx context.Context, v ...data.LispValue) (data.LispValue, error) {
+	p := params.NewParameterLookup(ctx, v...)
 	err := enforce.Validate(enforce.Length(p.Args, 0))
 	if err != nil {
 		return types.Nil, err
@@ -27,10 +28,10 @@ func NewMap(v ...data.LispValue) (data.LispValue, error) {
 	return maps.NewMapFromMapString(p.KwArgs), nil
 }
 
-func MapSet(v ...data.LispValue) (data.LispValue, error) {
+func MapSet(ctx context.Context, v ...data.LispValue) (data.LispValue, error) {
 	err := enforce.Validate(
 		enforce.Length(v, 3),
-		enforce.Namespace(v, 1),
+		enforce.Entity("lisp_namespace", v, 1),
 	)
 	if err != nil {
 		return types.Nil, err
@@ -39,10 +40,10 @@ func MapSet(v ...data.LispValue) (data.LispValue, error) {
 	return m.Set(v[1], v[2]), nil
 }
 
-func MapGet(v ...data.LispValue) (data.LispValue, error) {
+func MapGet(ctx context.Context, v ...data.LispValue) (data.LispValue, error) {
 	err := enforce.Validate(
 		enforce.Length(v, 2),
-		enforce.Namespace(v, 1),
+		enforce.Entity("lisp_namespace", v, 1),
 	)
 	if err != nil {
 		return types.Nil, err
@@ -51,10 +52,10 @@ func MapGet(v ...data.LispValue) (data.LispValue, error) {
 	return m.Get(v[1]), nil
 }
 
-func MapKeys(v ...data.LispValue) (data.LispValue, error) {
+func MapKeys(ctx context.Context, v ...data.LispValue) (data.LispValue, error) {
 	err := enforce.Validate(
 		enforce.Length(v, 1),
-		enforce.Map(v, 1),
+		enforce.Entity("lisp_map", v, 1),
 	)
 	if err != nil {
 		return types.Nil, err
@@ -63,10 +64,10 @@ func MapKeys(v ...data.LispValue) (data.LispValue, error) {
 	return iterator.NewIterator(m.Keys())
 }
 
-func MapValues(v ...data.LispValue) (data.LispValue, error) {
+func MapValues(ctx context.Context, v ...data.LispValue) (data.LispValue, error) {
 	err := enforce.Validate(
 		enforce.Length(v, 1),
-		enforce.Map(v, 1),
+		enforce.Entity("lisp_map", v, 1),
 	)
 	if err != nil {
 		return types.Nil, err
@@ -75,10 +76,10 @@ func MapValues(v ...data.LispValue) (data.LispValue, error) {
 	return iterator.NewIterator(m.Values())
 }
 
-func MapTuples(v ...data.LispValue) (data.LispValue, error) {
+func MapTuples(ctx context.Context, v ...data.LispValue) (data.LispValue, error) {
 	err := enforce.Validate(
 		enforce.Length(v, 1),
-		enforce.Map(v, 1),
+		enforce.Entity("lisp_map", v, 1),
 	)
 	if err != nil {
 		return types.Nil, err

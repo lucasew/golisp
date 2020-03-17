@@ -1,11 +1,23 @@
 package maps
 
 import (
+	"fmt"
 	"github.com/lucasew/golisp/data"
+	"github.com/lucasew/golisp/data/entity/register"
 	"github.com/lucasew/golisp/data/types"
-    "fmt"
-    "strings"
+	"strings"
 )
+
+func init() {
+	register.Register("map_value", func(v data.LispValue) bool {
+		_, ok := v.(LispMap)
+		return ok
+	})
+}
+
+func NewMapValue(m map[data.LispValue]data.LispValue) LispMap {
+	return LispMap(m)
+}
 
 type LispMap map[data.LispValue]data.LispValue
 
@@ -69,19 +81,19 @@ func (m LispMap) LispTypeName() string {
 }
 
 func (m LispMap) Repr() string {
-    ret := []string{"( new-map "}
-    for k, v := range m {
-        kf := ""
-        switch ks := k.(type) {
-        case data.LispString:
-            kf = ks.ToString()
-        default:
-            kf = fmt.Sprintf(":invalid[%s]", ks.Repr())
-        }
-        ret = append(ret, fmt.Sprintf("%s '%s ", kf, v.Repr()))
-    }
-    ret = append(ret, ")")
-    return strings.Join(ret, " ")
+	ret := []string{"( new-map "}
+	for k, v := range m {
+		kf := ""
+		switch ks := k.(type) {
+		case data.LispString:
+			kf = ks.ToString()
+		default:
+			kf = fmt.Sprintf(":invalid[%s]", ks.Repr())
+		}
+		ret = append(ret, fmt.Sprintf("%s '%s ", kf, v.Repr()))
+	}
+	ret = append(ret, ")")
+	return strings.Join(ret, " ")
 }
 
 func (m LispMap) IsNil() bool {

@@ -1,11 +1,13 @@
 package stdlib
 
 import (
+	"context"
+	"errors"
 	"github.com/lucasew/golisp/data"
+	eregister "github.com/lucasew/golisp/data/entity/register"
 	"github.com/lucasew/golisp/data/types"
 	"github.com/lucasew/golisp/data/types/number"
 	"github.com/lucasew/golisp/data/types/raw"
-	"github.com/lucasew/golisp/data/types/test"
 	"github.com/lucasew/golisp/utils/enforce"
 )
 
@@ -21,10 +23,26 @@ func init() {
 	register("is-map", IsMap)
 	register("is-namespace", IsNamespace)
 	register("is-iterator", IsIterator)
+	register("is-entity", IsEntity)
 	register("pass", Pass)
 }
 
-func IsNative(v ...data.LispValue) (data.LispValue, error) {
+func IsEntity(ctx context.Context, v ...data.LispValue) (data.LispValue, error) {
+	err := enforce.Validate(
+		enforce.Length(v, 2),
+		enforce.Entity("lisp_string", v, 1),
+	)
+	if err != nil {
+		return types.Nil, err
+	}
+	e, ok := eregister.Get(v[0].(data.LispString).ToString())
+	if !ok {
+		return types.Nil, errors.New("entity not found")
+	}
+	return raw.NewLispWrapper(e.Isfn(v[1])), nil
+}
+
+func IsNative(ctx context.Context, v ...data.LispValue) (data.LispValue, error) {
 	err := enforce.Validate(enforce.Length(v, 1))
 	if err != nil {
 		return types.Nil, err
@@ -33,7 +51,7 @@ func IsNative(v ...data.LispValue) (data.LispValue, error) {
 	return raw.NewLispWrapper(ok), nil
 }
 
-func IsNumber(v ...data.LispValue) (data.LispValue, error) {
+func IsNumber(ctx context.Context, v ...data.LispValue) (data.LispValue, error) {
 	err := enforce.Validate(enforce.Length(v, 1))
 	if err != nil {
 		return types.Nil, err
@@ -41,7 +59,7 @@ func IsNumber(v ...data.LispValue) (data.LispValue, error) {
 	return raw.NewLispWrapper(number.IsNumber(v[0])), nil
 }
 
-func IsString(v ...data.LispValue) (data.LispValue, error) {
+func IsString(ctx context.Context, v ...data.LispValue) (data.LispValue, error) {
 	err := enforce.Validate(enforce.Length(v, 1))
 	if err != nil {
 		return types.Nil, err
@@ -49,7 +67,7 @@ func IsString(v ...data.LispValue) (data.LispValue, error) {
 	return raw.NewLispWrapper(types.IsString(v[0])), nil
 }
 
-func IsSymbol(v ...data.LispValue) (data.LispValue, error) {
+func IsSymbol(ctx context.Context, v ...data.LispValue) (data.LispValue, error) {
 	err := enforce.Validate(enforce.Length(v, 1))
 	if err != nil {
 		return types.Nil, err
@@ -57,7 +75,7 @@ func IsSymbol(v ...data.LispValue) (data.LispValue, error) {
 	return raw.NewLispWrapper(types.IsSymbol(v[0])), nil
 }
 
-func IsFunction(v ...data.LispValue) (data.LispValue, error) {
+func IsFunction(ctx context.Context, v ...data.LispValue) (data.LispValue, error) {
 	err := enforce.Validate(enforce.Length(v, 1))
 	if err != nil {
 		return types.Nil, err
@@ -65,7 +83,7 @@ func IsFunction(v ...data.LispValue) (data.LispValue, error) {
 	return raw.NewLispWrapper(types.IsFunction(v[0])), nil
 }
 
-func IsFunctionNative(v ...data.LispValue) (data.LispValue, error) {
+func IsFunctionNative(ctx context.Context, v ...data.LispValue) (data.LispValue, error) {
 	err := enforce.Validate(enforce.Length(v, 1))
 	if err != nil {
 		return types.Nil, err
@@ -73,36 +91,36 @@ func IsFunctionNative(v ...data.LispValue) (data.LispValue, error) {
 	return raw.NewLispWrapper(types.IsNativeFunction(v[0])), nil
 }
 
-func IsAtom(v ...data.LispValue) (data.LispValue, error) {
+func IsAtom(ctx context.Context, v ...data.LispValue) (data.LispValue, error) {
 	err := enforce.Validate(enforce.Length(v, 1))
 	if err != nil {
 		return types.Nil, err
 	}
-	return raw.NewLispWrapper(test.IsAtom(v[0])), nil
+	return raw.NewLispWrapper(eregister.Is("lisp_atom", v[0])), nil
 }
 
-func IsCons(v ...data.LispValue) (data.LispValue, error) {
+func IsCons(ctx context.Context, v ...data.LispValue) (data.LispValue, error) {
 	err := enforce.Validate(enforce.Length(v, 1))
 	if err != nil {
 		return types.Nil, err
 	}
-	return raw.NewLispWrapper(test.IsCons(v[0])), nil
+	return raw.NewLispWrapper(eregister.Is("lisp_cons", v[0])), nil
 }
 
-func IsMap(v ...data.LispValue) (data.LispValue, error) {
+func IsMap(ctx context.Context, v ...data.LispValue) (data.LispValue, error) {
 	err := enforce.Validate(enforce.Length(v, 1))
 	if err != nil {
 		return types.Nil, err
 	}
-	return raw.NewLispWrapper(test.IsMap(v[0])), nil
+	return raw.NewLispWrapper(eregister.Is("lisp_map", v[0])), nil
 }
 
-func IsNamespace(v ...data.LispValue) (data.LispValue, error) {
+func IsNamespace(ctx context.Context, v ...data.LispValue) (data.LispValue, error) {
 	err := enforce.Validate(enforce.Length(v, 1))
 	if err != nil {
 		return types.Nil, err
 	}
-	return raw.NewLispWrapper(test.IsNamespace(v[0])), nil
+	return raw.NewLispWrapper(eregister.Is("lisp_namespace", v[0])), nil
 }
 
 func IsIterator(v ...data.LispValue) (data.LispValue, error) {
@@ -110,7 +128,7 @@ func IsIterator(v ...data.LispValue) (data.LispValue, error) {
 	if err != nil {
 		return types.Nil, err
 	}
-	return raw.NewLispWrapper(test.IsIterator(v[0])), nil
+	return raw.NewLispWrapper(eregister.Is("lisp_iterator", v[0])), nil
 }
 
 func Pass(v ...data.LispValue) (data.LispValue, error) {

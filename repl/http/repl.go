@@ -18,13 +18,13 @@ func main() {
 			handleError(c, err)
 			return
 		}
-		ast, err := tc.ParseBytes(buf)
+		ast, err := tc.ParseBytes(c, buf)
 		if err != nil {
 			handleError(c, err)
 			return
 		}
 		mutex.Lock()
-		res, err := tc.Eval(ast)
+		res, err := tc.Eval(c, ast)
 		mutex.Unlock()
 		c.JSON(200, gin.H{
 			"result": res.Repr(),
@@ -37,14 +37,14 @@ func main() {
 			handleError(c, err)
 			return
 		}
-		ast, err := tc.ParseBytes(buf)
+		ast, err := tc.ParseBytes(c, buf)
 		if err != nil {
 			handleError(c, err)
 			return
 		}
 		mutex.Lock()
-		res, err := tc.Eval(ast)
-		mutex.Unlock()
+		defer mutex.Unlock()
+		res, err := tc.Eval(c, ast)
 		c.JSON(200, gin.H{
 			"result": spew.Sdump(res),
 		})

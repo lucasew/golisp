@@ -9,8 +9,8 @@ import (
 	"strings"
 )
 
-func ParseNumber(ctx *lex.Context) (data.LispValue, error) {
-	b, ok := ctx.GetByte()
+func ParseNumber(ctx lex.ParseContext) (data.LispValue, error) {
+	b, ok := ctx.Lex().GetByte()
 	if !ok {
 		return types.Nil, fmt.Errorf("%w: number", ErrEOFWhile)
 	}
@@ -20,10 +20,10 @@ func ParseNumber(ctx *lex.Context) (data.LispValue, error) {
 	e := false     // For scientific notation like 10^2 that is like 1E2
 	dot := false   // For the dot of floats
 	slash := false // For the / in rational numbers
-	begin := ctx.Index()
+	begin := ctx.Lex().Index()
 	for {
-		ctx.Increment()
-		b, ok := ctx.GetByte()
+		ctx.Lex().Increment()
+		b, ok := ctx.Lex().GetByte()
 		if !ok {
 			// return types.Nil, errors.New("eof when parsing number body")
 		}
@@ -57,7 +57,7 @@ func ParseNumber(ctx *lex.Context) (data.LispValue, error) {
 		if b.IsByteUnderline() { // TODO: Ignore it when using the function to parse
 			continue
 		}
-		s := ctx.Slice(begin, ctx.Index())
+		s := ctx.Lex().Slice(begin, ctx.Lex().Index())
 		s = strings.ReplaceAll(s, "_", "")
 		reti, ok := number.NewIntFromString(s)
 		if ok {

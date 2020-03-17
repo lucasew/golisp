@@ -1,8 +1,8 @@
 package stdlib
 
 import (
+	"context"
 	"github.com/lucasew/golisp/data"
-	// "github.com/lucasew/golisp/data/convert"
 	"github.com/lucasew/golisp/data/types"
 	"github.com/lucasew/golisp/data/types/raw"
 	"github.com/lucasew/golisp/data/types/test"
@@ -16,7 +16,7 @@ func init() {
 	register("eqt", EqType)
 }
 
-func EqRef(v ...data.LispValue) (data.LispValue, error) {
+func EqRef(ctx context.Context, v ...data.LispValue) (data.LispValue, error) {
 	err := enforce.Validate(enforce.Length(v, 2))
 	if err != nil {
 		return types.Nil, err
@@ -26,7 +26,7 @@ func EqRef(v ...data.LispValue) (data.LispValue, error) {
 	return raw.NewLispWrapper(a == b), nil
 }
 
-func EqDeep(v ...data.LispValue) (data.LispValue, error) {
+func EqDeep(ctx context.Context, v ...data.LispValue) (data.LispValue, error) {
 	err := enforce.Validate(enforce.Length(v, 2))
 	if err != nil {
 		return types.Nil, err
@@ -36,7 +36,7 @@ func EqDeep(v ...data.LispValue) (data.LispValue, error) {
 	return raw.NewLispWrapper(reflect.DeepEqual(a, b)), nil
 }
 
-func EqType(v ...data.LispValue) (data.LispValue, error) {
+func EqType(ctx context.Context, v ...data.LispValue) (data.LispValue, error) {
 	err := enforce.Validate(enforce.Length(v, 2))
 	if err != nil {
 		return types.Nil, err

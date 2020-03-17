@@ -1,9 +1,18 @@
 package iterator
 
 import (
+	"context"
 	"github.com/lucasew/golisp/data"
+	"github.com/lucasew/golisp/data/entity/register"
 	"github.com/lucasew/golisp/data/types"
 )
+
+func init() {
+	register.Register("map_iterator", func(v data.LispValue) bool {
+		_, ok := v.(MapIterator)
+		return ok
+	})
+}
 
 type MapIterator struct {
 	in data.LispIterator
@@ -17,8 +26,8 @@ func NewMapIterator(c data.LispIterator, f data.LispFunction) data.LispIterator 
 	}
 }
 
-func (m MapIterator) IsEnd() bool {
-	return m.in.IsEnd()
+func (m MapIterator) IsEnd(ctx context.Context) bool {
+	return m.in.IsEnd(ctx)
 }
 
 func (m MapIterator) IsNil() bool {
@@ -29,12 +38,12 @@ func (MapIterator) LispTypeName() string {
 	return "iterator"
 }
 
-func (m *MapIterator) Next() data.LispValue {
-	if m.in.IsEnd() {
+func (m *MapIterator) Next(ctx context.Context) data.LispValue {
+	if m.in.IsEnd(ctx) {
 		return types.Nil
 	}
-	v := m.in.Next()
-	r, err := m.f.LispCall(v)
+	v := m.in.Next(ctx)
+	r, err := m.f.LispCall(ctx, v)
 	if err != nil {
 		return types.Nil
 	}

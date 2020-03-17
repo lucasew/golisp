@@ -2,19 +2,25 @@ package vm_default
 
 import (
 	// "github.com/lucasew/golisp/datatypes"
+	"context"
 	"github.com/davecgh/go-spew/spew"
 	"github.com/lucasew/golisp/data"
 	parser "github.com/lucasew/golisp/parser/default"
 	"testing"
+	// "time"
 )
 
+var ctx = context.Background()
+
+// var ctx, cancel = context.WithTimeout(context.Background(), time.Second*2)
+
 func TestBasicEval(t *testing.T) {
-	ast, err := parser.Parse("(and (or 2 3 4) 3 4)")
+	ast, err := parser.Parse(ctx, "(and (or 2 3 4) 3 4)")
 	if err != nil {
 		t.Error(err)
 	}
 	vm := NewVM(nil)
-	res, err := vm.Eval(ast)
+	res, err := vm.Eval(ctx, ast)
 	if err != nil {
 		t.Error(err)
 	}
@@ -26,12 +32,12 @@ func TestBasicEval(t *testing.T) {
 }
 
 func TestIfPrints(t *testing.T) {
-	ast, err := parser.Parse("(println \"teste\" )")
+	ast, err := parser.Parse(ctx, "(println \"teste\" )")
 	if err != nil {
 		t.Error(err)
 	}
 	vm := NewVM(nil)
-	res, err := vm.Eval(ast)
+	res, err := vm.Eval(ctx, ast)
 	if err != nil {
 		t.Error(err)
 	}
@@ -48,12 +54,12 @@ func TestAcessFunctionAnd(t *testing.T) {
 }
 
 func TestSetg(t *testing.T) {
-	ast, err := parser.Parse("(setg teste \"teste\")")
+	ast, err := parser.Parse(ctx, "(setg teste \"teste\")")
 	if err != nil {
 		t.Error(err)
 	}
 	vm := NewVM(nil)
-	_, err = vm.Eval(ast)
+	_, err = vm.Eval(ctx, ast)
 	if err != nil {
 		t.Error(err)
 	}
@@ -65,12 +71,12 @@ func TestSetg(t *testing.T) {
 }
 
 func TestIfYes(t *testing.T) {
-	ast, err := parser.Parse("(if 2 3 4)") // 2 == true
+	ast, err := parser.Parse(ctx, "(if 2 3 4)") // 2 == true
 	if err != nil {
 		t.Error(err)
 	}
 	vm := NewVM(nil)
-	ret, err := vm.Eval(ast)
+	ret, err := vm.Eval(ctx, ast)
 	if err != nil {
 		t.Error(err)
 	}
@@ -82,12 +88,12 @@ func TestIfYes(t *testing.T) {
 }
 
 func TestIfNo(t *testing.T) {
-	ast, err := parser.Parse("(if nil 3 4)") // nil == false
+	ast, err := parser.Parse(ctx, "(if nil 3 4)") // nil == false
 	if err != nil {
 		t.Error(err)
 	}
 	vm := NewVM(nil)
-	ret, err := vm.Eval(ast)
+	ret, err := vm.Eval(ctx, ast)
 	if err != nil {
 		t.Error(err)
 	}
@@ -99,7 +105,7 @@ func TestIfNo(t *testing.T) {
 }
 
 func TestMap(t *testing.T) {
-	ast, err := parser.Parse(`
+	ast, err := parser.Parse(ctx, `
     (setg incr (lambda (x) (+ x 1)))
     (collect (map incr '(1 2 3)))
     `)
@@ -107,7 +113,7 @@ func TestMap(t *testing.T) {
 		t.Error(err)
 	}
 	vm := NewVM(nil)
-	ret, err := vm.Eval(ast)
+	ret, err := vm.Eval(ctx, ast)
 	if err != nil {
 		t.Error(err)
 	}

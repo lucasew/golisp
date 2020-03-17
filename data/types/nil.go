@@ -1,6 +1,7 @@
 package types
 
 import (
+	"context"
 	"fmt"
 	"github.com/lucasew/golisp/data"
 )
@@ -33,15 +34,15 @@ func (_nil) LispTypeName() string {
 	return "cons"
 }
 
-func (_nil) Next() data.LispValue {
+func (_nil) Next(context.Context) data.LispValue {
 	return Nil
 }
 
-func (_nil) IsEnd() bool {
+func (_nil) IsEnd(context.Context) bool {
 	return true
 }
 
-func (_nil) LispCall(...data.LispValue) (data.LispValue, error) {
+func (_nil) LispCall(context.Context, ...data.LispValue) (data.LispValue, error) {
 	return Nil, fmt.Errorf("you are calling nil")
 }
 

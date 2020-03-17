@@ -1,6 +1,7 @@
 package types
 
 import (
+	"context"
 	"github.com/lucasew/golisp/data"
 )
 
@@ -28,7 +29,7 @@ func (_t) Cdr() data.LispCarCdr {
 	return Nil
 }
 
-func (_t) LispCall(...data.LispValue) (data.LispValue, error) {
+func (_t) LispCall(context.Context, ...data.LispValue) (data.LispValue, error) {
 	return T, nil
 }
 

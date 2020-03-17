@@ -1,6 +1,7 @@
 package stdlib
 
 import (
+	"context"
 	"fmt"
 	"github.com/lucasew/golisp/data"
 	"github.com/lucasew/golisp/data/types"
@@ -17,7 +18,7 @@ func init() {
 	register("is-end", IsEnd)
 }
 
-func Range(v ...data.LispValue) (data.LispValue, error) {
+func Range(ctx context.Context, v ...data.LispValue) (data.LispValue, error) {
 	a := v[0]
 	to, ok := a.(number.LispInt)
 	if !ok {
@@ -27,7 +28,7 @@ func Range(v ...data.LispValue) (data.LispValue, error) {
 	return iterator.NewRangeIteratorTo(int(to_num)), nil
 }
 
-func NewIterator(v ...data.LispValue) (data.LispValue, error) {
+func NewIterator(ctx context.Context, v ...data.LispValue) (data.LispValue, error) {
 	err := enforce.Validate(enforce.Length(v, 1))
 	if err != nil {
 		return types.Nil, err
@@ -35,38 +36,38 @@ func NewIterator(v ...data.LispValue) (data.LispValue, error) {
 	return iterator.NewIterator(v[0])
 }
 
-func Collect(v ...data.LispValue) (data.LispValue, error) {
+func Collect(ctx context.Context, v ...data.LispValue) (data.LispValue, error) {
 	err := enforce.Validate(enforce.Length(v, 1), enforce.Entity("lisp_iterator", v, 1))
 	if err != nil {
 		return types.Nil, err
 	}
 	iter := v[0].(data.LispIterator)
 	ret := []data.LispValue{}
-	for !iter.IsEnd() {
-		ret = append(ret, iter.Next())
+	for !iter.IsEnd(ctx) {
+		ret = append(ret, iter.Next(ctx))
 	}
 	return types.NewCons(ret...), nil
 }
 
-func Next(v ...data.LispValue) (data.LispValue, error) {
+func Next(ctx context.Context, v ...data.LispValue) (data.LispValue, error) {
 	err := enforce.Validate(enforce.Length(v, 1), enforce.Entity("lisp_iterator", v, 1))
 	if err != nil {
 		return types.Nil, err
 	}
 	iter := v[0].(data.LispIterator)
-	if iter.IsEnd() {
+	if iter.IsEnd(ctx) {
 		return types.Nil, fmt.Errorf("empty iterator")
 	}
-	return iter.Next(), nil
+	return iter.Next(ctx), nil
 }
 
-func IsEnd(v ...data.LispValue) (data.LispValue, error) {
+func IsEnd(ctx context.Context, v ...data.LispValue) (data.LispValue, error) {
 	err := enforce.Validate(enforce.Length(v, 1), enforce.Entity("lisp_iterator", v, 1))
 	if err != nil {
 		return types.Nil, err
 	}
 	iter := v[0].(data.LispIterator)
-	if iter.IsEnd() {
+	if iter.IsEnd(ctx) {
 		return types.T, nil
 	} else {
 		return types.Nil, nil

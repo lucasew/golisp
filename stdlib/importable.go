@@ -1,6 +1,7 @@
 package stdlib
 
 import (
+	"context"
 	"github.com/lucasew/golisp/data"
 	"github.com/lucasew/golisp/data/types"
 	"github.com/lucasew/golisp/data/types/macro"
@@ -15,7 +16,7 @@ type Importable interface {
 
 func AsMacro(i Importable) macro.LispMacro {
 	return macro.LispMacro(
-		func(vm vm.LispVM, v ...data.LispValue) (data.LispValue, error) {
+		func(ctx context.Context, vm vm.LispVM, v ...data.LispValue) (data.LispValue, error) {
 			err := enforce.Validate(
 				enforce.Length(v, 1),
 				enforce.Entity("lisp_string", v, 1),

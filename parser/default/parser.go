@@ -1,32 +1,29 @@
 package pdefault
 
 import (
+	"context"
 	"github.com/lucasew/golisp/data"
 	"github.com/lucasew/golisp/data/types"
 	"github.com/lucasew/golisp/lex"
 	"github.com/lucasew/golisp/parser"
-	// "github.com/davecgh/go-spew/spew"
 )
 
-func Parse(s string) (data.LispValue, error) {
-	ctx := lex.NewContext([]byte(s))
+func Parse(ctx context.Context, s string) (data.LispValue, error) {
+	pctx := lex.NewParseContextFromContext(ctx, lex.NewContext([]byte(s)))
 	list := types.NewCons().(types.Cons)
 	err := error(nil)
 	for {
-		// println("parse")
-		ret, err := GlobalState(&ctx)
-		// spew.Dump(ret)
+		ret, err := GlobalState(pctx)
 		if err != nil {
 			return types.Nil, err
 		}
 		if !parser.IsComment(ret) { // Ignore all comments
 			list = append(list, ret)
 		}
-		erreof := ctx.StateWhitespace()
-		if erreof != nil {
+		err = lex.StateWhitespace(pctx)
+		if err != nil {
 			break
 		}
 	}
-	// spew.Dump(list)
 	return list, err
 }

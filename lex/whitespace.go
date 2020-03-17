@@ -2,17 +2,23 @@ package lex
 
 import (
 	"fmt"
+	"github.com/lucasew/golisp/data"
 )
 
-func (ctx *Context) StateWhitespace() error {
+func StateWhitespace(ctx ParseContext) error {
 	for {
-		b, ok := ctx.GetByte()
-		if !ok {
-			return fmt.Errorf("%w: while looking for whitespaces", ErrEOF)
+		select {
+		case _ = <-ctx.Done():
+			return data.ErrContextCancelled
+		default:
+			b, ok := ctx.Lex().GetByte()
+			if !ok {
+				return fmt.Errorf("%w: while looking for whitespaces", ErrEOF)
+			}
+			if !b.IsBlank() {
+				return nil
+			}
+			ctx.Lex().Increment()
 		}
-		if !b.IsBlank() {
-			return nil
-		}
-		ctx.Increment()
 	}
 }

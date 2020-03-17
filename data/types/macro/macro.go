@@ -1,6 +1,7 @@
 package macro
 
 import (
+	"context"
 	"github.com/lucasew/golisp/data"
 	"github.com/lucasew/golisp/data/entity/register"
 	"github.com/lucasew/golisp/vm"
@@ -13,9 +14,9 @@ func init() {
 	})
 }
 
-type LispMacro func(vm.LispVM, ...data.LispValue) (data.LispValue, error)
+type LispMacro func(context.Context, vm.LispVM, ...data.LispValue) (data.LispValue, error)
 
-func NewLispMacro(f func(vm.LispVM, ...data.LispValue) (data.LispValue, error)) LispMacro {
+func NewLispMacro(f func(context.Context, vm.LispVM, ...data.LispValue) (data.LispValue, error)) LispMacro {
 	return f
 }
 
@@ -31,6 +32,6 @@ func (LispMacro) LispTypeName() string {
 	return "macro"
 }
 
-func (m LispMacro) LispCallMacro(v vm.LispVM, val ...data.LispValue) (data.LispValue, error) {
-	return m(v, val...)
+func (m LispMacro) LispCallMacro(ctx context.Context, v vm.LispVM, val ...data.LispValue) (data.LispValue, error) {
+	return m(ctx, v, val...)
 }

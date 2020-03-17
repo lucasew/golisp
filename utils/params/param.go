@@ -1,6 +1,7 @@
 package params
 
 import (
+	"context"
 	"fmt"
 	"github.com/lucasew/golisp/data"
 	"github.com/lucasew/golisp/data/entity"
@@ -9,16 +10,16 @@ import (
 	"github.com/lucasew/golisp/data/types/iterator"
 )
 
-func NewParameterLookup(v ...data.LispValue) ParameterLookup {
+func NewParameterLookup(ctx context.Context, v ...data.LispValue) ParameterLookup {
 	params := ParameterLookup{
 		[]data.LispValue{},
 		map[string]data.LispValue{},
 	}
 	values := iterator.NewConsIterator(types.NewCons(v...))
-	for !values.IsEnd() {
-		switch this := values.Next().(type) {
+	for !values.IsEnd(ctx) {
+		switch this := values.Next(ctx).(type) {
 		case types.Atom:
-			params.KwArgs[this.AtomString()] = values.Next()
+			params.KwArgs[this.AtomString()] = values.Next(ctx)
 		default:
 			params.Args = append(params.Args, this)
 		}

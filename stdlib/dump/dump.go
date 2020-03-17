@@ -1,6 +1,7 @@
 package libdump
 
 import (
+	"context"
 	"github.com/davecgh/go-spew/spew"
 	"github.com/lucasew/golisp/data"
 	"github.com/lucasew/golisp/data/types"
@@ -15,7 +16,7 @@ func init() {
 	register("dump-call", DumpCall)
 }
 
-func EnvDump(env vm.LispVM, v ...data.LispValue) (data.LispValue, error) {
+func EnvDump(ctx context.Context, env vm.LispVM, v ...data.LispValue) (data.LispValue, error) {
 	err := enforce.Validate(enforce.Length(v, 0))
 	if err != nil {
 		return types.Nil, err
@@ -23,7 +24,7 @@ func EnvDump(env vm.LispVM, v ...data.LispValue) (data.LispValue, error) {
 	return types.NewString(spew.Sdump(env)), nil
 }
 
-func Dump(v ...data.LispValue) (data.LispValue, error) {
+func Dump(ctx context.Context, v ...data.LispValue) (data.LispValue, error) {
 	err := enforce.Validate(enforce.Length(v, 1))
 	if err != nil {
 		return types.Nil, err
@@ -31,7 +32,7 @@ func Dump(v ...data.LispValue) (data.LispValue, error) {
 	return types.NewString(spew.Sdump(v[0])), nil
 }
 
-func DumpCall(v ...data.LispValue) (data.LispValue, error) {
-	p := params.NewParameterLookup(v...)
+func DumpCall(ctx context.Context, v ...data.LispValue) (data.LispValue, error) {
+	p := params.NewParameterLookup(ctx, v...)
 	return types.NewString(spew.Sdump(p)), nil
 }

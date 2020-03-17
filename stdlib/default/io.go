@@ -1,6 +1,7 @@
 package stdlib
 
 import (
+	"context"
 	"github.com/lucasew/golisp/data"
 	"github.com/lucasew/golisp/data/types"
 	"github.com/lucasew/golisp/utils/enforce"
@@ -11,7 +12,7 @@ func init() {
 	register("println", Println)
 }
 
-func Print(v ...data.LispValue) (data.LispValue, error) {
+func Print(ctx context.Context, v ...data.LispValue) (data.LispValue, error) {
 	if len(v) == 0 {
 		return types.NewString(""), nil
 	}
@@ -24,7 +25,7 @@ func Print(v ...data.LispValue) (data.LispValue, error) {
 	return s, nil
 }
 
-func Println(v ...data.LispValue) (data.LispValue, error) {
+func Println(ctx context.Context, v ...data.LispValue) (data.LispValue, error) {
 	if len(v) == 0 {
 		return types.NewString(""), nil
 	}

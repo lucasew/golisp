@@ -3,7 +3,10 @@ package pdefault
 import (
 	"testing"
 	// "github.com/davecgh/go-spew/spew"
+	"context"
 )
+
+var ctx = context.Background()
 
 func TestGlobalState(t *testing.T) {
 	//     in := `
@@ -39,9 +42,9 @@ func TestGlobalState(t *testing.T) {
 
 `
 	// in := "((trabson(((eoq)))"
-	ret, err := Parse(in)
+	ret, err := Parse(ctx, in)
 	if err != nil {
-		panic(err)
+		t.Error(err)
 	}
 	// spew.Dump(ret)
 

@@ -1,6 +1,7 @@
 package stdlib
 
 import (
+	"context"
 	"fmt"
 	"github.com/lucasew/golisp/data"
 	"github.com/lucasew/golisp/data/types"
@@ -16,7 +17,7 @@ func init() {
 	register("==", Equal)
 }
 
-func MoreThan(v ...data.LispValue) (data.LispValue, error) {
+func MoreThan(ctx context.Context, v ...data.LispValue) (data.LispValue, error) {
 	r, err := cmp(v...)
 	if err != nil {
 		return types.Nil, err
@@ -27,7 +28,7 @@ func MoreThan(v ...data.LispValue) (data.LispValue, error) {
 	return types.Nil, nil
 }
 
-func MoreEqualThan(v ...data.LispValue) (data.LispValue, error) {
+func MoreEqualThan(ctx context.Context, v ...data.LispValue) (data.LispValue, error) {
 	r, err := cmp(v...)
 	if err != nil {
 		return types.Nil, err
@@ -38,7 +39,7 @@ func MoreEqualThan(v ...data.LispValue) (data.LispValue, error) {
 	return types.Nil, nil
 }
 
-func LessThan(v ...data.LispValue) (data.LispValue, error) {
+func LessThan(ctx context.Context, v ...data.LispValue) (data.LispValue, error) {
 	r, err := cmp(v...)
 	if err != nil {
 		return types.Nil, err
@@ -49,7 +50,7 @@ func LessThan(v ...data.LispValue) (data.LispValue, error) {
 	return types.Nil, nil
 }
 
-func LessEqualThan(v ...data.LispValue) (data.LispValue, error) {
+func LessEqualThan(ctx context.Context, v ...data.LispValue) (data.LispValue, error) {
 	r, err := cmp(v...)
 	if err != nil {
 		return types.Nil, err
@@ -60,7 +61,7 @@ func LessEqualThan(v ...data.LispValue) (data.LispValue, error) {
 	return types.Nil, nil
 }
 
-func Equal(v ...data.LispValue) (data.LispValue, error) {
+func Equal(ctx context.Context, v ...data.LispValue) (data.LispValue, error) {
 	r, err := cmp(v...)
 	if err != nil {
 		return types.Nil, err

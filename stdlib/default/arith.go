@@ -1,6 +1,7 @@
 package stdlib
 
 import (
+	"context"
 	"fmt"
 	"github.com/lucasew/golisp/data"
 	"github.com/lucasew/golisp/data/types"
@@ -23,43 +24,43 @@ func init() {
 	register("is-int", IsInt)
 }
 
-func Sum(v ...data.LispValue) (data.LispValue, error) {
+func Sum(ctx context.Context, v ...data.LispValue) (data.LispValue, error) {
 	return pairOp("Sum", v)
 }
 
-func Sub(v ...data.LispValue) (data.LispValue, error) {
+func Sub(ctx context.Context, v ...data.LispValue) (data.LispValue, error) {
 	return pairOp("Sub", v)
 }
 
-func Neg(v ...data.LispValue) (data.LispValue, error) {
+func Neg(ctx context.Context, v ...data.LispValue) (data.LispValue, error) {
 	return singleOp("Neg", v)
 }
 
-func Mul(v ...data.LispValue) (data.LispValue, error) {
+func Mul(ctx context.Context, v ...data.LispValue) (data.LispValue, error) {
 	return pairOp("Mul", v)
 }
 
-func Div(v ...data.LispValue) (data.LispValue, error) {
+func Div(ctx context.Context, v ...data.LispValue) (data.LispValue, error) {
 	return pairOp("Div", v)
 }
 
-func Rem(v ...data.LispValue) (data.LispValue, error) {
+func Rem(ctx context.Context, v ...data.LispValue) (data.LispValue, error) {
 	return pairOp("Rem", v)
 }
 
-func Sqrt(v ...data.LispValue) (data.LispValue, error) {
+func Sqrt(ctx context.Context, v ...data.LispValue) (data.LispValue, error) {
 	return singleOp("Sqrt", v)
 }
 
-func Exp(v ...data.LispValue) (data.LispValue, error) {
+func Exp(ctx context.Context, v ...data.LispValue) (data.LispValue, error) {
 	return pairOp("Exp", v)
 }
 
-func Abs(v ...data.LispValue) (data.LispValue, error) {
+func Abs(ctx context.Context, v ...data.LispValue) (data.LispValue, error) {
 	return singleOp("Abs", v)
 }
 
-func IsZero(v ...data.LispValue) (data.LispValue, error) {
+func IsZero(ctx context.Context, v ...data.LispValue) (data.LispValue, error) {
 	err := enforce.Validate(enforce.Length(v, 1), enforce.Number(v, 1))
 	if err != nil {
 		return types.Nil, err
@@ -68,7 +69,7 @@ func IsZero(v ...data.LispValue) (data.LispValue, error) {
 	return raw.NewLispWrapper(num.IsZero()), nil
 }
 
-func IsInt(v ...data.LispValue) (data.LispValue, error) {
+func IsInt(ctx context.Context, v ...data.LispValue) (data.LispValue, error) {
 	err := enforce.Validate(enforce.Length(v, 1), enforce.Number(v, 1))
 	if err != nil {
 		return types.Nil, err

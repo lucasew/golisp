@@ -7,23 +7,23 @@ import (
 	"github.com/lucasew/golisp/lex"
 )
 
-func ParseAtom(ctx *lex.Context) (data.LispValue, error) {
-	b, ok := ctx.GetByte()
+func ParseAtom(ctx lex.ParseContext) (data.LispValue, error) {
+	b, ok := ctx.Lex().GetByte()
 	if !ok {
 		return types.Nil, fmt.Errorf("%w: atom datatype", ErrEOFWhile)
 	}
 	if !b.IsByteColon() {
 		return types.Nil, fmt.Errorf("%w: atom datatype", ErrInvalidEntryPoint)
 	}
-	begin := ctx.Index() + 1
+	begin := ctx.Lex().Index() + 1
 	for {
-		ctx.Increment()
-		b, ok := ctx.GetByte()
+		ctx.Lex().Increment()
+		b, ok := ctx.Lex().GetByte()
 		if !ok {
 			return types.Nil, fmt.Errorf("%w: atom", ErrPrematureEOF)
 		}
 		if !(b.IsByteNumber() || b.IsByteLetter() || b.IsByteSpecialSymbol()) {
-			return types.NewAtom(ctx.Slice(begin, ctx.Index())), nil
+			return types.NewAtom(ctx.Lex().Slice(begin, ctx.Lex().Index())), nil
 		}
 	}
 }

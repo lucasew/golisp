@@ -1,6 +1,7 @@
 package mutexed
 
 import (
+	"context"
 	"github.com/lucasew/golisp/data"
 	vmdefs "github.com/lucasew/golisp/vm"
 	"sync"
@@ -35,10 +36,10 @@ func (e *MutexedVM) EnvSetLocal(k string, v data.LispValue) data.LispValue {
 	return e.vm.EnvSetLocal(k, v)
 }
 
-func (e *MutexedVM) Eval(v data.LispValue) (data.LispValue, error) {
+func (e *MutexedVM) Eval(ctx context.Context, v data.LispValue) (data.LispValue, error) {
 	e.Lock()
 	defer e.Unlock()
-	return e.vm.Eval(v)
+	return e.vm.Eval(ctx, v)
 }
 
 func (e *MutexedVM) Import(v map[string]interface{}) {

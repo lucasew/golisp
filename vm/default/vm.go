@@ -1,6 +1,7 @@
 package vm_default
 
 import (
+	"context"
 	"errors"
 	"github.com/lucasew/golisp/data"
 	"github.com/lucasew/golisp/data/entity/repo"
@@ -54,57 +55,62 @@ func (vm *LispVM) EnvSetGlobal(k string, v data.LispValue) data.LispValue {
 }
 
 // Eval this function is where the magic starts
-func (vm *LispVM) Eval(v data.LispValue) (data.LispValue, error) {
-	switch in := v.(type) {
-	case types.Cons:
-		switch first := in.Car().(type) {
-		case types.Symbol:
-			f := vm.EnvGet(first.ToString())
-			switch fn := f.(type) {
-			case data.LispFunction:
-				crude_params := []data.LispValue(in.Cdr().(types.Cons))
-				params := make([]data.LispValue, len(crude_params))
-				var err error = nil
-				for k, v := range crude_params {
-					params[k], err = vm.Eval(v)
+func (vm *LispVM) Eval(ctx context.Context, v data.LispValue) (data.LispValue, error) {
+	select {
+	case _ = <-ctx.Done():
+		return types.Nil, data.ErrContextCancelled
+	default:
+		switch in := v.(type) {
+		case types.Cons:
+			switch first := in.Car().(type) {
+			case types.Symbol:
+				f := vm.EnvGet(first.ToString())
+				switch fn := f.(type) {
+				case data.LispFunction:
+					crude_params := []data.LispValue(in.Cdr().(types.Cons))
+					params := make([]data.LispValue, len(crude_params))
+					var err error = nil
+					for k, v := range crude_params {
+						params[k], err = vm.Eval(ctx, v)
+						if err != nil {
+							return types.Nil, err
+						}
+					}
+					return fn.LispCall(ctx, params...)
+				case macro.LispMacro:
+					l, ok := in.Cdr().(data.LispCons)
+					if !ok {
+						l = types.NewCons(v)
+					}
+					switch c := l.(type) {
+					case types.Cons:
+						return fn.LispCallMacro(ctx, vm, c...)
+					default:
+						return types.Nil, errors.New("evaluation of not []LispValue cons not supported yet")
+					}
+				default:
+					return types.Nil, errors.New("cant call the variable")
+				}
+			case types.Cons:
+				ret := types.Nil.(data.LispValue)
+				var err error
+				for _, stmt := range in {
+					ret, err = vm.Eval(ctx, stmt.(data.LispValue))
 					if err != nil {
 						return types.Nil, err
 					}
 				}
-				return fn.LispCall(params...)
-			case macro.LispMacro:
-				l, ok := in.Cdr().(data.LispCons)
-				if !ok {
-					l = types.NewCons(v)
-				}
-				switch c := l.(type) {
-				case types.Cons:
-					return fn.LispCallMacro(vm, c...)
-				default:
-					return types.Nil, errors.New("evaluation of not []LispValue cons not supported yet")
-				}
+				return ret, nil
 			default:
-				return types.Nil, errors.New("cant call the variable")
+				println(v.Repr())
+				return types.Nil, errors.New("in code mode only commands are allowed")
 			}
-		case types.Cons:
-			ret := types.Nil.(data.LispValue)
-			var err error
-			for _, stmt := range in {
-				ret, err = vm.Eval(stmt.(data.LispValue))
-				if err != nil {
-					return types.Nil, err
-				}
-			}
-			return ret, nil
+		case types.Symbol:
+			return vm.EnvGet(in.ToString()), nil
+		case types.String:
+			return in, nil
 		default:
-			println(v.Repr())
-			return types.Nil, errors.New("in code mode only commands are allowed")
+			return in, nil
 		}
-	case types.Symbol:
-		return vm.EnvGet(in.ToString()), nil
-	case types.String:
-		return in, nil
-	default:
-		return in, nil
 	}
 }

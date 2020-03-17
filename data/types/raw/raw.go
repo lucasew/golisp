@@ -1,6 +1,7 @@
 package raw
 
 import (
+	"context"
 	"fmt"
 	"github.com/davecgh/go-spew/spew"
 	"github.com/lucasew/golisp/data"
@@ -70,9 +71,9 @@ func NewLispWrapper(v interface{}) data.LispValue {
 		return number.NewRationalFromBigRat(v)
 	case big.Int, big.Float, big.Rat:
 		return NewLispWrapper(&v)
-	case func(vm.LispVM, ...data.LispValue) (data.LispValue, error):
+	case func(context.Context, vm.LispVM, ...data.LispValue) (data.LispValue, error):
 		return macro.NewLispMacro(v)
-	case func(...data.LispValue) (data.LispValue, error):
+	case func(context.Context, ...data.LispValue) (data.LispValue, error):
 		return types.NewFunction(v)
 	}
 	return LispWrapper{v}

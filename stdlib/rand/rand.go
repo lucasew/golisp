@@ -1,6 +1,7 @@
 package rand
 
 import (
+	"context"
 	"github.com/lucasew/golisp/data"
 	"github.com/lucasew/golisp/data/types"
 	"github.com/lucasew/golisp/data/types/number"
@@ -14,7 +15,7 @@ func init() {
 	register("rand-map", RandMap)
 }
 
-func RandInt(v ...data.LispValue) (data.LispValue, error) {
+func RandInt(ctx context.Context, v ...data.LispValue) (data.LispValue, error) {
 	err := enforce.Validate(
 		enforce.Length(v, 1),
 		enforce.Entity("int", v, 1),
@@ -27,7 +28,7 @@ func RandInt(v ...data.LispValue) (data.LispValue, error) {
 	return number.NewIntFromInt64(rdn), nil
 }
 
-func RandCons(v ...data.LispValue) (data.LispValue, error) {
+func RandCons(ctx context.Context, v ...data.LispValue) (data.LispValue, error) {
 	err := enforce.Validate(
 		enforce.Length(v, 1),
 		enforce.Entity("lisp_cons", v, 1),
@@ -40,7 +41,7 @@ func RandCons(v ...data.LispValue) (data.LispValue, error) {
 	return cons.Get(rand.Intn(l)), nil
 }
 
-func RandMap(v ...data.LispValue) (data.LispValue, error) {
+func RandMap(ctx context.Context, v ...data.LispValue) (data.LispValue, error) {
 	err := enforce.Validate(
 		enforce.Length(v, 1),
 		enforce.Entity("lisp_map", v, 1),
@@ -49,7 +50,7 @@ func RandMap(v ...data.LispValue) (data.LispValue, error) {
 		return types.Nil, err
 	}
 	m := v[0].(data.LispMap)
-	k, err := RandCons(m.Keys())
+	k, err := RandCons(ctx, m.Keys())
 	if err != nil {
 		// Isto não pode acontecer
 		panic(err)

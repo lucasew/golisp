@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"context"
 	"github.com/lucasew/golisp/stdlib"
 	"github.com/lucasew/golisp/stdlib/dump"
 	"github.com/lucasew/golisp/stdlib/portal"
@@ -25,6 +26,7 @@ const banner = `
 
 func main() {
 	tc := tdefault.NewDefaultToolchain(nil)
+	ctx := context.Background()
 	repo := stdlib.NewImporter(
 		libdump.ELEMENTS,
 		libportal.ELEMENTS,
@@ -55,7 +57,7 @@ func main() {
 		if parenthesis == 0 {
 			stmt := strings.Join(lines, "\n")
 			lines = []string{}
-			ret, err := tc.EvalString(stmt)
+			ret, err := tc.EvalString(ctx, stmt)
 			if err != nil {
 				println(err.Error())
 			}

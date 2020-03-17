@@ -1,6 +1,7 @@
 package types
 
 import (
+	"context"
 	"github.com/lucasew/golisp/data"
 	"github.com/lucasew/golisp/data/entity/register"
 )
@@ -12,7 +13,7 @@ func init() {
 	})
 }
 
-type NativeFunction func(...data.LispValue) (data.LispValue, error)
+type NativeFunction func(context.Context, ...data.LispValue) (data.LispValue, error)
 
 func IsFunction(v data.LispValue) bool {
 	_, ok := v.(data.LispFunction)
@@ -31,8 +32,8 @@ func (f NativeFunction) IsNil() bool {
 	return f == nil
 }
 
-func (f NativeFunction) LispCall(i ...data.LispValue) (data.LispValue, error) {
-	return f(i...)
+func (f NativeFunction) LispCall(ctx context.Context, i ...data.LispValue) (data.LispValue, error) {
+	return f(ctx, i...)
 }
 
 func (f NativeFunction) Repr() string {
@@ -43,7 +44,7 @@ func (f NativeFunction) IsFunctionNative() bool {
 	return true
 }
 
-func NewFunction(f func(...data.LispValue) (data.LispValue, error)) data.LispFunction {
+func NewFunction(f func(context.Context, ...data.LispValue) (data.LispValue, error)) data.LispFunction {
 	return NativeFunction(f)
 }
 

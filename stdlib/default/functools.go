@@ -1,6 +1,7 @@
 package stdlib
 
 import (
+	"context"
 	"github.com/lucasew/golisp/data"
 	"github.com/lucasew/golisp/data/types"
 	"github.com/lucasew/golisp/data/types/iterator"
@@ -13,7 +14,7 @@ func init() {
 	register("reduce", Reduce)
 }
 
-func Map(v ...data.LispValue) (data.LispValue, error) {
+func Map(ctx context.Context, v ...data.LispValue) (data.LispValue, error) {
 	err := enforce.Validate(enforce.Length(v, 2), enforce.Function(v, 1))
 	if err != nil {
 		return types.Nil, err
@@ -26,7 +27,7 @@ func Map(v ...data.LispValue) (data.LispValue, error) {
 	return iterator.NewMapIterator(lst, fn), nil
 }
 
-func Filter(v ...data.LispValue) (data.LispValue, error) {
+func Filter(ctx context.Context, v ...data.LispValue) (data.LispValue, error) {
 	err := enforce.Validate(enforce.Length(v, 2), enforce.Function(v, 1))
 	if err != nil {
 		return types.Nil, err
@@ -36,10 +37,10 @@ func Filter(v ...data.LispValue) (data.LispValue, error) {
 	if err != nil {
 		return types.Nil, err
 	}
-	return iterator.NewFilterIterator(lst, fn), nil
+	return iterator.NewFilterIterator(ctx, lst, fn), nil
 }
 
-func Reduce(v ...data.LispValue) (data.LispValue, error) {
+func Reduce(ctx context.Context, v ...data.LispValue) (data.LispValue, error) {
 	err := enforce.Validate(enforce.Length(v, 2), enforce.Function(v, 1))
 	if err != nil {
 		return types.Nil, err
@@ -49,14 +50,19 @@ func Reduce(v ...data.LispValue) (data.LispValue, error) {
 	if err != nil {
 		return types.Nil, err
 	}
-	ret := lst.Next()
+	ret := lst.Next(ctx)
 next:
-	if lst.IsEnd() {
-		return ret, nil
-	}
-	ret, err = fn.LispCall(ret, lst.Next())
-	if err != nil {
-		return types.Nil, err
+	select {
+	case <-ctx.Done():
+		return types.Nil, data.ErrContextCancelled
+	default:
+		if lst.IsEnd(ctx) {
+			return ret, nil
+		}
+		ret, err = fn.LispCall(ctx, ret, lst.Next(ctx))
+		if err != nil {
+			return types.Nil, err
+		}
 	}
 	goto next
 }

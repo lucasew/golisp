@@ -1,6 +1,7 @@
 package stdlib
 
 import (
+	"context"
 	"github.com/lucasew/golisp/data"
 	"github.com/lucasew/golisp/data/types"
 	"github.com/lucasew/golisp/utils/enforce"
@@ -13,7 +14,7 @@ func init() {
 	register("call", Call)
 }
 
-func Quote(env vm.LispVM, v ...data.LispValue) (data.LispValue, error) {
+func Quote(ctx context.Context, env vm.LispVM, v ...data.LispValue) (data.LispValue, error) {
 	err := enforce.Validate(enforce.Length(v, 1))
 	if err != nil {
 		return types.Nil, err
@@ -21,11 +22,11 @@ func Quote(env vm.LispVM, v ...data.LispValue) (data.LispValue, error) {
 	return v[0], nil
 }
 
-func List(v ...data.LispValue) (data.LispValue, error) {
+func List(ctx context.Context, v ...data.LispValue) (data.LispValue, error) {
 	return v[0], nil
 }
 
-func Call(v ...data.LispValue) (data.LispValue, error) {
+func Call(ctx context.Context, v ...data.LispValue) (data.LispValue, error) {
 	err := enforce.Validate(
 		enforce.Length(v, 2),
 		enforce.Entity("lisp_function", v, 1),
@@ -36,5 +37,5 @@ func Call(v ...data.LispValue) (data.LispValue, error) {
 	}
 	fn := v[0].(data.LispFunction)
 	val := v[1].(data.LispCons)
-	return fn.LispCall(val)
+	return fn.LispCall(ctx, val)
 }

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"github.com/davecgh/go-spew/spew"
 	"github.com/go-telegram-bot-api/telegram-bot-api"
@@ -8,6 +9,7 @@ import (
 	"github.com/lucasew/golisp/toolchain/default"
 	"log"
 	"os"
+	"time"
 )
 
 var bot *tgbotapi.BotAPI
@@ -25,6 +27,8 @@ Digite /help para reexibir esta mensagem
 `
 
 func main() {
+	timeout := time.Second * 5
+	ctx := context.Background()
 	var err error
 	if len(os.Args) < 2 {
 		panic("Missing telegram bot api key")
@@ -68,7 +72,8 @@ func main() {
 		if update.Message.Command() == "parse" {
 			stmt = update.Message.CommandArguments()
 		}
-		ast, err := tc.ParseString(stmt)
+		ctx, cancel := context.WithTimeout(ctx, timeout)
+		ast, err := tc.ParseString(ctx, stmt)
 		if err != nil {
 			reply(&update, fmt.Sprintf("🤔 %s", err.Error()))
 			continue
@@ -77,11 +82,12 @@ func main() {
 			reply(&update, spew.Sdump(ast))
 			continue
 		}
-		res, err := tc.Eval(ast)
+		res, err := tc.Eval(ctx, ast)
 		if err != nil {
 			reply(&update, fmt.Sprintf("🤯 %s", err.Error()))
 			continue
 		}
+		cancel() // Apenas chamar no final. Evitar context leak
 		reply(&update, fmt.Sprintf("👍 %s", resp(res)))
 	}
 }

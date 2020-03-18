@@ -2,6 +2,7 @@ package time
 
 import (
 	"github.com/lucasew/golisp/data"
+	"github.com/lucasew/golisp/data/entity"
 	"github.com/lucasew/golisp/data/entity/register"
 	"github.com/lucasew/golisp/data/types"
 	"github.com/lucasew/golisp/data/types/maps"
@@ -12,10 +13,16 @@ import (
 type Time time.Time
 
 func init() {
-	register.Register("time", func(v data.LispValue) bool {
-		_, ok := v.(Time)
-		return ok
-	})
+	register.Register(new(Time).LispEntity())
+}
+
+func (Time) LispEntity() data.LispEntity {
+	return entity.Entity{
+		"time", func(v data.LispValue) bool {
+			_, ok := v.(Time)
+			return ok
+		},
+	}
 }
 
 func NewTimeFromUnix(n int64) Time {

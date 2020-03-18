@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/davecgh/go-spew/spew"
 	"github.com/lucasew/golisp/data"
+	"github.com/lucasew/golisp/data/entity"
 	"github.com/lucasew/golisp/data/entity/register"
 	"github.com/lucasew/golisp/data/types"
 	"github.com/lucasew/golisp/data/types/macro"
@@ -16,10 +17,16 @@ import (
 )
 
 func init() {
-	register.Register("wrapper", func(v data.LispValue) bool {
-		_, ok := v.(LispWrapper)
-		return ok
-	})
+	register.Register(new(LispWrapper).LispEntity())
+}
+
+func (LispWrapper) LispEntity() data.LispEntity {
+	return entity.Entity{
+		"wrapper", func(v data.LispValue) bool {
+			_, ok := v.(LispWrapper)
+			return ok
+		},
+	}
 }
 
 type LispWrapper struct {

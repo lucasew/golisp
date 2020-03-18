@@ -3,15 +3,22 @@ package iterator
 import (
 	"context"
 	"github.com/lucasew/golisp/data"
+	"github.com/lucasew/golisp/data/entity"
 	"github.com/lucasew/golisp/data/entity/register"
 	"github.com/lucasew/golisp/data/types"
 )
 
 func init() {
-	register.Register("filter_iterator", func(v data.LispValue) bool {
-		_, ok := v.(FilterIterator)
-		return ok
-	})
+	register.Register(new(FilterIterator).LispEntity())
+}
+
+func (FilterIterator) LispEntity() data.LispEntity {
+	return entity.Entity{
+		"filter_iterator", func(v data.LispValue) bool {
+			_, ok := v.(FilterIterator)
+			return ok
+		},
+	}
 }
 
 type FilterIterator struct {

@@ -13,5 +13,5 @@ func NewIterator(v data.LispValue) (data.LispIterator, error) {
 	case data.LispIterator:
 		return in, nil
 	}
-	return NewConsIterator(types.NewCons()), fmt.Errorf("cant convert type %s to iterator", v.LispTypeName())
+	return NewConsIterator(types.NewCons()), fmt.Errorf("cant convert type %s to iterator", v.LispEntity().EntityName())
 }

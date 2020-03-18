@@ -6,22 +6,25 @@ import (
 	"github.com/lucasew/golisp/data/entity"
 )
 
-var Registry = map[string]entity.Entity{}
+var Registry = map[string]data.LispEntity{}
 
-func Register(name string, isfn func(data.LispValue) bool) {
-	_, ok := Registry[name]
+func Register(e data.LispEntity) {
+	_, ok := Registry[e.EntityName()]
 	if ok {
-		err := fmt.Errorf("collision: cant register %s entity twice", name)
+		err := fmt.Errorf("collision: cant register %s entity twice", e.EntityName())
 		panic(err)
 	}
-	e := entity.Entity{
-		Name: name,
-		Isfn: isfn,
-	}
-	Registry[name] = e
+	Registry[e.EntityName()] = e
 }
 
-func Get(k string) (entity.Entity, bool) {
+func BuildAndRegister(name string, isfunc func(v data.LispValue) bool) {
+	Register(entity.Entity{
+		Name: name,
+		Isfn: isfunc,
+	})
+}
+
+func Get(k string) (data.LispEntity, bool) {
 	r, ok := Registry[k]
 	return r, ok
 }
@@ -31,5 +34,5 @@ func Is(k string, v data.LispValue) bool {
 	if !ok {
 		return ok
 	}
-	return e.Isfn(v)
+	return e.EntityIsFn(v)
 }

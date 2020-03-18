@@ -2,10 +2,20 @@ package stdlib
 
 import (
 	"github.com/lucasew/golisp/data"
+	"github.com/lucasew/golisp/data/entity"
 	"github.com/lucasew/golisp/data/types"
 	"github.com/lucasew/golisp/data/types/raw"
 	"github.com/lucasew/golisp/vm"
 )
+
+func (Importer) LispEntity() data.LispEntity {
+	return entity.Entity{
+		"importer", func(v data.LispValue) bool {
+			_, ok := v.(Importer)
+			return ok
+		},
+	}
+}
 
 type Importer struct {
 	repositories []Repository

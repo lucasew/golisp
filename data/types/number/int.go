@@ -3,15 +3,22 @@ package number
 import (
 	"errors"
 	"github.com/lucasew/golisp/data"
+	"github.com/lucasew/golisp/data/entity"
 	"github.com/lucasew/golisp/data/entity/register"
 	"math/big"
 )
 
 func init() {
-	register.Register("int", func(v data.LispValue) bool {
-		_, ok := v.(LispInt)
-		return ok
-	})
+	register.Register(new(LispInt).LispEntity())
+}
+
+func (LispInt) LispEntity() data.LispEntity {
+	return entity.Entity{
+		"int", func(v data.LispValue) bool {
+			_, ok := v.(LispInt)
+			return ok
+		},
+	}
 }
 
 type LispInt struct {

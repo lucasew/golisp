@@ -2,15 +2,22 @@ package maps
 
 import (
 	"github.com/lucasew/golisp/data"
+	"github.com/lucasew/golisp/data/entity"
 	"github.com/lucasew/golisp/data/entity/register"
 	"github.com/lucasew/golisp/data/types"
 )
 
 func init() {
-	register.Register("map_mappeable", func(v data.LispValue) bool {
-		_, ok := v.(MapMappeable)
-		return ok
-	})
+	register.Register(new(MapMappeable).LispEntity())
+}
+
+func (MapMappeable) LispEntity() data.LispEntity {
+	return entity.Entity{
+		"mappeable_map", func(v data.LispValue) bool {
+			_, ok := v.(MapMappeable)
+			return ok
+		},
+	}
 }
 
 type MapMappeable struct {

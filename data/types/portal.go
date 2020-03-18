@@ -2,14 +2,21 @@ package types
 
 import (
 	"github.com/lucasew/golisp/data"
+	"github.com/lucasew/golisp/data/entity"
 	"github.com/lucasew/golisp/data/entity/register"
 )
 
 func init() {
-	register.Register("portal", func(v data.LispValue) bool {
-		_, ok := v.(Portal)
-		return ok
-	})
+	register.Register(new(Portal).LispEntity())
+}
+
+func (Portal) LispEntity() data.LispEntity {
+	return entity.Entity{
+		"portal", func(v data.LispValue) bool {
+			_, ok := v.(Portal)
+			return ok
+		},
+	}
 }
 
 type Portal chan (data.LispValue)

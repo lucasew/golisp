@@ -3,15 +3,13 @@ package macro
 import (
 	"context"
 	"github.com/lucasew/golisp/data"
+	"github.com/lucasew/golisp/data/entity"
 	"github.com/lucasew/golisp/data/entity/register"
 	"github.com/lucasew/golisp/vm"
 )
 
 func init() {
-	register.Register("macro", func(v data.LispValue) bool {
-		_, ok := v.(LispMacro)
-		return ok
-	})
+	register.Register(LispMacro(nil).LispEntity())
 }
 
 type LispMacro func(context.Context, vm.LispVM, ...data.LispValue) (data.LispValue, error)
@@ -28,10 +26,16 @@ func (LispMacro) Repr() string {
 	return "<native macro>"
 }
 
-func (LispMacro) LispTypeName() string {
-	return "macro"
-}
-
 func (m LispMacro) LispCallMacro(ctx context.Context, v vm.LispVM, val ...data.LispValue) (data.LispValue, error) {
 	return m(ctx, v, val...)
+}
+
+func (m LispMacro) LispEntity() data.LispEntity {
+	return entity.Entity{
+		Name: "macro",
+		Isfn: func(v data.LispValue) bool {
+			_, ok := v.(LispMacro)
+			return ok
+		},
+	}
 }

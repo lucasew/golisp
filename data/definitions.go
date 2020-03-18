@@ -57,8 +57,13 @@ type LispMap interface {
 
 type LispValue interface {
 	IsNil() bool
-	LispTypeName() string
+	LispEntity() LispEntity
 	Repr() string
+}
+
+type LispEntity interface {
+	EntityName() string
+	EntityIsFn(LispValue) bool
 }
 
 type IntoLispValue interface {

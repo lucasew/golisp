@@ -2,16 +2,23 @@ package types
 
 import (
 	"github.com/lucasew/golisp/data"
+	"github.com/lucasew/golisp/data/entity"
 	"github.com/lucasew/golisp/data/entity/register"
 	"github.com/lucasew/golisp/data/types/number"
 	_ "github.com/lucasew/golisp/data/types/test"
 )
 
 func init() {
-	register.Register("symbol", func(v data.LispValue) bool {
-		_, ok := v.(Symbol)
-		return ok
-	})
+	register.Register(new(Symbol).LispEntity())
+}
+
+func (Symbol) LispEntity() data.LispEntity {
+	return entity.Entity{
+		"symbol", func(v data.LispValue) bool {
+			_, ok := v.(Symbol)
+			return ok
+		},
+	}
 }
 
 type Symbol string

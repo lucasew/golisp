@@ -3,14 +3,21 @@ package number
 import (
 	"fmt"
 	"github.com/lucasew/golisp/data"
+	"github.com/lucasew/golisp/data/entity"
 	"github.com/lucasew/golisp/data/entity/register"
 )
 
 func init() {
-	register.Register("byte", func(v data.LispValue) bool {
-		_, ok := v.(Byte)
-		return ok
-	})
+	register.Register(new(Byte).LispEntity())
+}
+
+func (Byte) LispEntity() data.LispEntity {
+	return entity.Entity{
+		"byte", func(v data.LispValue) bool {
+			_, ok := v.(Byte)
+			return ok
+		},
+	}
 }
 
 type Byte byte

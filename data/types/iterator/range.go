@@ -3,16 +3,23 @@ package iterator
 import (
 	"context"
 	"github.com/lucasew/golisp/data"
+	"github.com/lucasew/golisp/data/entity"
 	"github.com/lucasew/golisp/data/entity/register"
 	"github.com/lucasew/golisp/data/types"
 	"github.com/lucasew/golisp/data/types/number"
 )
 
 func init() {
-	register.Register("range_iterator", func(v data.LispValue) bool {
-		_, ok := v.(RangeIterator)
-		return ok
-	})
+	register.Register(new(RangeIterator).LispEntity())
+}
+
+func (RangeIterator) LispEntity() data.LispEntity {
+	return entity.Entity{
+		"range_iterator", func(v data.LispValue) bool {
+			_, ok := v.(RangeIterator)
+			return ok
+		},
+	}
 }
 
 type RangeIterator struct {

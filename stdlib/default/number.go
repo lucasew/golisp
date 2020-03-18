@@ -73,7 +73,7 @@ func ToByte(ctx context.Context, v ...data.LispValue) (data.LispValue, error) {
 	case number.Byte:
 		num = n
 	default:
-		return types.Nil, fmt.Errorf("invalid type for the first parameter, expected byte got %s", vnum.LispTypeName())
+		return types.Nil, fmt.Errorf("invalid type for the first parameter, expected byte got %s", vnum.LispEntity().EntityName())
 	}
 	return num, nil
 }

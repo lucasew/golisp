@@ -64,6 +64,7 @@ type LispValue interface {
 type LispEntity interface {
 	EntityName() string
 	EntityIsFn(LispValue) bool
+	AssignTo(LispValue, interface{}) bool
 }
 
 type IntoLispValue interface {

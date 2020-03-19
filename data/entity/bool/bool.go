@@ -2,9 +2,8 @@ package bool
 
 import (
 	"github.com/lucasew/golisp/data"
-	"github.com/lucasew/golisp/data/entity"
 )
 
-func EntityAsBool(e entity.Entity) func(v data.LispValue) bool {
-	return e.Isfn
+func EntityAsBool(e data.LispEntity) func(v data.LispValue) bool {
+	return e.EntityIsFn
 }

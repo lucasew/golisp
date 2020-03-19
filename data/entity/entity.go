@@ -11,6 +11,24 @@ type Entity struct {
 	Isfn func(data.LispValue) bool
 }
 
+func (e Entity) AssignTo(v data.LispValue, to interface{}) bool {
+	if reflect.TypeOf(to).Kind() != reflect.Ptr {
+		print("not pointer")
+		return false
+	}
+	if !reflect.ValueOf(to).Elem().CanSet() {
+		print("not setable")
+		return false
+	}
+	if !reflect.TypeOf(v).ConvertibleTo(reflect.TypeOf(to).Elem()) {
+		print("not convertible")
+		return false
+	}
+	to_set := reflect.ValueOf(v).Convert(reflect.TypeOf(to).Elem())
+	reflect.ValueOf(to).Elem().Set(to_set)
+	return true
+}
+
 func (e Entity) EntityName() string {
 	return e.Name
 }

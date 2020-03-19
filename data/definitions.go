@@ -65,6 +65,18 @@ type LispEntity interface {
 	EntityName() string
 	EntityIsFn(LispValue) bool
 	AssignTo(LispValue, interface{}) bool
+	EntitySubEntities() LispSubEntities
+}
+
+type LispSubEntities interface {
+	LookupSubEntity(k string) LispSubEntity
+	Keys() []string
+	AddSubEntity(k string, s LispSubEntity) LispSubEntities
+}
+
+type LispSubEntity interface {
+	Get(self LispValue) LispValue
+	Set(self LispValue, to LispValue) (outself LispValue)
 }
 
 type IntoLispValue interface {

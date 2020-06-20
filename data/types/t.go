@@ -3,25 +3,11 @@ package types
 import (
 	"context"
 	"github.com/lucasew/golisp/data"
-	"github.com/lucasew/golisp/data/entity"
-	"github.com/lucasew/golisp/data/entity/register"
 )
-
-func init() {
-	register.Register(T.LispEntity())
-}
 
 type _t uint8
 
 var T data.LispValue = _t(0)
-
-func (_t) LispEntity() data.LispEntity {
-	return entity.Entity{
-		"t", func(v data.LispValue) bool {
-			return !v.IsNil()
-		},
-	}
-}
 
 func (_t) IsNil() bool {
 	return false

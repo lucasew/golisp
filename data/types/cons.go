@@ -3,22 +3,15 @@ package types
 import (
 	"fmt"
 	"github.com/lucasew/golisp/data"
-	"github.com/lucasew/golisp/data/entity"
 	"github.com/lucasew/golisp/data/entity/register"
 	"strings"
 )
 
 func init() {
-	register.Register(new(Cons).LispEntity())
-}
-
-func (Cons) LispEntity() data.LispEntity {
-	return entity.Entity{
-		"cons", func(v data.LispValue) bool {
-			_, ok := v.(Cons)
-			return ok
-		},
-	}
+	register.Register("cons", func(v data.LispValue) bool {
+		_, ok := v.(Cons)
+		return ok
+	})
 }
 
 type Cons []data.LispValue

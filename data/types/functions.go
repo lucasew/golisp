@@ -3,21 +3,14 @@ package types
 import (
 	"context"
 	"github.com/lucasew/golisp/data"
-	"github.com/lucasew/golisp/data/entity"
 	"github.com/lucasew/golisp/data/entity/register"
 )
 
 func init() {
-	register.Register(new(NativeFunction).LispEntity())
-}
-
-func (NativeFunction) LispEntity() data.LispEntity {
-	return entity.Entity{
-		"native_function", func(v data.LispValue) bool {
-			_, ok := v.(NativeFunction)
-			return ok
-		},
-	}
+	register.Register("native_function", func(v data.LispValue) bool {
+		_, ok := v.(NativeFunction)
+		return ok
+	})
 }
 
 type NativeFunction func(context.Context, ...data.LispValue) (data.LispValue, error)

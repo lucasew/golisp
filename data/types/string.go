@@ -3,22 +3,15 @@ package types
 import (
 	"fmt"
 	"github.com/lucasew/golisp/data"
-	"github.com/lucasew/golisp/data/entity"
 	"github.com/lucasew/golisp/data/entity/register"
 	"github.com/lucasew/golisp/data/types/number"
 )
 
 func init() {
-	register.Register(new(String).LispEntity())
-}
-
-func (String) LispEntity() data.LispEntity {
-	return entity.Entity{
-		"string", func(v data.LispValue) bool {
-			_, ok := v.(String)
-			return ok
-		},
-	}
+	register.Register("string", func(v data.LispValue) bool {
+		_, ok := v.(String)
+		return ok
+	})
 }
 
 type String string

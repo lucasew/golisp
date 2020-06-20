@@ -2,27 +2,12 @@ package maps
 
 import (
 	"github.com/lucasew/golisp/data"
-	"github.com/lucasew/golisp/data/entity"
-	"github.com/lucasew/golisp/data/entity/register"
 	"github.com/lucasew/golisp/data/types"
 	"github.com/lucasew/golisp/vm/components/env"
 )
 
 type LispEnv struct {
 	e *env.LispEnv
-}
-
-func init() {
-	register.Register(new(LispEnv).LispEntity())
-}
-
-func (LispEnv) LispEntity() data.LispEntity {
-	return entity.Entity{
-		"env_map", func(v data.LispValue) bool {
-			_, ok := v.(LispEnv)
-			return ok
-		},
-	}
 }
 
 func NewLispNamespaceFromEnv(e *env.LispEnv) data.LispNamespace {

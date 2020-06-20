@@ -3,23 +3,16 @@ package maps
 import (
 	"fmt"
 	"github.com/lucasew/golisp/data"
-	"github.com/lucasew/golisp/data/entity"
 	"github.com/lucasew/golisp/data/entity/register"
 	"github.com/lucasew/golisp/data/types"
 	"strings"
 )
 
 func init() {
-	register.Register(new(MapString).LispEntity())
-}
-
-func (MapString) LispEntity() data.LispEntity {
-	return entity.Entity{
-		"string_map", func(v data.LispValue) bool {
-			_, ok := v.(MapString)
-			return ok
-		},
-	}
+	register.Register("map_string", func(v data.LispValue) bool {
+		_, ok := v.(MapString)
+		return ok
+	})
 }
 
 type MapString map[string]data.LispValue

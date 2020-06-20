@@ -2,22 +2,15 @@ package number
 
 import (
 	"github.com/lucasew/golisp/data"
-	"github.com/lucasew/golisp/data/entity"
 	"github.com/lucasew/golisp/data/entity/register"
 	"math/big"
 )
 
 func init() {
-	register.Register(new(LispRational).LispEntity())
-}
-
-func (LispRational) LispEntity() data.LispEntity {
-	return entity.Entity{
-		"rational", func(v data.LispValue) bool {
-			_, ok := v.(LispRational)
-			return ok
-		},
-	}
+	register.Register("rational", func(v data.LispValue) bool {
+		_, ok := v.(LispRational)
+		return ok
+	})
 }
 
 type LispRational struct {

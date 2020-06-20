@@ -4,13 +4,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/lucasew/golisp/data"
-	"github.com/lucasew/golisp/data/entity"
-	"github.com/lucasew/golisp/data/entity/register"
 )
-
-func init() {
-	register.Register(Nil.LispEntity())
-}
 
 type _nil uint8
 
@@ -19,14 +13,6 @@ func IsNil(v data.LispValue) bool {
 }
 
 var Nil data.LispCarCdr = _nil(0)
-
-func (_nil) LispEntity() data.LispEntity {
-	return entity.Entity{
-		"nil", func(v data.LispValue) bool {
-			return v.IsNil()
-		},
-	}
-}
 
 func (_nil) IsNil() bool {
 	return true

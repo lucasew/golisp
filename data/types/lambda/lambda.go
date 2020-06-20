@@ -3,13 +3,15 @@ package lambda
 import (
 	"context"
 	"github.com/lucasew/golisp/data"
-	"github.com/lucasew/golisp/data/entity"
 	"github.com/lucasew/golisp/data/entity/register"
 	"github.com/lucasew/golisp/vm"
 )
 
 func init() {
-	register.Register(new(lispLambda).LispEntity())
+	register.Register("lambda_function", func(v data.LispValue) bool {
+		_, ok := v.(lispLambda)
+		return ok
+	})
 }
 
 type lispLambda struct {
@@ -46,12 +48,6 @@ func (f lispLambda) IsFunctionNative() bool {
 	return false
 }
 
-func (lispLambda) LispEntity() data.LispEntity {
-	return entity.Entity{
-		Name: "lambda_function",
-		Isfn: func(v data.LispValue) bool {
-			_, ok := v.(lispLambda)
-			return ok
-		},
-	}
+func (lispLambda) LispTypeName() string {
+	return "function"
 }

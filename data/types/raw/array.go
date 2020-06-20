@@ -3,7 +3,6 @@ package raw
 import (
 	"fmt"
 	"github.com/lucasew/golisp/data"
-	"github.com/lucasew/golisp/data/entity"
 	"github.com/lucasew/golisp/data/entity/register"
 	"github.com/lucasew/golisp/data/types"
 	"reflect"
@@ -11,16 +10,10 @@ import (
 )
 
 func init() {
-	register.Register(new(LispConsWrapper).LispEntity())
-}
-
-func (LispConsWrapper) LispEntity() data.LispEntity {
-	return entity.Entity{
-		"wrapper_cons", func(v data.LispValue) bool {
-			_, ok := v.(LispConsWrapper)
-			return ok
-		},
-	}
+	register.Register("cons_wrapper", func(v data.LispValue) bool {
+		_, ok := v.(LispConsWrapper)
+		return ok
+	})
 }
 
 type LispConsWrapper struct {

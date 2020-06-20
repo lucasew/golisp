@@ -8,10 +8,6 @@ type _comment uint8
 
 var Comment data.LispValue = _comment(0)
 
-func (_comment) LispEntity() data.LispEntity {
-	return nil
-}
-
 func (_comment) IsNil() bool {
 	return true
 }

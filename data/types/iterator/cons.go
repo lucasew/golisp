@@ -3,13 +3,15 @@ package iterator
 import (
 	"context"
 	"github.com/lucasew/golisp/data"
-	"github.com/lucasew/golisp/data/entity"
 	"github.com/lucasew/golisp/data/entity/register"
 	"github.com/lucasew/golisp/data/types"
 )
 
 func init() {
-	register.Register(new(ConsIterator).LispEntity())
+	register.Register("cons_iterator", func(v data.LispValue) bool {
+		_, ok := v.(ConsIterator)
+		return ok
+	})
 }
 
 type ConsIterator struct {
@@ -21,15 +23,6 @@ func NewConsIterator(c data.LispCons) data.LispIterator {
 	return &ConsIterator{
 		cons:  c,
 		index: 0,
-	}
-}
-
-func (ConsIterator) LispEntity() data.LispEntity {
-	return entity.Entity{
-		"cons_iterator", func(v data.LispValue) bool {
-			_, ok := v.(ConsIterator)
-			return ok
-		},
 	}
 }
 

@@ -2,22 +2,15 @@ package number
 
 import (
 	"github.com/lucasew/golisp/data"
-	"github.com/lucasew/golisp/data/entity"
 	"github.com/lucasew/golisp/data/entity/register"
 	"math/big"
 )
 
 func init() {
-	register.Register(new(LispFloat).LispEntity())
-}
-
-func (LispFloat) LispEntity() data.LispEntity {
-	return entity.Entity{
-		"float", func(v data.LispValue) bool {
-			_, ok := v.(LispFloat)
-			return ok
-		},
-	}
+	register.Register("float", func(v data.LispValue) bool {
+		_, ok := v.(LispFloat)
+		return ok
+	})
 }
 
 type LispFloat struct {

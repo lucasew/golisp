@@ -15,7 +15,7 @@ func SameType(v []data.LispValue, ntha, nthb int) func() error {
 		ta := reflect.TypeOf(a)
 		tb := reflect.TypeOf(b)
 		if ta != tb {
-			return fmt.Errorf("%w: expected %s got %s for %dth and %dth value", ErrNotSameType, a.LispEntity().EntityName(), b.LispEntity().EntityName(), ntha, nthb)
+			return fmt.Errorf("%w: expected %s got %s for %dth and %dth value", ErrNotSameType, a.LispTypeName(), b.LispTypeName(), ntha, nthb)
 		}
 		return nil
 	}

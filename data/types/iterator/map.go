@@ -3,22 +3,15 @@ package iterator
 import (
 	"context"
 	"github.com/lucasew/golisp/data"
-	"github.com/lucasew/golisp/data/entity"
 	"github.com/lucasew/golisp/data/entity/register"
 	"github.com/lucasew/golisp/data/types"
 )
 
 func init() {
-	register.Register(new(MapIterator).LispEntity())
-}
-
-func (MapIterator) LispEntity() data.LispEntity {
-	return entity.Entity{
-		"map_iterator", func(v data.LispValue) bool {
-			_, ok := v.(MapIterator)
-			return ok
-		},
-	}
+	register.Register("map_iterator", func(v data.LispValue) bool {
+		_, ok := v.(MapIterator)
+		return ok
+	})
 }
 
 type MapIterator struct {

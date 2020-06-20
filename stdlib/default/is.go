@@ -39,7 +39,7 @@ func IsEntity(ctx context.Context, v ...data.LispValue) (data.LispValue, error) 
 	if !ok {
 		return types.Nil, errors.New("entity not found")
 	}
-	return raw.NewLispWrapper(e.EntityIsFn(v[1])), nil
+	return raw.NewLispWrapper(e.Isfn(v[1])), nil
 }
 
 func IsNative(ctx context.Context, v ...data.LispValue) (data.LispValue, error) {
@@ -123,7 +123,7 @@ func IsNamespace(ctx context.Context, v ...data.LispValue) (data.LispValue, erro
 	return raw.NewLispWrapper(eregister.Is("lisp_namespace", v[0])), nil
 }
 
-func IsIterator(ctx context.Context, v ...data.LispValue) (data.LispValue, error) {
+func IsIterator(v ...data.LispValue) (data.LispValue, error) {
 	err := enforce.Validate(enforce.Length(v, 1))
 	if err != nil {
 		return types.Nil, err
@@ -131,7 +131,7 @@ func IsIterator(ctx context.Context, v ...data.LispValue) (data.LispValue, error
 	return raw.NewLispWrapper(eregister.Is("lisp_iterator", v[0])), nil
 }
 
-func Pass(ctx context.Context, v ...data.LispValue) (data.LispValue, error) {
+func Pass(v ...data.LispValue) (data.LispValue, error) {
 	err := enforce.Validate(enforce.Length(v, 1))
 	if err != nil {
 		return types.Nil, err

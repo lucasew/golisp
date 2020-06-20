@@ -3,22 +3,15 @@ package types
 import (
 	"fmt"
 	"github.com/lucasew/golisp/data"
-	"github.com/lucasew/golisp/data/entity"
 	"github.com/lucasew/golisp/data/entity/register"
 	_ "github.com/lucasew/golisp/data/types/test"
 )
 
 func init() {
-	register.Register(new(Atom).LispEntity())
-}
-
-func (Atom) LispEntity() data.LispEntity {
-	return entity.Entity{
-		"atom", func(v data.LispValue) bool {
-			_, ok := v.(Atom)
-			return ok
-		},
-	}
+	register.Register("atom", func(v data.LispValue) bool {
+		_, ok := v.(Atom)
+		return ok
+	})
 }
 
 type Atom string

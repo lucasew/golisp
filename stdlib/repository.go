@@ -2,6 +2,7 @@ package stdlib
 
 import (
 	"github.com/lucasew/golisp/data"
+	"github.com/lucasew/golisp/data/entity"
 	"github.com/lucasew/golisp/vm"
 )
 
@@ -12,6 +13,15 @@ type Repository struct {
 func NewRepository() Repository {
 	return Repository{
 		map[string]map[string]func() interface{}{},
+	}
+}
+
+func (Repository) LispEntity() data.LispEntity {
+	return entity.Entity{
+		"repository", func(v data.LispValue) bool {
+			_, ok := v.(Repository)
+			return ok
+		},
 	}
 }
 

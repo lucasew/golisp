@@ -8,7 +8,6 @@ import (
 )
 
 func main() {
-	var err error
 	tc := tdefault.NewDefaultToolchain(nil)
 	var mutex sync.Mutex
 	r := gin.Default()
@@ -26,13 +25,17 @@ func main() {
 		mutex.Lock()
 		res, err := tc.Eval(c, ast)
 		mutex.Unlock()
+		if err != nil {
+			handleError(c, err)
+			return
+		}
 		c.JSON(200, gin.H{
 			"result": res.Repr(),
 		})
 	})
 	r.GET("/eval-spew", func(c *gin.Context) {
 		buf := make([]byte, 4096)
-		_, err = c.Request.Body.Read(buf)
+		_, err := c.Request.Body.Read(buf)
 		if err != nil {
 			handleError(c, err)
 			return
@@ -45,11 +48,17 @@ func main() {
 		mutex.Lock()
 		defer mutex.Unlock()
 		res, err := tc.Eval(c, ast)
+		if err != nil {
+			handleError(c, err)
+			return
+		}
 		c.JSON(200, gin.H{
 			"result": spew.Sdump(res),
 		})
 	})
-	r.Run()
+	if err := r.Run(); err != nil {
+		panic(err)
+	}
 }
 
 func handleError(c *gin.Context, err error) {

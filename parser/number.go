@@ -25,7 +25,7 @@ func ParseNumber(ctx lex.ParseContext) (data.LispValue, error) {
 		ctx.Lex().Increment()
 		b, ok := ctx.Lex().GetByte()
 		if !ok {
-			// return types.Nil, errors.New("eof when parsing number body")
+			break
 		}
 		if b.IsByteE() {
 			if e {
@@ -74,4 +74,20 @@ func ParseNumber(ctx lex.ParseContext) (data.LispValue, error) {
 		}
 		return types.Nil, fmt.Errorf("%w: %s", ErrCantParseAsNumber, s)
 	}
+	s := ctx.Lex().Slice(begin, ctx.Lex().Index())
+	s = strings.ReplaceAll(s, "_", "")
+	reti, ok := number.NewIntFromString(s)
+	if ok {
+		return reti, nil
+	}
+	retf, ok := number.NewFloatFromString(s)
+	if ok {
+		return retf, nil
+	}
+
+	retr, ok := number.NewRationalFromString(s)
+	if ok {
+		return retr, nil
+	}
+	return types.Nil, fmt.Errorf("%w: %s", ErrCantParseAsNumber, s)
 }

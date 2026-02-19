@@ -14,7 +14,7 @@ func GlobalState(ctx lex.ParseContext) (data.LispValue, error) {
 		return types.Nil, err
 	}
 	select {
-	case _ = <-ctx.Done():
+	case <-ctx.Done():
 		return types.Nil, data.ErrContextCancelled
 	default:
 		b, ok := ctx.Lex().GetByte()

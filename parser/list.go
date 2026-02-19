@@ -8,7 +8,10 @@ import (
 )
 
 func ParseList(ctx lex.ParseContext, global GlobalStateFunc) (data.LispValue, error) {
-	lex.StateWhitespace(ctx)
+	err := lex.StateWhitespace(ctx)
+	if err != nil {
+		return types.Nil, err
+	}
 	b, ok := ctx.Lex().GetByte()
 	if !ok {
 		return types.Nil, fmt.Errorf("%w: list", ErrEOFWhile)

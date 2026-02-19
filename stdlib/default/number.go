@@ -64,7 +64,7 @@ func ToByte(ctx context.Context, v ...data.LispValue) (data.LispValue, error) {
 	if err != nil {
 		return types.Nil, err
 	}
-	num := number.NewByte(0)
+	var num data.LispValue
 	vnum := v[0].(data.LispNumber)
 	switch n := vnum.(type) {
 	case number.LispInt:

@@ -57,7 +57,7 @@ func (vm *LispVM) EnvSetGlobal(k string, v data.LispValue) data.LispValue {
 // Eval this function is where the magic starts
 func (vm *LispVM) Eval(ctx context.Context, v data.LispValue) (data.LispValue, error) {
 	select {
-	case _ = <-ctx.Done():
+	case <-ctx.Done():
 		return types.Nil, data.ErrContextCancelled
 	default:
 		switch in := v.(type) {
@@ -69,8 +69,8 @@ func (vm *LispVM) Eval(ctx context.Context, v data.LispValue) (data.LispValue, e
 				case data.LispFunction:
 					crude_params := []data.LispValue(in.Cdr().(types.Cons))
 					params := make([]data.LispValue, len(crude_params))
-					var err error = nil
 					for k, v := range crude_params {
+						var err error
 						params[k], err = vm.Eval(ctx, v)
 						if err != nil {
 							return types.Nil, err
@@ -95,7 +95,7 @@ func (vm *LispVM) Eval(ctx context.Context, v data.LispValue) (data.LispValue, e
 				ret := types.Nil.(data.LispValue)
 				var err error
 				for _, stmt := range in {
-					ret, err = vm.Eval(ctx, stmt.(data.LispValue))
+					ret, err = vm.Eval(ctx, stmt)
 					if err != nil {
 						return types.Nil, err
 					}

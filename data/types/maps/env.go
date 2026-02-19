@@ -35,7 +35,7 @@ func (e LispEnv) Set(k data.LispValue, v data.LispValue) data.LispValue {
 }
 
 func (e LispEnv) IsNil() bool {
-	return e.IsNil()
+	return e.e == nil
 }
 
 func (e LispEnv) LispTypeName() string {

@@ -35,7 +35,7 @@ func (i Cons) Cdr() data.LispCarCdr {
 	if len(i) < 2 {
 		return NewCons()
 	}
-	return i[1:len(i)]
+	return i[1:]
 }
 
 func (i Cons) IsNil() bool {

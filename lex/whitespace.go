@@ -8,7 +8,7 @@ import (
 func StateWhitespace(ctx ParseContext) error {
 	for {
 		select {
-		case _ = <-ctx.Done():
+		case <-ctx.Done():
 			return data.ErrContextCancelled
 		default:
 			b, ok := ctx.Lex().GetByte()

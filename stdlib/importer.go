@@ -27,9 +27,7 @@ func (i Importer) ImportOnVM(vm vm.LispVM, module string) []string {
 	keys := []string{}
 	for _, repo := range i.repositories {
 		ikeys := repo.ImportOnVM(vm, module)
-		for _, k := range ikeys {
-			keys = append(keys, k)
-		}
+		keys = append(keys, ikeys...)
 	}
 	return keys
 }

@@ -30,7 +30,7 @@ func And(ctx context.Context, v ...data.LispValue) (data.LispValue, error) {
 		return v[0], nil
 	}
 	select {
-	case _ = <-ctx.Done():
+	case <-ctx.Done():
 		return types.Nil, data.ErrContextCancelled
 	default:
 		return And(ctx, v[1:]...)
@@ -45,7 +45,7 @@ func Or(ctx context.Context, v ...data.LispValue) (data.LispValue, error) {
 		return v[0], nil
 	}
 	select {
-	case _ = <-ctx.Done():
+	case <-ctx.Done():
 		return types.Nil, data.ErrContextCancelled
 	default:
 		return Or(ctx, v[1:]...)

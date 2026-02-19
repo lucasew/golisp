@@ -30,7 +30,7 @@ func (s Symbol) UnwrapCons() ([]data.LispValue, error) {
 }
 
 func (s Symbol) Get(k int) data.LispValue {
-	return String(k).Get(k)
+	return String(s).Get(k)
 }
 
 func (s Symbol) Len() int {
